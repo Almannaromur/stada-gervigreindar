@@ -36,8 +36,11 @@ export default defineConfig({
       filter: (page) => !draftPaths.some((path) => page.replace(/\/$/, '').endsWith(path)) && !page.includes('/keystatic'),
     }),
   ],
-  // Addresses from the old report site (Framer), so existing links keep working
   redirects: {
+    // Easy-to-remember addresses for the editor (Keystatic itself must live at /keystatic)
+    '/admin': '/keystatic',
+    '/ritstjori': '/keystatic',
+    // Addresses from the old report site (Framer), so existing links keep working
     '/inngangur': '/greinar/inngangur',
     '/kafli-1': '/greinar/stefna-og-adgerdir-islands',
     '/kafli-2': '/greinar/hagnyting-og-innleiding-a-vinnustodum',
