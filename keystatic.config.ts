@@ -5,11 +5,9 @@ import { categoryColors } from './src/lib/colors';
 // Locally (npm run dev) the editor writes straight to the files on disk.
 // On the live site editors log in through Keystatic Cloud, and every save
 // becomes a commit to the GitHub repository, which triggers a new deploy.
-const cloudProject = import.meta.env.PUBLIC_KEYSTATIC_CLOUD_PROJECT as string | undefined;
-
 export default config({
-  storage: import.meta.env.DEV || !cloudProject ? { kind: 'local' } : { kind: 'cloud' },
-  ...(cloudProject ? { cloud: { project: cloudProject } } : {}),
+  storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'cloud' },
+  cloud: { project: 'almannaromur/stada-gervigreindar' },
   ui: {
     brand: { name: 'Staða gervigreindar' },
     navigation: {

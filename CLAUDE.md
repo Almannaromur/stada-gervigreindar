@@ -24,7 +24,7 @@ Consult these guides before working on related tasks:
 ## Project notes
 
 - Content: articles in `src/content/greinar/<slug>/index.mdx` (→ /greinar/<slug>), categories in `src/content/flokkar/<slug>.yaml`, rating tables in `src/content/einkunnir/`. Schema in `src/content.config.ts`.
-- Editor: Keystatic (`keystatic.config.ts`, component fields in `src/editor/components.ts`). Local storage in dev, Keystatic Cloud in production (`PUBLIC_KEYSTATIC_CLOUD_PROJECT`). Hosting: Vercel adapter; pages prerendered, only /keystatic routes on demand.
+- Editor: Keystatic (`keystatic.config.ts`, component fields in `src/editor/components.ts`). Local storage in dev, Keystatic Cloud project `almannaromur/stada-gervigreindar` in production. Hosting: Vercel adapter; pages prerendered, only /keystatic routes on demand.
 - Article MDX must stay editor-compatible: no `import` lines, no JS expressions/comments, no HTML tags, no GFM footnotes (sources are the `heimildir` frontmatter list + `<Ref n={…} />`). Components are passed globally by `src/pages/greinar/[slug].astro`.
 - Image props are strings "/src/content/greinar/<slug>/<file>" (what Keystatic writes); resolve with `resolveImage` in `src/lib/images.ts`. Keystatic drops image values that don't start with `<publicPath>/<slug>/`.
 - New component = `src/components/content/X.astro` + export in `index.ts` + entry in `src/editor/components.ts` (`npm run check` enforces the last two).

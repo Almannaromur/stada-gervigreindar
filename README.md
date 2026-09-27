@@ -95,6 +95,5 @@ Old addresses from the Framer site (`/kafli-1`, `/inngangur`, …) redirect to t
 
 1. Push this repository to GitHub.
 2. **Vercel:** *Add New Project* → import the repository. No special settings are needed; the Astro preset is detected.
-3. **Keystatic Cloud** (keystatic.cloud): create a team and a project, connect it to the GitHub repository, and invite editors by email.
-4. In Vercel → Settings → Environment Variables, set `PUBLIC_KEYSTATIC_CLOUD_PROJECT` to `team-name/project-name` from Keystatic Cloud, then redeploy.
-5. Point the stadagervigreindar.is domain to Vercel (Vercel → Domains).
+3. **Keystatic Cloud** (keystatic.cloud): project `almannaromur/stada-gervigreindar`, connected to the GitHub repository. Invite editors by email there. The project name is set in `keystatic.config.ts` (`cloud.project`); no environment variables are needed.
+4. Point the stadagervigreindar.is domain to Vercel (Vercel → Domains).
