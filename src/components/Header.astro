@@ -9,7 +9,7 @@ const categories = await getCategories();
 const current = Astro.url.pathname.replace(/\/$/, '');
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="container inner">
     <a href="/" class="logo">
       <img src="/logo-almannaromur.svg" alt={site.org.name} width="221" height="38" />
@@ -67,12 +67,66 @@ const current = Astro.url.pathname.replace(/\/$/, '');
     });
     menu.addEventListener('toggle', () => document.documentElement.classList.toggle('menu-open', menu.open));
   }
+
+  // Sticky header: hidden while scrolling down, back as soon as the reader scrolls up.
+  // Transparent at the very top (over the coloured page header), solid once scrolled.
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  if (header) {
+    let lastY = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = window.scrollY;
+      const menuOpen = header.querySelector('details[open]');
+      header.toggleAttribute('data-scrolled', y > 8);
+      if (menuOpen || y <= header.offsetHeight) header.removeAttribute('data-hidden');
+      else if (y > lastY + 4) header.setAttribute('data-hidden', '');
+      else if (y < lastY - 4) header.removeAttribute('data-hidden');
+      if (Math.abs(y - lastY) > 4 || y <= header.offsetHeight) lastY = y;
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    // Keyboard users tabbing into the header always see it
+    header.addEventListener('focusin', () => header.removeAttribute('data-hidden'));
+    update();
+  }
 </script>
 
 <style>
+  /* No transform or filter unless hidden: either would trap the fixed-position
+     mobile menu inside the header instead of covering the screen */
   .site-header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 20;
+    transition:
+      transform 0.25s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .site-header[data-scrolled] {
+    background: var(--color-bg);
+    box-shadow: 0 1px 0 var(--color-line-soft);
+  }
+
+  .site-header[data-hidden] {
+    transform: translateY(-100%);
+    box-shadow: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
   }
 
   .inner {
