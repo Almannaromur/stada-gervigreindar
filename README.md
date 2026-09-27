@@ -15,7 +15,7 @@ Locally, the editor writes straight to the files on disk. After creating a **new
 
 ## Ritstjóri (for editors)
 
-Go to **stadagervigreindar.is/keystatic** and log in with your email (Keystatic Cloud).
+Go to **stadagervigreindar.is/ritstjori** (or `/admin`; both lead to `/keystatic`) and log in with your email (Keystatic Cloud).
 
 **New article:** Greinar → *Add*.
 - Fill in title, category, author, summary ("Útdráttur") and date.
