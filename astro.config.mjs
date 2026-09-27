@@ -17,8 +17,13 @@ const draftPaths = fs
   .map((slug) => `/greinar/${slug}`);
 
 // https://astro.build/config
+// Absolute URLs (canonical, link-preview image, sitemap) use the site's production
+// address on Vercel: the vercel.app address until the domain is connected, then
+// stadagervigreindar.is. Outside Vercel, the real domain.
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export default defineConfig({
-  site: 'https://stadagervigreindar.is',
+  site: productionHost ? `https://${productionHost}` : 'https://stadagervigreindar.is',
   trailingSlash: 'never',
   build: { format: 'file' },
   // Pages are prerendered; only the editor (/keystatic, /api/keystatic) runs on the server

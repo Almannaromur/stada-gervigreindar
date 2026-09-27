@@ -1,6 +1,7 @@
 export const site = {
   name: 'Staða gervigreindar',
-  description: 'Gögn, þróun og sjónarmið um gervigreind á Íslandi. Almannarómur.',
+  // Same as the original site (link previews, search results)
+  description: 'Staða gervigreindar á Íslandi - skýrsla Almannaróms.',
   home: {
     eyebrow: '2026',
     title: 'Gervigreind á Íslandi',
