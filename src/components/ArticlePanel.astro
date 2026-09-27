@@ -1,0 +1,53 @@
+---
+/** A titled stack of article cards ("Nýjar greinar", "Næsta grein"). */
+import ArticleCard from './ArticleCard.astro';
+import type { Article, Category } from '@/lib/content';
+
+interface Props {
+  title: string;
+  items: { article: Article; category: Category }[];
+}
+
+const { title, items } = Astro.props;
+const id = `panel-${title.toLowerCase().replace(/\W+/g, '-')}`;
+---
+
+<section class="panel" aria-labelledby={id}>
+  <h2 id={id} class="panel-title">{title}</h2>
+  <ul>
+    {
+      items.map(({ article, category }) => (
+        <li>
+          <ArticleCard article={article} category={category} />
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-tight);
+  }
+
+  .panel-title {
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--color-surface);
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 0.85rem + 0.5vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.24;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-tight);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

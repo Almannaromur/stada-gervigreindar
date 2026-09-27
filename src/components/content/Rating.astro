@@ -1,0 +1,60 @@
+---
+/**
+ * Score badge, coloured by score (1 red → 5 green).
+ *
+ * <Rating label="Íslenskustuðningur" value={4} />   → "Íslenskustuðningur: [4 af 5]"
+ * <Rating value={4} compact />                       → "[4]"
+ */
+interface Props {
+  label?: string;
+  value: number;
+  max?: number;
+  compact?: boolean;
+}
+
+const { label, value, max = 5, compact = false } = Astro.props;
+
+// Score colours from the original site
+const colours: Record<number, [string, string]> = {
+  1: ['#FD5252', '#fff'],
+  2: ['#FF8D58', 'var(--color-text)'],
+  3: ['#FFCA58', 'var(--color-text)'],
+  4: ['#58B6FF', 'var(--color-text)'],
+  5: ['#6CE459', 'var(--color-text)'],
+};
+const [bg, fg] = colours[Math.round((value / max) * 5)] ?? colours[3];
+---
+
+<span class="rating">
+  {label && <span class="label">{label}:</span>}
+  <span class="badge" style={`--badge-bg: ${bg}; --badge-fg: ${fg}`} aria-label={`${value} af ${max}`}>
+    <span aria-hidden="true">{compact ? value : `${value} af ${max}`}</span>
+  </span>
+</span>
+
+<style>
+  .rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: var(--body-xs);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .label {
+    font-weight: 500;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    background: var(--badge-bg);
+    color: var(--badge-fg);
+    font-weight: 700;
+  }
+</style>

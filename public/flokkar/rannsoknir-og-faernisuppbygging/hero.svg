@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10690 800 1440 794" width="1440" height="794" fill="none" preserveAspectRatio="xMidYMid slice">
+<g opacity="0.5" clip-path="url(#clip78_1_4)">
+<rect width="1440" height="794" transform="translate(10690 800)" fill="url(#paint74_linear_1_4)"/>
+<path d="M11468.5 823L12130 823M11863.5 897.732L12130 897.732M10876 972.4L12130 972.4M11962.2 1047.13L12130 1047.13M11567.2 1121.8L12130 1121.8M11764.7 1196.53L12130 1196.53M10974.7 1271.2L12130 1271.2M11271 1345.93L12130 1345.93M11369.7 1420.6L12130 1420.6M11764.7 1495.33L12130 1495.33M11073.5 1570L12130 1570" stroke="#B9F2FF" stroke-width="2" stroke-miterlimit="10"/>
+</g>
+<defs>
+<clipPath id="clip78_1_4">
+<rect width="1440" height="794" fill="white" transform="translate(10690 800)"/>
+</clipPath>
+<linearGradient id="paint74_linear_1_4" x1="720" y1="0" x2="720" y2="794" gradientUnits="userSpaceOnUse">
+<stop stop-color="#946AB4"/>
+<stop offset="1" stop-color="#EBD3A0"/>
+</linearGradient>
+</defs>
+</svg>

@@ -1,0 +1,400 @@
+---
+title: Hagnýting og innleiðing á vinnustöðum
+category: atvinnulifid
+description: >-
+  Kaflinn nýtist þeim sem vilja átta sig á því hvernig fyrirtæki og stofnanir
+  geta byrjað að nýta sér gervigreind, hvar stærstu tækifærin liggja og hvað
+  aðrir hafa lært af fyrstu skrefunum.
+author: marin-jonsdottir
+date: 2026-04-27
+draft: false
+heimildir:
+  - texti: >-
+      Hagstofa Íslands. (2026, 10. mars). Notkun gervigreindar útbreidd en
+      markviss innleiðing og stefnumótun fátíðari.
+    slod: >-
+      https://hagstofa.is/utgafur/frettasafn/visindi-og-taekni/upplysingataekninotkun-fyrirtaekja-2024/
+  - texti: Anthropic. (2026, 24. mars). How Asana built AI teammates on Claude.
+    slod: https://claude.com/customers/asana-qa
+  - texti: >-
+      OpenAI. (2025, 22. desember). One in a million: Celebrating the customers
+      shaping AI’s future.
+    slod: https://openai.com/index/one-in-a-million-customers/
+  - texti: OpenAI. (2024, 24. apríl). Moderna.
+    slod: https://openai.com/index/moderna/
+  - texti: >-
+      Digitaliseringsministeriet. (2025, desember). Aftale om tre
+      storskalaprojekter med kunstig intelligens i den offentlige sektor.
+    slod: >-
+      https://www.digmin.dk/digitalisering/nyheder/nyhedsarkiv/2025/dec/aftale-om-tre-storskalaprojekter-med-kunstig-intelligens-i-den-offentlige-sektor
+  - texti: >-
+      McKinsey & Company. (2025, nóvember). The state of AI in 2025: Agents,
+      innovation, and transformation
+    slod: >-
+      https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai
+  - texti: >-
+      European Investment Bank. (2026, 13. janúar). AI adoption, productivity
+      and employment: Evidence from European firms (Economics Working Paper
+      2026/02).
+    slod: >-
+      https://www.eib.org/en/publications/20250383-economics-working-paper-2026-02
+  - texti: Eurostat. (2025). Use of artificial intelligence in enterprises.
+    slod: >-
+      https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises
+  - texti: >-
+      AMD Silo AI og AI Finland. (2025, mars). The Nordic State of AI: The
+      Report, Edition IV.
+    slod: >-
+      https://aifinland.fi/wp-content/uploads/2025/03/Silo_NSOAI4_INLAY_update_spreads.pdf
+  - texti: >-
+      Debales AI. (2025). How Maersk saved $300M, and what smaller operators can
+      learn.
+    slod: https://debales.ai/blog/maersk-ai-logistics-cost-savings-lessons
+  - texti: >-
+      Logistics Viewpoints. (2025, 9. október). Ingka Group acquires Locus to
+      enhance IKEA’s home delivery operations with AI-powered logistics.
+    slod: >-
+      https://logisticsviewpoints.com/2025/10/09/ingka-group-acquires-locus-to-enhance-ikeas-home-delivery-operations-with-ai-powered-logistics/
+  - texti: H&M Group. (2021, 15. júní). Responsible AI, is better AI.
+    slod: https://hmgroup.com/our-stories/responsible-ai-is-better-ai/
+  - texti: >-
+      Anthropic. (2024). European Parliament expands access to their archives
+      with Claude.
+    slod: https://claude.com/customers/european-parliament
+  - texti: >-
+      Ayfie. (2026). Public sector picks made-in-Norway AI as government
+      mandates adoption.
+    slod: >-
+      https://www.ayfie.com/impact/blog/public-sector-picks-made-in-norway-ai-as-government-mandates-adoption
+  - texti: >-
+      PA Consulting. (2025). How to achieve tech-enabled health and welfare in
+      the Nordic region.
+    slod: >-
+      https://www.paconsulting.com/insights/how-to-achieve-tech-enabled-health-and-welfare-in-the-nordic-region
+  - texti: >-
+      Boston Consulting Group. (2026). Scaling AI requires new processes, not
+      just new tools.
+    slod: >-
+      https://www.bcg.com/publications/2026/scaling-ai-requires-new-processes-not-just-new-tools
+  - texti: >-
+      Deloitte. (2025, 3. desember). Nordic AI investment is rising – but firms
+      risk missing out on business value.
+    slod: >-
+      https://www.deloitte.com/dk/en/issues/generative-ai/ai-roi-in-the-nordics.html
+  - texti: >-
+      Mollick, E. (2026, 1. apríl). The IT department: Where AI goes to die. The
+      Economist.
+    slod: >-
+      https://www.economist.com/finance-and-economics/2026/04/01/the-it-department-where-ai-goes-to-die
+---
+Helmingur íslenskra fyrirtækja segist nota gervigreind en aðeins fjórðungur þeirra getur sagt til um hvernig hún er hagnýtt<Ref n={1} />. Þetta bendir til þess að það sé ekki skortur á tæknilegri getu, heldur frekar skortur á skýrri stefnumótun hjá fyrirtækjum. Stjórnendur fyrirtækja og stofnana kannast líklega við þá tilfinningu að þau ættu að vera að nýta gervigreind í meiri mæli enda berast reglulega fréttir að utan af fyrirtækjum sem búa sér til sérsniðna erindreka (e. agents) sem draga úr handavinnu starfsfólks<Ref n={2} />, gervigreindarþjónustufulltrúum sem svara tveimur þriðju fyrirspurna sjálfvirkt<Ref n={3} /> og sum erlend stórfyrirtæki halda því fram að nokkur þúsund starfsmenn geti nú skilað sama árangri og hundrað þúsund áður fyrr<Ref n={4} />. Í opinbera geiranum fjárfesta ríkisstjórnir fyrir milljarða í gervigreindarverkefnum til að einfalda skýrslugerðir og úrvinnslu umsókna<Ref n={5} />.
+
+Raunveruleikinn á bak við fyrirsagnirnar er aftur á móti flóknari. Samkvæmt McKinsey eru tveir þriðju hlutar gervigreindarverkefna enn á tilraunastigi<Ref n={6} />. Rannsókn Evrópska fjárfestingarbankans sýnir sömuleiðis að framleiðniaukning vegna gervigreindar nemur aðeins um 4% og hún næst einungis ef fyrirtæki leggja ríka áherslu á gagnaúrvinnslu og þjálfun starfsfólks<Ref n={7} />. Á Íslandi hafa einungis 14% fyrirtækja mótað sér formlega gervigreindarstefnu<Ref n={1} />. Bilið á milli möguleika tækninnar og raunverulegrar hagnýtingar er því gríðarlegt og það brúast ekki sjálfkrafa.
+
+Í þessum kafla greinum við hvernig norræn og íslensk fyrirtæki nýta gervigreind í dag, hvar helstu hindranir fyrir þau liggja og hvaða stuðningur er í boði til að stíga næstu skref.
+
+## Hvernig eru fyrirtæki og stofnanir að hagnýta gervigreind?
+
+### Staðan á Norðurlöndum
+
+Norðurlöndin eru framarlega í Evrópu þegar kemur að útbreiðslu gervigreindar en samkvæmt Eurostat nota 42% danskra fyrirtækja gervigreind, 38% í Finnlandi og 35% í Svíþjóð, samanborið við 20% að meðaltali í Evrópusambandinu<Ref n={8} />. Sama könnun var lögð fyrir íslensk fyrirtæki af Hagstofu Íslands og sýna niðurstöður hennar að 48% íslenskra fyrirtækja noti gervigreindarhugbúnað af einhverju tagi<Ref n={1} />. Þetta bendir til þess að Ísland fylgi ekki aðeins norrænum nágrönnum sínum í þessari þróun, heldur virðast íslensk fyrirtæki ekki síður viljug til að innleiða þessa nýju tækni en önnur fyrirtæki á Norðurlöndum.
+
+En útbreiðsla er ekki það sama og þroski. Samkvæmt könnuninni The Nordic State of AI hefur hlutfall þeirra sem hafa skilgreint formlegan ramma til að meta árangur af innleiðingu gervigreindar vaxið úr 25% í 40% á aðeins einu ári í Norðurlöndunum<Ref n={9} /> sem gefur til kynna að fyrirtæki séu að færast frá tilraunum með gervigreind yfir í markvissa nálgun á gervigreindarinnleiðingu hjá sér. Samt sem áður er munurinn á geirum áberandi: 41% fyrirtækja í einkageiranum hafa slíkan ramma en aðeins 24% opinberra stofnana. Opinberar stofnanir eru einnig líklegri til að einangra gervigreindarverkefni í einstökum deildum, sem getur leitt til ósamræmis og óhagkvæmni þegar til lengri tíma er litið.
+
+Könnunin gefur einnig innsýn í hvers konar gervigreind er í notkun. Algengust er spunagreind (e. generative AI) sem er tækni sem býr til nýjan texta, kóða, myndir eða hljóð. Þar á eftir koma mállíkön (e. large language models), málvinnsla (e. natural language processing), djúpnám (e. deep learning) og bestunarvélar (e. optimization engines) sem nýtast meðal annars í framleiðslu og gagnagreiningu. Fyrirtækin nota þessa tækni helst í eigin vörum og til að bæta framleiðni starfsmanna<Ref n={9} />.
+
+### Dæmi sem sýna umbreytingu, ekki bara hagræðingu
+
+Á Norðurlöndum og í Evrópu má sjá fjölbreytt dæmi um fyrirtæki og stofnanir sem nýta gervigreind, en þau áhugaverðustu eiga eitt sameiginlegt: þau byrjuðu ekki á tæknilausninni heldur á að greina vandamálið sem tæknin ætti að leysa.
+
+<Box logo="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/maersk.png" logoAlt="Maersk" tone="tint" level="3">
+  Danska skipafyrirtækið Maersk nýtti gervigreind til að bæta viðhald og draga úr óvæntum bilunum í skipaflota sínum<Ref n={10} />.
+
+  #### Vandamál greint
+
+  Ófyrirséðar bilanir á skipum ollu kostnaðarsömum rekstrarstöðvunum og truflunum á þjónustu.
+
+  #### Lausnin
+
+  Gervigreindarlíkan var þróað til að greina gögn úr rekstri skipanna og spá fyrir um bilanir með allt að þriggja vikna fyrirvara.
+
+  #### Útkoman
+
+  Rekstrarstöðvunum fækkaði um 30% og fyrirtækið náði yfir 300 milljóna dala árlegum sparnaði.
+</Box>
+
+<Box logo="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/ikea.png" logoAlt="IKEA" tone="tint" level="3">
+  Alþjóðlegi húsgagna- og heimilisvöruframleiðandinn IKEA, í gegnum eiganda sinn Ingka Group, nýtti gervigreind til að bæta skipulagningu heimsendinga og draga úr akstri<Ref n={11} />.
+
+  #### Vandamál greint
+
+  Skipulagning heimsendinga var flókin, kostnaðarsöm og gat leitt til óþarfa aksturs.
+
+  #### Lausnin
+
+  Ingka Group keypti gervigreindardrifið flutningafyrirtæki Locus til að skipuleggja heimsendingar í rauntíma og draga úr akstri.
+
+  #### Útkoman
+
+  Betri nýting í heimsendingum, minni akstur og skilvirkari flutningar.
+</Box>
+
+<Box logo="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/hm.png" logoAlt="H&M" tone="tint" level="3">
+  Sænska tískufyrirtækið H\&M notar gervigreind í markaðssetningu og rekstri til að bæta skilvirkni og styðja við betri ákvarðanir<Ref n={12} />.
+
+  #### Vandamál greint
+
+  Flókið var að mæta eftirspurn viðskiptavina og hagræða aðfangakeðjunni.
+
+  #### Lausnin
+
+  Gervigreind er notuð til stafrænnar efnissköpunar og til að spá fyrir um eftirspurn.
+
+  #### Útkoman
+
+  Tími sparast og starfsemi fyrirtækisins verður markvissari og skilvirkari.
+</Box>
+
+Í öllum þessum tilvikum er gervigreind ekki bara verkfæri sem sparar tíma; hún breytir því hvernig fyrirtækið starfar.
+
+Opinberi geirinn í Evrópu situr svo ekki eftir. Evrópuþingið hefur búið til gervigreindarverkfærið Archibot sem veitir aðgang að yfir 2,1 milljón skjala á mörgum tungumálum, allt aftur til 1952. Leit og greining gengur 80% hraðar og skjalasafnið, sem áður var aðeins aðgengilegt á frönsku, er nú opið öllum borgurum sambandsins<Ref n={13} />. Norsk stjórnvöld hafa falið sveitarfélögum að innleiða gervigreindarlausnir til að sinna stjórnsýsluverkefnum, og tugir sveitarfélaga vinna nú þegar að slíkri innleiðingu<Ref n={14} />. Í Svíþjóð hafa sveitarfélög tekið í notkun lyfjagjafarvélmenni á hjúkrunarheimilum sem spara hundruð vinnustunda á ári en mikilvægara er að starfsfólki gefist meiri tími til að sinna beinni umönnun<Ref n={15} />.
+
+<PullQuote>
+  Mynstrið er skýrt: árangurinn kemur þegar gervigreind er notuð til að leysa raunverulegan vanda, ekki þegar hún er keypt sem hugbúnaður og dreift út í fyrirtækið án skýrs markmiðs.
+</PullQuote>
+
+## Viðtöl við stjórnendur vinnustaða
+
+Til að fá innsýn í stöðuna á Íslandi tókum við viðtöl við stjórnendur úr mismunandi atvinnugreinum; frá stórfyrirtæki í flutningum til sprotafyrirtækis í hugbúnaðarþróun. Reynsla þeirra varpar ljósi á bæði tækifæri og áskoranir sem einkenna íslenskt umhverfi.
+
+<Interview name="Guðrún Aðalsteinsdóttir" role="framkvæmdastjóri Krónunnar" image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/gudrun-adalsteinsdottir.png">
+  **Geturðu lýst kjarnastarfsemi þíns vinnustaðar og þínu hlutverki í einni, hnitmiðaðri setningu?**
+
+  Krónan er framsækin og leiðandi matvöruverslun sem leggur áherslu á snjallar og sjálfbærar lausnir og að einfalda viðskiptavinum lífið með ánægjulegri innkaupaupplifun.
+
+  Mitt hlutverk er að leiða okkar vegferð með skýrri stefnu, drifkrafti og hugrekki til að prófa nýjar leiðir og stöðugt aðlaga okkur að þörfum viðskiptavina og breytingum í umhverfinu.
+
+  **Smásöluverslun býr yfir gríðarlegu magni gagna um kaupmynstur, birgðastöðu og verðlagningu. Hvar er gervigreindin nú þegar farin að skila árangri í daglegum rekstri Krónunnar?**
+
+  Við erum farin að sjá mjög skýran ávinning af gervigreind, sérstaklega í innkaupum og birgðastýringu þar sem spálíkön hjálpa okkur að bæta aðgengi að vörum, minnka sóun og lækka vöruhúsakostnað.
+
+  Við erum einnig að þróa okkar eigin sjálfsafgreiðslulausn sem byggir að hluta á gervigreind, þar sem markmiðið er að bæta flæði fyrir viðskiptavini og á sama tíma greina betur óeðlilega hegðun á sjálfsafgreiðslusvæðum.
+
+  Við erum að byggja upp okkar getu á þessu sviði, prófa okkur áfram og læra hvað skilar raunverulegu virði með skýran fókus á að nýta gögn til að bæta upplifun viðskiptavina og vera skilvirkari í rekstri.
+
+  **Þú tókst við framkvæmdastjórastólnum eftir að hafa stýrt stafrænni þróun fyrirtækisins. Hvernig hefur sá bakgrunnur mótað nálgun þína að gervigreindarvæðingu Krónunnar?**
+
+  Hann hefur mótað mig mikið og þá í áttina að hugsa einfalt og leggja áherslu á gæði, frekar en að ætla sér of mikið of hratt. Ég trúi því að stærstu mistökin séu að bíða eftir hinni fullkomnu lausn. Í staðinn þurfum við að prófa, læra og þróa áfram og gera það þvert á fyrirtækið. Við vinnum markvisst með teymum frá ólíkum sviðum, fáum hugmyndir upp á borðið og gefum fólki svigrúm til að prófa sig áfram. Tækifærin í gervigreind eru gríðarleg ef henni er beitt vel, en þetta snýst líka um að þróa menningu fyrirtækisins í takt við tæknina.
+
+  **Matvöruverslun einkennist af mikilli veltu en lágri framlegð. Hvernig metið þið hvaða gervigreindarfjárfestingar skila raunverulegum ávinningi, og hvað er einungis tímabundin tískubylgja (e. hype)?**
+
+  Við erum mjög skýr á því að fjárfestingar í gervigreind þurfa að skila raunverulegu virði, bæði fyrir viðskiptavininn og reksturinn. Á sama tíma þurfum við að passa okkur að vera ekki of varkár. Þróunin er hröð og ef við prófum ekki, þá lærum við ekki. Þess vegna vinnum í tveimur lögum: annars vegar með agað mat á fjárfestingum og mælanlegum árangri, og hins vegar með rými fyrir tilraunir þar sem við leyfum okkur að kanna nýjar leiðir. Hingað til hafa tilraunir okkar skilað góðum árangri og það hvetur okkur til að halda áfram á þessari braut.
+
+  **Krónan er vel þekkt vörumerki á flestum heimilum landsins. Þegar kemur að því að tvinna gervigreind inn í upplifun viðskiptavina, hvernig tryggið þið að traust og góð tenging við viðskiptavininn haldist?**
+
+  Við byrjum alltaf á viðskiptavininum og að gervigreindin skapi raunverulegt virði fyrir þá. Ef hún gerir upplifunina einfaldari, hraðari og persónulegri, þá erum við á réttri leið.
+
+  Traust byggist líka á gagnsæi og ábyrgð. Við leggjum áherslu á að viðskiptavinir viti hvernig gögnin þeirra eru notuð og að það sé alltaf gert með því markmiði að bæta og einfalda þeirra daglega líf.
+
+  Á sama tíma skiptir miklu máli að halda mannlega þættinum og þessu góða samtali við viðskiptavini. Tæknin á ekki að koma í veg fyrir góð tengsl, heldur þvert á móti að styðja við og færa okkur nær viðskiptavinum.
+
+  **Ef þú gætir breytt einu í nálgun Íslands að gervigreind, hvað væri það?**
+
+  Að við myndum hugsa stærra og hreyfa okkur hraðar. Sem lítið land erum við í einstakri stöðu til að prófa hluti, vinna þvert á geira og læra hratt. Við gætum til dæmis sett af stað fleiri sameiginleg tilraunaverkefni milli fyrirtækja, opinberra aðila og háskóla þar sem raunveruleg gögn eru notuð til að leysa þekkt vandamál.
+
+  Staðreyndin er sú að leikurinn er að breytast mjög hratt og það mun ekki duga að plástra gömul kerfi. Við þurfum að endurhugsa leikinn frá grunni.
+</Interview>
+
+<Interview name="Hjálmar Gíslason" role="framkvæmdastjóri og stofnandi GRID" image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/hjalmar-gislason.png">
+  **Geturðu lýst kjarnastarfsemi þíns vinnustaðar og þínu hlutverki í einni, hnitmiðaðri setningu?**
+
+  GRID brúar bilið milli gervigreindarlausna og töflureikna.
+
+  **Sem frumkvöðull og stofnandi sprotafyrirtækis, hvaða frelsi hefur þú til að nýta gervigreind sem stærri, rótgrónari fyrirtæki hafa hreinlega ekki — og hvernig hefur það mótað vöruþróunina hjá GRID?**
+
+  Ég hef - í minni stöðu í svona fyrirtæki - algert frelsi til þess og hef nýtt það til fullnustu til að kynna mér tæknina "hands on". Í raun hafa allir starfsmenn haft slíkt frelsi, en ég hef kannski leyft mér að fara víðar og prófa fleira sem ekki verður endilega séð strax hvernig tengist kjarnastarfsemi fyrirtækisins. Þetta leiddi til stefnuvendingar (pivot) fyrirtækisins á seinni hluta ársins 2024 og inn í 2025 í átt að gervgreindarlausnum, sem svo aftur kom okkur í stöðu þar sem við erum að vinna með fyrirtækjum sem eru í fararbroddi þar sem gervigreind og töflureiknar mætast.
+
+  **Tæki og hugtök á borð við Claude Code, „stemningsforritun“ (e. vibe coding) og ýmis sjálfvirk gervigreindarverkfæri eru að bylta því hvernig hugbúnaður verður til. Hvaða áhrif hefur þessi breyting á GRID og íslenskt sprotaumhverfi almennt?**
+
+  Á síðustu 6 mánuðum hefur forritun með aðstoð mállíkana - sérstaklega Claude Code - gerbreytt því hvernig hugbúnaðarteymið vinnur. Sumir forritararnir skrifa varla línu af kóða lengur, heldur segja mállíkönum fyrir verkum og yfirfara og nýta útkomu þeirra. Þetta hefur aukið afköstin verulega og breytt vinnunni. Þar að auki er talsverð og endurnýjuð spenna í "gömlum hundum" sem þrífast á því að sjá hugmyndir verða að veruleika og flókin vandamál leysast. Við erum enn að læra og móta það hvernig besta vinnulagið er, en þegar best lætur - sem í dag á sérstaklega við um tilraunir og frumgerðasmíð - getur einn maður afkastað á við 5-10 manna teymi með hjálp þessarra tóla.
+
+  Þetta hefur líka orðið til þess að við erum að endurhugsa svolítið hvað það er sem gerir hugbúnað verðmætan í heimi þar sem kóðinn sjálfur nálgast það að vera "ókeypis".
+
+  Hvað varðar sprotaumhverfið í heild sinni, þá hefur aldrei verið auðveldara að byrja - og komast lengra án, eða á mjög litlu fjármagni. Við erum því að sjá margfalt fleiri hugmyndir prófaðar og þó hlutfall þeirra góðu sé ekki hærra, ættu fleiri góðir hlutir að koma út, einfaldlega útaf magninu. Það má samt ekki gleyma því að þó skrif á kóða hafi bæði verið tímafrek og kostnaðarsöm áður, þá hefur mjög margt annað þurft til að ná árangri með hugbúnaðarfyrirtæki eða aðra sprota: markaðssetning, sala, staðsetning á markaði, tengslamyndun, fjármögnun og svo framvegis. Þar hefur gervigreind líka mikil áhrif en ekki nærri eins mikil og í forrituninni - ennþá.
+
+  **Þú hefur stofnað fimm fyrirtæki á þremur áratugum. Hvernig er núverandi gervigreindarbylgja í samanburði við fyrri tæknibyltingar sem þú hefur gengið í gegnum — erum við að horfa á algera grundvallarbreytingu?**
+
+  Á tæknisviðinu er gervigreindarbylgjan er að minnsta kosti jafn stór og tilkoma netsins og snjallsímans. Sé horft víðar er hún sennilega stærri, þar sem hún mun hafa meiri áhrif á samfélagið allt, hraðar en hinar gerðu.
+
+  **Ísland býr að litlu en ört vaxandi sprotavistkerfi. Hvað þarf að breytast hérlendis til að fleiri íslensk sprotafyrirtæki nái alþjóðlegri samkeppnishæfni á sviði gervigreindar?**
+
+  Uppbygging þekkingar. Breyta skólakerfinu hratt til að taka mið af breyttum tímum. Styrkur okkar mun liggja í því hversu hratt við getum tileinkað okkur og innleitt tæknina á ólíkum sviðum - þar á meðal við uppbyggingu sprotafyrirtækja - frekar en í því að Ísland geti markað sér sérstöðu við smíði grunntækni í gervigreind. Með öðrum orðum: Næsta Anthropic eða Nvidia getur ekki komið frá Íslandi, en fyrirtæki sem eru fyrst til að koma fram með lausnir sem nýta gervigreind á tilteknum sviðum - ekki ólíklega sviðum þar sem Ísland er sterkt fyrir - gætu átt stór tækifæri.
+
+  **Ef þú gætir breytt einu í nálgun Íslands að gervigreind, hvað væri það?**
+
+  Hraða uppbyggingu á fullveldisgervigreind. Það þarf að byggja upp aðstöðu til að keyra krítíska gervigreindarvinnu í íslenskri lögsögu, án þess að gögn fari úr landi eða aðgangur að þeim sé í röngum höndum.
+
+  Og festa í sessi, hraða og skýra ferli varðandi endurgreiðslu á rannsóknar- og þróunarkostnaði. Það er mikilvægur margfaldari á öll verkefni, þar á meðal gervigreindarverkefni, en óvissan í kringum hana hefur dregið úr slagkrafti sprotafyrirtækja nú þegar.
+</Interview>
+
+<Interview name="Ásdís Halla Bragadóttir" role="Ráðuneytisstjóri hjá Mennta- og barnamálaráðuneytinu" image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/asdis-halla-bragadottir.jpg">
+  **Geturðu lýst kjarnastarfsemi þíns vinnustaðar og þínu hlutverki í einni, hnitmiðaðri setningu?**
+
+  Ráðuneyti mennta- og barnamála er skrifstofa ráðherrans sem mótar stefnu og tryggir umgjörð um menntun og velferð barna í því samhengi er mitt hlutverk að leiða starfsemi ráðuneytisins og tryggja að stefnumótunin skili árangri í framkvæmd.
+
+  **Hið opinbera hreyfist oft á öðrum hraða en einkageirinn þegar kemur að tækniinnleiðingu. Hverjar eru helstu áskoranir ríkisins varðandi gervigreind — og býr hið opinbera yfir einhverju forskoti sem einkageirinn hefur ekki?**
+
+  Það er rétt og ég hef oft gagnrýnt hið opinbera fyrir það. Það er einmitt ein helsta áskorun ríkisins varðandi gervigreind en á móti þá felur forskot hins opinbera m.a. í sér aðgengi að heildstæðum gögnum (sem þó þarf að bæta verulega úr) og getu til að móta sameiginlega sýn og jafnræði í notkun gervigreindar. Jafnframt þá felst forskotið í því að hið opinbera hefur tækin og tólin til að breyta reglum og taka metnaðarfullar ákvarðani er vilji er fyrir hendi.
+
+  Gervigreind á eftir að verða sífellt stærri hluti af skólastarfi framtíðarinnar, bæði sem stoð við nám, kennslu og námsmat. Nýleg rannsókn Brookings-stofnunarinnar bendir á fjölmörg tækifæri á þessu sviði. Þar má nefna einstaklingsmiðaðra nám, betra aðgengi að menntun, einfaldari umsýsla hjá kennurum sem getur leitt til þess að þeir geta forgangsraðað sínum tíma betur í þágu nemenda. Á móti kemur að tækninni fylgja miklar áskoranir sem gætu hæglega vegið þyngra en ávinningurinn. Óheft notkun getur til að mynda dregið úr sjálfstæðri hugsun, skert lestrar- og ritfærni, hamlað félags- og tilfinningaþroska og jafnvel skaðað traustið milli nemanda og kennara. Þess vegna verður að nýta gervigreind til að dýpka námið fremur en að hún komi í stað eigin hugsunar nemenda. Jafnframt þarf að efla tæknilæsi kennara og foreldra og setja skýran ramma um persónuvernd og öryggi barna. Gervigreindin á að vera kennaranum til halds og trausts og hún má aldrei koma í hans stað.
+
+  **Ráðuneytið þitt ber ábyrgð á menntun og velferð barna. Hvernig sérðu gervigreindina breyta hefðbundnu skólastarfi á næstu árum, og hvernig tryggjum við að þessi tækni nýtist sem jákvætt verkfæri í námi án þess að hafa neikvæð áhrif á þroska eða vellíðan barna?**
+
+  Það sem er mest spennandi er að gervigreind getur gert námið mun einstaklingsmiðaðra en áður hefur þekkst – og breytingarnar geta orðið ævintýralegar. En auk þess að styðja nemendur þá getur hún veitt kennurum og foreldrum ómetanlegan stuðning. Lykilatriði er að hún styðji við gagnrýna hugsun, félagsfærni og vellíðan barna með skýrum ramma, siðferðilegri leiðsögn og faglegri ábyrgð.
+
+  Innleiðing gervigreindar í skólum verður að vera markviss og byggð á skýrri stefnu. Hún má aldrei grafa undan grunnfærni eins og ritun, gagnrýninni hugsun og einbeitingu. Nauðsynlegt er gervigreindarlæsi sé hluti af grunnmenntun, þannig að nemendur læri ekki aðeins að nota tæknina heldur einnig að skilja takmarkanir hennar og áhættu. Afar mikilvægt er að endurskoða námsmat þar sem hefðbundin heimavinna og verkefni missa vægi þegar gervigreind getur leyst þau auðveldlega. Færa þarf áherslu yfir munnlegt mat og að verkefni séu unnin innan veggja skólans með leiðsögn kennara. Að lokum er mikilvægt að verja nemenda með skýrum reglum um persónuvernd, skjánotkun og andlega vellíðan. Áskorunin felst sem sagt í því að nýta tækifæri gervigreindar án þess að fórna gæðum menntunar, með meðvitaðri stefnumótun og ábyrgri innleiðingu.
+
+  **Ráðuneytið þitt heldur utan um mjög viðamikinn málaflokk sem krefst mikillar umsýslu. Hvernig nýtið þið, eða horfið til þess að nýta, gervigreind í ykkar innri starfsemi til að draga úr skriffinnsku og gera stjórnsýsluna skilvirkari?**
+
+  Við horfum til gervigreindar til að einfalda verkferla, styðja við ákvarðanatöku og draga úr handvirkri umsýslu, þannig að meiri tími fari í stefnumótun og þjónustu fremur en skriffinnsku.
+
+  Við berum ábyrgð á fjölbreyttum og viðamiklum málaflokkum og sjáum mikil tækifæri í nýtingu gervigreindar til að efla starfsemina. Í fyrsta áfanga er horft til þess að nýta tæknina til að draga úr handvirkum vinnuferlum svo sem við samantektir, skjalagerð, upplýsingaleit og önnur tímafrek, verkefni sem krefjast endurtekninga. Með því skapast dýrmætt svigrúm fyrir starfsfólk til að sinna því sem raunverulega skiptir máli: mannlegum samskiptum, faglegri greiningarvinnu og stefnumótun.
+
+  Til lengri tíma litið er stefnan að nýta gervigreind til að styrkja gagnadrifna ákvarðanatöku. Við búum yfir gríðarlegu magni gagna sem tæknin getur greint bæði hraðar og af meiri nákvæmni en til að það verði unnt þarf gagnaöflun og varðveisla að vera mun markvissari. Það gerir okkur kleift að bregðast mun fyrr við og byggja stefnumótun á traustari grunni. Markmiðið er að auka gæði þjónustunnar að gera ráðuneytið skilvirkara og viðbragðsfljótara. Þannig getum við smám saman fært stefnumótunarvinnu frá þunglamalegum ferlum yfir í snjallari og markvissari vinnubrögð.
+
+  **Ef þú gætir breytt einu í nálgun Íslands að gervigreind, hvað væri það?**
+
+  Ég myndi leggja mesta áherslu að efla gervigreindarlæsi á öllum stigum samfélagsins. Í könnun sem Fjölmiðlanefnd gerði í nóvember síðastliðnum kom fram að 74,5% landsmanna vilja að rík áhersla sé lögð á gervigreindarlæsi á öllum skólastigum og það er algjört aðalatriði. Eftir því sem við búum yfir meiri þekkingu á tækninni, þeim mun betur getum við sem samfélag stýrt innleiðingu hennar á ábyrgan og gagnsæjan hátt.
+
+  Þetta er þó ekki einungis hlutverk skólakerfisins eins, heldur krefst það samstillts átaks þar sem stjórnvöld, stofnanir, atvinnulíf og menntakerfið leggjast á eitt. Þegar við höfum öðlast dýpri skilning á því til hvers gervigreindin nýtist og hver takmörk hennar eru verðum við mun betur í stakk búin til að beita henni af skynsemi, öllu samfélaginu til hagsbóta.
+</Interview>
+
+<Interview name="Vilhelm Már Þorsteinsson" role="forstjóri Eimskips" image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/vilhelm-mar-thorsteinsson.png">
+  **Geturðu lýst kjarnastarfsemi þíns vinnustaðar og þínu hlutverki í einni, hnitmiðaðri setningu?**
+
+  Við hjá Eimskip tryggjum viðskiptavinum okkar áreiðanlegar heildarlausnir í flutningum meðal annars með áætlunarsiglingum og rekstri gáma- og frystiskipa í Norður-Atlantshafi, hafnarþjónustu, landflutningum, vöruhúsa- og frystigeymsluþjónustu og alþjóðlegu skrifstofuneti í flutningsmiðlun. Sem forstjóri hef ég yfirumsjón með daglegri starfsemi félagsins og fylgi eftir markmiðum og stefnumótun samþykktum af stjórn.
+
+  **Eimskip rekur afar flóknar aðfangakeðjur í yfir 20 löndum. Hvar sérðu gervigreindina skila mestum og áþreifanlegustum ávinningi í flutningum og skipaiðnaði í dag?**
+
+  Við sjáum skýrustu og áþreifanlegustu áhrif gervigreindar á þremur sviðum: aukin afköst starfsfólks með betra aðgengi að upplýsingum, sjálfvirknivæðing handvirkra ferla og skilvirkari ákvörðunartaka.
+
+  Í fyrsta lagi nýtum við Microsoft 365 Copilot og gervigreindarþjóna (e. AI agent) til að styðja starfsfólk í daglegum verkefnum og upplýsingaleit, innan öruggs og samþykks vinnuumhverfis. Þetta gerir þekkingu aðgengilega á réttum tíma og dregur úr þörf á að leita svara í gegnum sérfræðinga, þannig að starfsmenn geti einbeitt sér að því að skilja og þjónusta viðskiptavininn betur.
+
+  Í öðru lagi höfum við náð góðum árangri í að sjálfvirknivæða handvirka ferla, til dæmis yfirferð farmskráa, innslátt tollupplýsinga og meðhöndlun reikninga. Þar skilar gervigreind minni handavinnu, auknu samræmi í gögnum og minni villuhættu, á sama tíma og sérfræðingar okkar fá meira svigrúm til að sinna virðisaukandi verkefnum.
+
+  Að auki beitum við gervigreind til að vinna greiningar og innsýn úr rekstrargögnum sem styðja við hraðari og betur upplýstar ákvarðanir. Með því að tengja saman gögn úr ólíkum kerfum og greina mynstur og frávik styrkjum við ákvarðanatöku í flóknum flutningarekstri.
+
+  **Eimskip er stórt og rótgróið fyrirtæki sem byggir á eldri kerfum og vinnuferlum. Hverjar eru helstu áskoranirnar við að innleiða gervigreind í svo umfangsmiklum rekstri, og hvernig takist þið á við þær?**
+
+  Helsta áskorun Eimskips við innleiðingu gervigreindar er víðfeðmi rekstursins, það á bæði við um vöru- og þjónustuframboð sem er mjög fjölbreytt sem og breytileika milli skrifstofa þar sem við erum með 56 skrifstofur í 20 löndum. Innleiðing gervigreindar er ekki innleiðing á nýju kerfi heldur verkefni sem snýr að stjórnun og forystu, gögnum og breytingastjórnun.
+
+  Í slíku umhverfi snýst áskorunin fyrst og fremst um að tryggja samræmi, öryggi og raunverulegt virði þvert á reksturinn, án þess að skapa óþarfa flækjustig eða áhættu.Gervigreind magnar upp bæði styrkleika og veikleika í gögnum, aðgangsstýringu og ferlum, sem þýðir að góð stjórnskipan, skýr ábyrgð og vönduð gagnagrunnsvinna eru forsenda árangurs.
+
+  Við nálgumst þetta með stýrðri og ábyrgri innleiðingu þar sem áhersla er lögð á skýrar leikreglur, gagnavernd og fræðslu starfsfólks. Markmiðið er ekki að ýta gervigreind hratt út í reksturinn heldur að byggja upp trausta undirstöðu sem gerir okkur kleift að nýta tæknina á öruggan hátt, með raunverulegum rekstrarávinningi og stuðningi við daglega starfsemi til lengri tíma.
+
+  **Skipaiðnaðurinn er að taka stakkaskiptum vegna aukinna sjálfbærnikrafna og hagræðingar á siglingaleiðum. Hvernig nýtist gervigreind við endurnýjun flotans og markmiðasetningu Eimskips í loftslagsmálum?**
+
+  Hjá Eimskip höfum við sett okkur metnaðarfull loftslagsmarkmið, þar á meðal að ná kolefnishlutleysi árið 2040, og vinnum markvisst að breytingum á leiðakerfum og rekstri til að draga úr siglingamílum, eldsneytisnotkun og losun. Í því samhengi er helsti ávinningur gervigreindar að bæta gæði og hraða ákvarðanatöku með því að greina rekstrarsviðsmyndir, svo sem leiðaskipan, hafnartíma, nýtingu og losunaráhrif, byggt á áreiðanlegum rekstrargögnum og umhverfismælingum.
+
+  **Vinnumarkaðurinn hérlendis er smár. Hvernig laðið þið að ykkur eða byggið upp þá sérfræðiþekkingu á gervigreind sem fyrirtækið þarfnast - og horfið þið frekar inn á við eða út fyrir landsteinana í þeirri leit?**
+
+  Hjá Eimskip beitum við blandaðri nálgun: við byggjum upp færni innan fyrirtækisins með skipulagðri fræðslu, innri samfélögum og hagnýtum tilraunaverkefnum og bætum við okkur sérfræðiþekkingu þegar hraða þarf innleiðingu.
+
+  Við vorum eitt fyrsta fyrirtækið á Íslandi til að ráða starfsmann sem yfirmann gervigreinar (e. Head of Artificial Intelligence) þvert á samstæðu félagsins. Sá stjórnandi stýrir jafnframt teymi innri og ytri sérfræðinga sem leiða sjálfvirkni vegferð félagsins í samvinnu við sérfræðinga á hverju sviði og deildum fyrir sig.
+
+  Innan Eimskips söfnum við fræðslu- og notkunarefni og hvetjum til öruggrar og hagnýtrar notkunar verkfæra eins og Microsoft 365 Copilot innan stýrðs umhverfis, studd af innri upplýsingagátt um gervigreind og kennsluefni.
+
+  Við byggjum einnig upp þekkingu með þróun innri gervigreindarlausna, allt frá einföldum þekkingaraðstoðarmönnum til flóknari lausna, þannig að færniuppbygging og rekstrarvirði haldist í hendur.Utan fyrirtækisins höfum við haldið vinnustofur með sérfræðingum hérlendis til að bæta við okkur nýrri þekkingu, og skilgreinum einnig skipulagða samvinnu, til dæmis nemendaverkefni sem snúa að hagnýtingu gagna og þróun innri gervigreindarlausna.
+
+  **Ef þú gætir breytt einu í nálgun Íslands að gervigreind, hvað væri það?**
+
+  Ég myndi vilja sjá meiri og markvissari umræðu um áhrif gervigreindar á íslenskan vinnumarkað og hvernig við ætlum að hagnýta tæknina í krafti smæðar okkar. Sakna þess að þetta sé ekki nú þegar í ríkari mæli rætt á vettvangi Samtaka Atvinnulífsins, verkalýðsfélaga, í háskólasamfélaginu og á vettvangi stjórnmálanna enda mun áhrifa gervigreinarinnar hafa gríðarlega mikil áhrif á þróun vinnumarkaðarins og samfélagsins á komandi árum og áratugum. Ísland hefur einstakt tækifæri til að innleiða gervigreind hratt og á ábyrgan hátt til að styrkja störf, sérfræðikunnáttu og framleiðni þvert á atvinnugreinar og í opinbera geiranum þ.a.m. í menntakerfinu.
+</Interview>
+
+### Rauði þráðurinn í svörum viðmælenda
+
+Þrátt fyrir ólíkan bakgrunn er hægt að sjá fjóra þræði sem flæða í gegnum svör íslensku stjórnendanna.
+
+#### Hraði
+
+Guðrún segir að „stærstu mistökin \[séu] að bíða eftir hinni fullkomnu lausn". Hjálmar nefnir að „styrkur okkar mun liggja í því hversu hratt við getum tileinkað okkur og innleitt tæknina á ólíkum sviðum ". Vilhelm talar um „einstakt tækifæri til að innleiða gervigreind hratt og á ábyrgan hátt". Þau eru ekki að bíða eftir að tæknin verði áreiðanlegri eða ódýrari, þau vita að tækifærið er núna og að sá sem hreyfir sig fyrst lærir mest.
+
+#### Smæðin er kostur
+
+Þrír af fjórum viðmælendum nefna beinlínis að stærð Íslands sé styrkur þegar kemur að innleiðingu og hagnýtingu gervigreindar. Guðrún segir að “sem lítið land erum við í einstakri stöðu til að prófa hluti, vinna þvert á geira og læra hratt”. Hjálmar nefnir að næsta Anthropic eða Nvidia komi ólíklega frá Íslandi en bendir á að “fyrirtæki sem eru fyrst til að koma fram með lausnir sem nýta gervigreind á tilteknum sviðum - ekki ólíklega sviðum þar sem Ísland er sterkt fyrir - gætu átt stór tækifæri”. Vilhelm vill „hagnýta tæknina í krafti smæðar okkar" og vekur athygli á að “Ísland hefur einstakt tækifæri til að innleiða gervigreind hratt og á ábyrgan hátt”.
+
+#### Fólk umfram tækni
+
+Enginn viðmælendanna nefnir tækniinnviði eða líkön sem helsta flöskuhálsinn. Þess í stað talar Guðrún um menningu fyritækisins „í takt við tæknina", Vilhelm um fræðslu og stýrða innleiðingu, Hjálmar um „uppbyggingu þekkingar" og Ásdís Halla um „gervigreindarlæsi á öllum stigum samfélagsins". Þetta er í takt við niðurstöðu Boston Consulting Group<Ref n={16} /> um 10/20/70 regluna: 70% af árangri liggur í mannauðnum, sem verður fjallað um nánar hér að neðan.
+
+#### Ákall á samstarf og samtal
+
+Vilhelm saknar þess að gervigreind sé ekki „í ríkari mæli rætt á vettvangi Samtaka Atvinnulífsins, verkalýðsfélaga, í háskólasamfélaginu og á vettvangi stjórnmálanna". Ásdís Halla kallar eftir „samstilltu átaki þar sem stjórnvöld, stofnanir, atvinnulíf og menntakerfið leggjast á eitt" og Guðrún kallar einnig eftir „sameiginleg\[u] tilraunaverkefni milli fyrirtækja, opinberra aðila og háskóla".
+
+## Hvar er best að byrja?
+
+<Figure image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/mynd-1.png" kind="Mynd">
+
+</Figure>
+
+Algeng mistök eru að meðhöndla innleiðingu gervigreindar sem einangrað verkefni innan tölvudeildar fyrirtækja. Slík nálgun takmarkar möguleika tækninnar við staðlaða hugbúnaðarferla. Gervigreind krefst hins vegar heildrænnar sýnar; hún þarf að vera drifkraftur í stefnumótun fyrirtækisins og hluti af daglegu starfi alls starfsfólks. Könnun Deloitte<Ref n={17} /> meðal 1.742 evrópskra stjórnenda sýnir að norræn fyrirtæki eru mun líklegri en önnur evrópsk fyrirtæki til að fela tölvudeildinni að sjá um gervigreindarverkefni sín. Þegar innleiðing gervigreindar lendir aðeins á ábyrgð tölvudeilda beinist sjónarhorn fyrirtækja hins vegar sjálfkrafa að tæknilausnum frekar en umbreytingu viðskiptamódela og vinnuferla.
+
+Ethan Mollick, dósent við Wharton viðskiptaháskólann, mælir með þrískiptu líkani til að forðast þessa gildru: forystu, þar sem æðstu stjórnendur leiða sjálfir gervigreindarsýnina og nota verkfærin; fjöldanum, þar sem starfsfólk fær raunverulegt leyfi og hvata til að gera tilraunir; og rannsóknarstofunni, þar sem sérhæft teymi þenur mörk hins mögulega og miðlar lærdómi inn í fyrirtækið<Ref n={18} />. Í íslensku samhengi er ekki alltaf hægt að réttlæta fjármögnun á rannsóknarstofuteymi í fullu starfi, en meginatriðið er að einhver innan fyrirtækisins hafi það hlutverk að kanna hvað sé mögulegt að áorka með gervigreind.
+
+Með innblæstri frá þessu líkani eru hér fjögur skref sem miðast ekki aðeins við að auka framleiðni heldur einnig að styðja við raunverulega umbreytingu:
+
+#### 1. Endurhugsa, ekki bara bæta
+
+Skilgreinið markmið sem snúa að umbreytingu, ekki bara hagræðingu eða framleiðniaukningu. Hvaða nýju vörur verða mögulegar? Hvaða markaðir opnast og hvaða þjónustu getum við boðið upp á sem var óhugsandi fyrir ári síðan?
+
+#### 2. Virkja starfsfólkið og gefa því raunverulegt frelsi
+
+Fræðsla er nauðsynleg en nægir ekki ein og sér. Starfsfólk þarf raunverulegt svigrúm til tilrauna því sérfræðingar fyrirtækisins, sem þekkja áskoranir rekstursins af eigin raun, eru líklegust til að koma auga á stærstu tækifærin.
+
+#### 3. Mæla árangur og deila honum
+
+Skilgreinið viðmið til að meta hvort verkefni skili raunverulegu virði, ekki aðeins með tilliti til tímasparnaðar, heldur líka þeirra nýju tækifæra sem skapast. Deilið niðurstöðum og lærdómi innan fyrirtækisins til að byggja upp þekkingu innanhúss.
+
+#### 4. Skala umbreytinguna, ekki bara tólið
+
+Þegar verkefni hefur sannað gildi sitt er tímabært að skala, eða innleiða lausnina og nýju vinnuferlana þvert á alla starfsemi fyrirtækisins. Samkvæmt Boston Consulting Group<Ref n={16} /> ætti aðeins 10% af kröftum fyrirtækja að fara í tæknilausnina sjálfa og 20% í gögn og innviði. Stærsti hlutinn, eða 70%, ætti að færast yfir á mannauðinn til að endurhanna vinnuferla, þjálfa starfsfólk og tryggja stuðning stjórnenda. Þetta undirstrikar það að umbreytingin sé fyrst og fremst mannleg áskorun, ekki tæknileg.
+
+<Figure image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/mynd-2.png" kind="Tafla" number="2.1">
+  10/20/70 reglan. Langmestur tími fyrirtækja í gervigreindarverkefnum ætti að fara í mannauð og endurhönnun vinnuferla.
+</Figure>
+
+## Kveikja og Glóð: Stuðningur við gervigreindarverkefni á Íslandi
+
+<Figure image="/src/content/greinar/hagnyting-og-innleiding-a-vinnustodum/mynd-3.png" alt="Kort af Íslandi með merkjum Kveikju og Glóðar." kind="Mynd">
+
+</Figure>
+
+Það eru úrræði í boði fyrir sprota, lítil og meðalstór fyrirtæki og stofnanir til að taka gervigreindarverkefni á næsta stig hérlendis. Almannarómur býður heildrænan stuðning á þessari vegferð með samstarfsaðilum, sem samanstanda af helstu sérfræðingum landsins á sviði gervigreindar. Þau eru Háskóli Íslands, Háskólinn í Reykjavík, Rannís, Auðna tæknitorg, Veðurstofa Íslands, Árnastofnun og Vísindagarðar. Stuðningurinn er veittur í gegnum tvö verkefni sem bæði eru styrkt að hluta af Evrópusambandinu og því gjaldfrjáls: Kveikju (EDIH-IS) og Glóð (AIFA-ICE).
+
+Kveikja aðstoðar fyrirtæki og stofnanir við að móta og prófa hugmyndir sínar, á meðan Glóð veitir aðgang að reikniafli, sérfræðiþekkingu og gagnasöfnum til að hraða hagnýtingu gervigreindar. Saman taka verkefnin utan um allt ferlið frá fyrstu hugmynd, í gegnum þjálfun og prófanir, og yfir í aðgengi að öflugu reikniafli. Stuðningurinn er ætlaður fyrir prófanir, ekki rekstur. Markmiðið er að lækka þröskulda og gefa fyrirtækjum svigrúm til að sanna gildi hugmynda sinna áður en ráðist er í eigin fjárfestingar. Þegar kemur að rekstri og frekari innleiðingu bendum við á viðeigandi aðila sem geta aðstoðað við næstu skref.
+
+Tökum skáldað dæmi. Íslenska sprotafyrirtækið Stálsmíð ehf. er að þróa forspárviðhaldslausn fyrir framleiðsluiðnaðinn. Hugmyndin er sú að með því að greina gögn úr skynjurum á vélum má spá fyrir um bilanir áður en þær verða og hjálpa framleiðslufyrirtækjum að draga úr rekstrarstöðvunum. Stofnendurnir hafa aðgang að skynjaragögnum frá samstarfsaðila en skortir þekkingu og innviði til að þróa forspárlíkanið sjálft.
+
+#### Greining og undirbúningur
+
+Stálsmíð hefur samband við Almannaróm og fær aðstoð við að meta hvar fyrirtækið stendur. Matið sýnir að fyrirtækið búi yfir góðum gagnagrunni en þurfi aðstoð við þróun og prófanir.
+
+#### Þjálfun og prófanir
+
+Tveir starfsmenn fara í þjálfun um undirstöður vélnáms og forspárlíkön og fá aðgang að lánsvélum til að þjálfa sitt fyrsta forspárlíkan á skynjaragögnum samstarfsaðilans. Sérfræðingar aðstoða við fínstillingu og uppsetningu á MLOps-ferli (e. Machine Learning Operations) sem tryggir áreiðanleika í rekstri.
+
+#### Ofurtölvan LUMI og innleiðing
+
+Þegar líkanið virkar vel á lánstölvunum fær Stálsmíð aðgang að LUMI-ofurtölvunni í Finnlandi, sem er niðurgreidd af Evrópusambandinu í gegnum EuroHPC-samstarfið, til að þjálfa það á stærra gagnasafni og auka nákvæmnina. Með fínstillta forspárlíkanið í höndunum getur Stálsmíð nú boðið framleiðslufyrirtækjum lausn sem greinir frávik í skynjaragögnum og varar verkstjóra við áður en bilun verður. Þegar lausnin er komin í rekstur tekur Stálsmíð sjálf við rekstrarkostnaðinum; stuðningurinn hefur þjónað sínu hlutverki að sanna að lausnin virki.
+
+Fyrirtækið hefur ekki aðeins þróað söluhæfa vöru heldur einnig byggt upp innri þekkingu og getu til að takast á við fleiri gervigreindarverkefni í framtíðinni. Þetta er skáldað dæmi en vonandi verða sigursögur sem þessar til í náinni framtíð.
+
+## Lokaorð
+
+Kaflinn sýnir tvö andstæð mynstur. Tæknin er komin langt: helmingur íslenskra fyrirtækja nýtir gervigreind í einhverri mynd, norræn fyrirtæki eru í fararbroddi í Evrópu, og innlendir stjórnendur lýsa raunverulegum ávinningi í innkaupum, flutningum, stjórnsýslu og vöruþróun. Á sama tíma er innleiðingin óþroskuð: tveir þriðju hlutar gervigreindarverkefna heimsins eru enn á tilraunastigi og aðeins 14% íslenskra fyrirtækja hafa mótað sér stefnu.
+
+Áskorunin er ekki tæknileg, heldur mannleg. Lausnin snýr að stefnumótun og skrefunum fjórum sem við nefnum fyrr í kaflanumi: Endurhugsið, virkið starfsfólkið, mælið árangur og skalið umbreytinguna, ekki bara tólið. Í takt við 10/20/70 regluna, leggið áherslu á valdeflingu og þjálfun mannauðsins.
+
+Á Íslandi höfum við stuttar boðleiðir á milli fyrirtækja, háskóla og stjórnvalda. Við búum að þroskaðri tækniþekkingu og verðmætum gagnaauðlindum í geirum þar sem við erum þegar í fararbroddi; sjávarútvegi, orkuvinnslu, heilbrigðisþjónustu og opinberri stjórnsýslu. Úrræði eins og Kveikja og Glóð lækka þröskuldinn fyrir þau sem vilja stíga fyrstu skrefin.
+
+Skilaboðin frá stjórnendunum sem töluðu í þessum kafla eru samhljóma: hraði, smæð, samstarf og fræðsla eru okkar helstu tækifæri á Íslandi. Næsta Anthropic kemur ekki frá Íslandi en næsta fyrirtæki sem umbreytir íslenskum sjávarútvegi, íslensku menntakerfi eða íslenskri heilbrigðisþjónustu með gervigreind gæti gert það. Við erum í kjörinni stöðu til að læra af hvoru öðru og nýta smæð okkar til að hagnýta gervigreind hratt og örugglega.

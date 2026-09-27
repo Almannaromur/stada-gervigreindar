@@ -1,0 +1,84 @@
+---
+import '@fontsource-variable/roboto-serif';
+import '@fontsource-variable/figtree';
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { site } from '@/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  /** Background behind the top of the page: the brand gradient, or a category's artwork */
+  backdrop?: 'brand' | { art: string };
+  /** Extra inline style on <body>, e.g. category colour variables */
+  style?: string;
+  /** Keep the page out of search engines (drafts) */
+  noindex?: boolean;
+}
+
+const { title, description = site.description, ogType = 'website', backdrop, style, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+const backdropStyle = backdrop && backdrop !== 'brand' ? `background-image: url(${backdrop.art})` : undefined;
+---
+
+<!doctype html>
+<html lang="is">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/favicon-light.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/favicon-dark.png" media="(prefers-color-scheme: dark)" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title ?? site.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="is_IS" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body style={style}>
+    {backdrop && <div class:list={['backdrop', backdrop === 'brand' ? 'brand' : 'art']} style={backdropStyle} aria-hidden="true" />}
+    <a class="skip-link" href="#main">Fara í efni</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  body {
+    position: relative;
+  }
+
+  .backdrop {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .brand {
+    height: clamp(37.5rem, 60vw, 38.625rem); /* 618px */
+    background: var(--gradient-brand);
+  }
+
+  .art {
+    height: clamp(37.75rem, 55vw, 49.625rem); /* 794px */
+    background-size: cover;
+    background-position: center top;
+  }
+</style>

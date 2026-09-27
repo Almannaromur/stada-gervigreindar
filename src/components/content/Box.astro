@@ -1,0 +1,126 @@
+---
+/**
+ * Tinted box for a self-contained piece of content: an example, a scenario,
+ * a question, a company or a tool. Tinted with the article's category colour.
+ *
+ * <Box title="Ókeypis aðgangur að mállíkani">…</Box>
+ * <Box title="Sérstök áskorun: Apple" logo="/src/content/greinar/<grein>/apple.svg" logoAlt="Apple" rating={1}>…</Box>
+ * <Box tone="neutral">…</Box>          grey instead of the category colour
+ *
+ * Boxes that follow each other are stacked closely as a group.
+ */
+import Rating from './Rating.astro';
+import { resolveImage } from '@/lib/images';
+
+interface Props {
+  title?: string;
+  /** Makes the title a link */
+  href?: string;
+  /** Logo image next to the article (or a public path) */
+  logo?: string;
+  logoAlt?: string;
+  /** Icelandic-support score shown top right */
+  rating?: number;
+  ratingLabel?: string;
+  tone?: 'tint' | 'neutral';
+  /** Heading level for the title */
+  level?: 3 | 4 | '3' | '4';
+}
+
+const { title, href, logo, logoAlt = '', rating, ratingLabel = 'Íslenskustuðningur', tone = 'tint', level = 3 } = Astro.props;
+const Heading = `h${Number(level)}` as 'h3' | 'h4';
+const logoImage = logo ? resolveImage(logo, Astro.locals.articleId) : undefined;
+const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
+---
+
+<section class:list={['box', tone]}>
+  {
+    (logoSrc || rating) && (
+      <div class="top">
+        {logoSrc && <img src={logoSrc} alt={logoAlt} class="logo" loading="lazy" />}
+        {rating && <Rating label={ratingLabel} value={rating} />}
+      </div>
+    )
+  }
+  {title && <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>}
+  <div class="body"><slot /></div>
+</section>
+
+<style>
+  .box {
+    padding: 1.75rem 2rem 2rem;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--cat-base) 18%, var(--color-bg));
+  }
+
+  .neutral {
+    background: var(--color-surface);
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .logo {
+    width: auto;
+    height: 2.25rem;
+    max-width: 10rem;
+    object-fit: contain;
+  }
+
+  /* Rating alone sits on the right */
+  .top:not(:has(.logo)) {
+    justify-content: flex-end;
+  }
+
+  .title {
+    margin: 0 0 0.625rem;
+    font-family: var(--font-sans);
+    font-size: var(--body-md);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  .title a {
+    text-decoration: none;
+  }
+
+  .title a:hover {
+    text-decoration: underline;
+  }
+
+  .body {
+    font-size: 0.9em;
+  }
+
+  .body > :global(*) {
+    margin: 0;
+  }
+
+  .body > :global(* + *) {
+    margin-top: 1.1em;
+  }
+
+  .body :global(h4) {
+    margin-top: 1.5em;
+    font-size: 1em;
+  }
+
+  .body :global(h4 + *) {
+    margin-top: 0.35em;
+  }
+
+  .body :global(.stat + .stat) {
+    margin-top: 0.25em;
+  }
+
+  /* Stacked group */
+  :global(.box + .box) {
+    margin-top: var(--gap-tight) !important;
+  }
+</style>

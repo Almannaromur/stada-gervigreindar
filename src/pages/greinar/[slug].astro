@@ -1,0 +1,188 @@
+---
+import { render } from 'astro:content';
+import '@/styles/prose.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticlePanel from '@/components/ArticlePanel.astro';
+import BackButton from '@/components/BackButton.astro';
+import Byline from '@/components/Byline.astro';
+import CategoryCta from '@/components/CategoryCta.astro';
+import CategoryDot from '@/components/CategoryDot.astro';
+import { categoryVars } from '@/lib/colors';
+import * as contentComponents from '@/components/content';
+import { categoryUrl, formatDate, getAllArticles, getArticles, getCategories, getCategory, isoDate, nextArticle, readingPath, type Article } from '@/lib/content';
+
+export async function getStaticPaths() {
+  const path = readingPath(await getArticles(), await getCategories());
+  // Drafts get a page too (for preview), but aren't part of the reading path
+  return (await getAllArticles()).map((article) => ({
+    params: { slug: article.id },
+    props: { article, next: nextArticle(article, path) },
+  }));
+}
+
+interface Props {
+  article: Article;
+  next?: Article;
+}
+
+const { article, next } = Astro.props;
+const category = await getCategory(article);
+const nextCategory = next && (await getCategory(next));
+const { Content } = await render(article);
+const { title, description, date, draft, heimildir } = article.data;
+// Source text may mark titles as *italic*
+const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const sourceHtml = (s: string) => escapeHtml(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+// Lets content components find images stored next to this article
+Astro.locals.articleId = article.id;
+---
+
+<BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
+  <div class="container layout">
+    <div class="back"><BackButton href={categoryUrl(category)} /></div>
+
+    <article class="article">
+      {draft && <p class="draft-banner" role="status">Drög: þessi grein er ekki birt. Hún sést aðeins þeim sem hafa slóðina.</p>}
+      <header>
+        <p class="meta">
+          <a href={categoryUrl(category)} class="category">
+            <CategoryDot color={category.data.color} size="lg" />
+            {category.data.name}
+          </a>
+          <time datetime={isoDate(date)}>{formatDate(date)}</time>
+        </p>
+        <h1>{title}</h1>
+        <Byline article={article} />
+      </header>
+
+      <div class="prose">
+        <Content components={contentComponents} />
+
+        {
+          heimildir.length > 0 && (
+            <section class="sources" aria-labelledby="heimildir">
+              <h2 id="heimildir">Heimildaskrá</h2>
+              <ol>
+                {heimildir.map((h, i) => (
+                  <li id={`heimild-${i + 1}`}>{h.slod ? <a href={h.slod} set:html={sourceHtml(h.texti)} /> : <span set:html={sourceHtml(h.texti)} />}</li>
+                ))}
+              </ol>
+            </section>
+          )
+        }
+      </div>
+    </article>
+
+    {
+      next && nextCategory && (
+        <div class="next-article">
+          <ArticlePanel title="Næsta grein" items={[{ article: next, category: nextCategory }]} />
+        </div>
+      )
+    }
+  </div>
+
+  <div class="container category-cta">
+    <CategoryCta heading="Flokkur" category={category} />
+  </div>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--article-width)) minmax(0, 1fr);
+    column-gap: 2rem;
+    padding-top: clamp(1.5rem, 5vw, 4.5rem);
+  }
+
+  .back {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .article,
+  .next-article {
+    grid-column: 2;
+  }
+
+  .article {
+    grid-row: 1 / span 2;
+  }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.75rem;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .category {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .category:hover {
+    text-decoration: underline;
+  }
+
+  .draft-banner {
+    margin: 0 0 1.5rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius);
+    background: #ffca58;
+    font-weight: 600;
+  }
+
+  .meta time {
+    flex: none;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  h1 {
+    font-size: var(--h1);
+  }
+
+  .next-article {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  .category-cta {
+    margin-top: clamp(4rem, 8vw, 5.75rem);
+  }
+
+  @media (max-width: 63.99rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .back,
+    .article,
+    .next-article {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .back {
+      margin-bottom: 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,293 @@
+---
+import Icon from './Icon.astro';
+import CategoryDot from './CategoryDot.astro';
+import FooterInfo from './FooterInfo.astro';
+import { categoryUrl, getCategories } from '@/lib/content';
+import { site } from '@/site';
+
+const categories = await getCategories();
+const current = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<header class="site-header">
+  <div class="container inner">
+    <a href="/" class="logo">
+      <img src="/logo-almannaromur.svg" alt={site.org.name} width="221" height="38" />
+    </a>
+
+    <nav aria-label="Aðalvalmynd" class="nav">
+      <details class="menu" data-menu>
+        <summary class="pill menu-button">
+          <span class="desktop-label">Flokkar <Icon name="chevron-down" class="chevron" /></span>
+          <span class="mobile-label">
+            <Icon name="menu" class="open-icon" />
+            <Icon name="close" class="close-icon" />
+            <span class="visually-hidden">Flokkar</span>
+          </span>
+        </summary>
+
+        <div class="panel">
+          <p class="panel-title" aria-hidden="true">Flokkar</p>
+          <ul class="categories">
+            {
+              categories.map((c) => (
+                <li>
+                  <a href={categoryUrl(c)} aria-current={current === categoryUrl(c) ? 'page' : undefined}>
+                    <span class="dot-sm"><CategoryDot color={c.data.color} /></span>
+                    <span class="dot-lg"><CategoryDot color={c.data.color} size="lg" /></span>
+                    {c.data.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="panel-footer"><FooterInfo /></div>
+        </div>
+      </details>
+
+      <a href={site.org.url} class="pill org-link">
+        {site.org.name}.is <Icon name="external" />
+        <span class="visually-hidden">(opnast á öðrum vef)</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Close the menu on Escape, outside clicks, and when navigating within the page
+  for (const menu of document.querySelectorAll<HTMLDetailsElement>('[data-menu]')) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+    menu.addEventListener('toggle', () => document.documentElement.classList.toggle('menu-open', menu.open));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 20;
+  }
+
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.5rem;
+  }
+
+  .logo {
+    position: relative;
+    z-index: 2;
+  }
+
+  .logo img {
+    height: 2.25rem;
+    width: auto;
+  }
+
+  .nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pill {
+    background: transparent;
+  }
+
+  .pill:hover,
+  .menu[open] > .pill {
+    background: var(--color-white);
+  }
+
+  .pill :global(.icon) {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--color-text-muted);
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .desktop-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .menu[open] :global(.chevron) {
+    transform: rotate(180deg);
+  }
+
+  .mobile-label,
+  .dot-lg {
+    display: none;
+  }
+
+  .panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 1.5rem);
+    width: min(43rem, 90vw);
+    padding: 2.25rem 2rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    box-shadow: var(--shadow-2);
+  }
+
+  .panel-title,
+  .panel-footer {
+    display: none;
+  }
+
+  .categories {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
+    gap: 0.25rem 2.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .categories a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 0.75rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .categories a:hover,
+  .categories a[aria-current='page'] {
+    background: var(--color-hover);
+  }
+
+  .categories a:hover .dot-sm,
+  .categories a[aria-current='page'] .dot-sm {
+    display: none;
+  }
+
+  .categories a:hover .dot-lg,
+  .categories a[aria-current='page'] .dot-lg {
+    display: inline-flex;
+  }
+
+  .dot-sm {
+    display: inline-flex;
+    width: 1rem;
+    justify-content: center;
+  }
+
+  /* Mobile: hamburger opens a full-screen menu */
+  @media (max-width: 47.99rem) {
+    .org-link,
+    .desktop-label {
+      display: none;
+    }
+
+    .mobile-label {
+      display: inline-flex;
+    }
+
+    .menu-button {
+      padding: 0.5rem;
+    }
+
+    .menu-button :global(.icon) {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--color-text);
+    }
+
+    .menu :global(.close-icon),
+    .menu[open] :global(.open-icon) {
+      display: none;
+    }
+
+    .menu[open] :global(.close-icon) {
+      display: block;
+    }
+
+    .logo img {
+      height: 1.5rem;
+    }
+
+    .menu[open] > .pill {
+      background: transparent;
+    }
+
+    .menu[open] > summary {
+      position: relative;
+      z-index: 2;
+    }
+
+    .panel {
+      position: fixed;
+      inset: 0;
+      width: auto;
+      padding: 6.5rem var(--gutter) 2rem;
+      overflow-y: auto;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .panel-title {
+      display: block;
+      margin: 0 0 1.5rem;
+      padding-left: 0.75rem;
+      font-family: var(--font-serif);
+      font-size: var(--h4);
+      font-weight: 500;
+    }
+
+    .categories {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-auto-flow: row;
+    }
+
+    .categories a {
+      font-size: 1.125rem;
+      font-weight: 500;
+      white-space: normal;
+    }
+
+    .dot-sm {
+      display: none;
+    }
+
+    .dot-lg {
+      display: inline-flex;
+    }
+
+    .panel-footer {
+      display: block;
+      margin: 2rem calc(-1 * var(--gutter)) 0;
+      padding: 1.5rem var(--gutter) 0;
+      border-top: 1px solid var(--color-line);
+    }
+
+    :global(html.menu-open) {
+      overflow: hidden;
+    }
+  }
+</style>

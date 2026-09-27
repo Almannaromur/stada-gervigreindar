@@ -1,0 +1,19 @@
+---
+/** An emphasised sentence lifted out of the text. */
+---
+
+<blockquote class="pull-quote"><slot /></blockquote>
+
+<style>
+  .pull-quote {
+    margin-inline: 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--cat-base);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .pull-quote :global(p) {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  label?: string;
+}
+
+const { href, label = 'Til baka' } = Astro.props;
+---
+
+<a href={href} class="pill back"><Icon name="chevron-left" /> {label}</a>
+
+<style>
+  .back :global(.icon) {
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+/**
+ * A quote from a named person, with portrait.
+ *
+ * <Quote name="Jón Jónsson" role="Framkvæmdastjóri" image="jon-jonsson.png">…</Quote>
+ */
+import { Image } from 'astro:assets';
+import { resolveImage } from '@/lib/images';
+
+interface Props {
+  name: string;
+  role?: string;
+  /** File next to the article, e.g. "jon-jonsson.png" */
+  image?: string;
+}
+
+const { name, role, image } = Astro.props;
+const portrait = image ? resolveImage(image, Astro.locals.articleId) : undefined;
+---
+
+<figure class="quote">
+  <blockquote><slot /></blockquote>
+  <figcaption>
+    {portrait && (typeof portrait === 'string' ? <img src={portrait} alt="" class="portrait" /> : <Image src={portrait} alt="" width={96} height={96} class="portrait" />)}
+    <span>
+      <span class="name">{name}</span>
+      {role && <span class="role">{role}</span>}
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .quote {
+    margin-inline: 0;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--cat-base);
+  }
+
+  blockquote {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  blockquote :global(p + p) {
+    margin-top: 0.75em;
+  }
+
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .portrait {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .name {
+    display: block;
+    font-size: var(--body-sm);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .role {
+    display: block;
+    font-size: var(--body-xs);
+    color: var(--color-text-muted);
+    line-height: 1.3;
+  }
+</style>

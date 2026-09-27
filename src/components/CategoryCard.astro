@@ -1,0 +1,44 @@
+---
+/** Homepage category tile: artwork above, name below. */
+import { categoryArt, categoryUrl, type Category } from '@/lib/content';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<a href={categoryUrl(category)} class="tile">
+  <img src={categoryArt(category, 'card')} alt="" width="444" height="300" loading="lazy" />
+  <span class="name">{category.data.name}</span>
+</a>
+
+<style>
+  .tile {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius);
+    text-decoration: none;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 444 / 300;
+    object-fit: cover;
+  }
+
+  .name {
+    padding: 1.75rem 2rem;
+    background: var(--color-surface);
+    font-size: var(--body-md);
+    font-weight: 600;
+    line-height: 1.24;
+    transition: background-color 0.15s;
+  }
+
+  .tile:hover .name {
+    background: var(--color-hover);
+  }
+</style>

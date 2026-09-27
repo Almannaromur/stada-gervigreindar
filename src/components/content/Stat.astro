@@ -1,0 +1,20 @@
+---
+/** A key figure, usually inside a Callout or Box: <Stat>25% aukning VLF</Stat> */
+---
+
+<div class="stat"><slot /></div>
+
+<style>
+  /* Spacing comes from the surrounding box or article */
+  .stat {
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: -0.0125em;
+  }
+
+  .stat :global(p) {
+    margin: 0;
+  }
+</style>

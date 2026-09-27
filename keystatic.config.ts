@@ -1,0 +1,129 @@
+import { collection, config, fields } from '@keystatic/core';
+import { components } from './src/editor/components';
+import { categoryColors } from './src/lib/colors';
+
+// Locally (npm run dev) the editor writes straight to the files on disk.
+// On the live site editors log in through Keystatic Cloud, and every save
+// becomes a commit to the GitHub repository, which triggers a new deploy.
+const cloudProject = import.meta.env.PUBLIC_KEYSTATIC_CLOUD_PROJECT as string | undefined;
+
+export default config({
+  storage: import.meta.env.DEV || !cloudProject ? { kind: 'local' } : { kind: 'cloud' },
+  ...(cloudProject ? { cloud: { project: cloudProject } } : {}),
+  ui: {
+    brand: { name: 'Staða gervigreindar' },
+    navigation: {
+      Efni: ['greinar'],
+      Uppsetning: ['flokkar', 'authors', 'einkunnir'],
+    },
+  },
+
+  collections: {
+    greinar: collection({
+      label: 'Greinar',
+      slugField: 'title',
+      path: 'src/content/greinar/*/',
+      entryLayout: 'content',
+      format: { contentField: 'content' },
+      columns: ['title', 'date'],
+      previewUrl: '/greinar/{slug}',
+      schema: {
+        title: fields.slug({
+          name: { label: 'Titill', validation: { length: { min: 1 } } },
+          slug: { label: 'Slóð', description: 'Birtist sem /greinar/<slóð>. Breytið ekki eftir birtingu.' },
+        }),
+        category: fields.relationship({ label: 'Flokkur', collection: 'flokkar', validation: { isRequired: true } }),
+        description: fields.text({
+          label: 'Útdráttur',
+          description: 'Ein til tvær setningar. Birtist á flokkasíðu og þegar grein er deilt.',
+          multiline: true,
+          validation: { length: { min: 1 } },
+        }),
+        author: fields.relationship({ label: 'Höfundur', collection: 'authors', validation: { isRequired: true } }),
+        date: fields.date({ label: 'Dagsetning', defaultValue: { kind: 'today' }, validation: { isRequired: true } }),
+        updated: fields.date({ label: 'Uppfært', description: 'Valfrjálst' }),
+        draft: fields.checkbox({
+          label: 'Drög',
+          description: 'Hakið við meðan greinin er í vinnslu. Hún birtist þá ekki á vefnum nema fyrir þá sem hafa slóðina.',
+          defaultValue: true,
+        }),
+        heimildir: fields.array(
+          fields.object({
+            texti: fields.text({ label: 'Heimild', description: 'T.d. Hagstofa Íslands. (2026, 10. mars). *Titill*. Stjörnur um texta gera hann skáletraðan.', validation: { length: { min: 1 } } }),
+            slod: fields.url({ label: 'Slóð', description: 'Valfrjálst' }),
+          }),
+          {
+            label: 'Heimildir',
+            description: 'Í textanum er vísað í heimild með „Tilvísun í heimild“ og númeri hennar hér (fyrsta = 1).',
+            itemLabel: (props) => props.fields.texti.value || 'Ný heimild',
+          },
+        ),
+        content: fields.mdx({
+          label: 'Texti',
+          components,
+          options: {
+            image: false,
+            divider: false,
+            codeBlock: false,
+          },
+        }),
+      },
+    }),
+
+    flokkar: collection({
+      label: 'Flokkar',
+      slugField: 'name',
+      path: 'src/content/flokkar/*',
+      format: 'yaml',
+      columns: ['name', 'order'],
+      schema: {
+        name: fields.slug({ name: { label: 'Heiti' }, slug: { label: 'Slóð', description: 'Birtist sem /flokkar/<slóð>' } }),
+        description: fields.text({ label: 'Lýsing', multiline: true }),
+        color: fields.select({
+          label: 'Litur',
+          options: Object.keys(categoryColors).map((key) => ({ label: key, value: key })),
+          defaultValue: 'army',
+        }),
+        order: fields.integer({ label: 'Röð', description: 'Staða í valmynd og á forsíðu' }),
+      },
+    }),
+
+    authors: collection({
+      label: 'Höfundar',
+      slugField: 'name',
+      path: 'src/content/authors/*',
+      format: 'yaml',
+      schema: {
+        name: fields.slug({ name: { label: 'Nafn' } }),
+        role: fields.text({ label: 'Starfsheiti' }),
+        image: fields.image({ label: 'Mynd', directory: 'src/content/authors', publicPath: './' }),
+      },
+    }),
+
+    einkunnir: collection({
+      label: 'Einkunnatöflur',
+      slugField: 'title',
+      path: 'src/content/einkunnir/*',
+      format: 'yaml',
+      schema: {
+        title: fields.slug({ name: { label: 'Heiti' } }),
+        companies: fields.array(
+          fields.object({
+            company: fields.text({ label: 'Fyrirtæki' }),
+            logo: fields.image({ label: 'Merki', directory: 'public/logos', publicPath: '/logos/' }),
+            items: fields.array(
+              fields.object({
+                name: fields.text({ label: 'Lausn' }),
+                category: fields.text({ label: 'Tegund' }),
+                description: fields.text({ label: 'Lýsing', multiline: true }),
+                rating: fields.integer({ label: 'Einkunn (1–5)', validation: { min: 1, max: 5, isRequired: true } }),
+              }),
+              { label: 'Lausnir', itemLabel: (props) => props.fields.name.value || 'Ný lausn' },
+            ),
+          }),
+          { label: 'Fyrirtæki', itemLabel: (props) => props.fields.company.value || 'Nýtt fyrirtæki' },
+        ),
+      },
+    }),
+  },
+});

@@ -1,0 +1,95 @@
+---
+/**
+ * A Q&A interview. Questions are bold paragraphs, answers plain paragraphs.
+ *
+ * <Interview name="Jón Jónsson" role="Forstjóri" image="jon-jonsson.png">
+ *   **Spurning?**
+ *
+ *   Svar…
+ * </Interview>
+ */
+import { Image } from 'astro:assets';
+import { resolveImage } from '@/lib/images';
+
+interface Props {
+  name: string;
+  role?: string;
+  /** File next to the article, e.g. "jon-jonsson.png" */
+  image?: string;
+}
+
+const { name, role, image } = Astro.props;
+const portrait = image ? resolveImage(image, Astro.locals.articleId) : undefined;
+---
+
+<section class="interview" aria-label={`Viðtal við ${name}`}>
+  <header>
+    {portrait && (typeof portrait === 'string' ? <img src={portrait} alt="" class="portrait" /> : <Image src={portrait} alt="" width={128} height={128} class="portrait" />)}
+    <div>
+      <p class="name">{name}</p>
+      {role && <p class="role">{role}</p>}
+    </div>
+  </header>
+  <div class="body"><slot /></div>
+</section>
+
+<style>
+  .interview {
+    padding: 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  header p {
+    margin: 0;
+  }
+
+  .portrait {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .name {
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    line-height: 1.32;
+  }
+
+  .role {
+    font-size: var(--body-xs);
+    color: var(--color-text-muted);
+  }
+
+  .body :global(p) {
+    margin: 0;
+  }
+
+  .body :global(p + p) {
+    margin-top: 0.9em;
+  }
+
+  /* Questions */
+  .body :global(p:has(> strong:only-child)) {
+    margin-top: 1.9em;
+    font-weight: 600;
+  }
+
+  .body :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  /* Interviews that follow each other stack closely */
+  :global(.interview + .interview) {
+    margin-top: 6px !important;
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+/** Contact details and funder logos: used in the footer and the mobile menu. */
+import { site } from '@/site';
+---
+
+<div class="info">
+  <address>
+    <strong>{site.org.name}</strong><br />
+    {site.org.address}<br />
+    <a href={`mailto:${site.org.email}`}>{site.org.email}</a>
+  </address>
+  <img
+    class="funders"
+    src="/styrktaradilar.svg"
+    alt="Styrkt af Stjórnarráði Íslands (menningar-, nýsköpunar- og háskólaráðuneyti), EuroHPC Joint Undertaking og Evrópusambandinu"
+    width="798"
+    height="48"
+    loading="lazy"
+  />
+</div>
+
+<style>
+  .info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 3rem;
+  }
+
+  address {
+    font-style: normal;
+    font-size: var(--body-xs);
+    line-height: 1.6;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .funders {
+    width: min(48rem, 100%);
+    height: auto;
+  }
+</style>

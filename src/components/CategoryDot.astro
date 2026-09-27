@@ -1,0 +1,33 @@
+---
+/** Round category marker: a small solid dot, or a larger gradient dot. */
+import { categoryVars, type CategoryColor } from '@/lib/colors';
+
+interface Props {
+  color: CategoryColor;
+  size?: 'sm' | 'lg';
+}
+
+const { color, size = 'sm' } = Astro.props;
+---
+
+<span class:list={['dot', size]} style={categoryVars(color)} aria-hidden="true"></span>
+
+<style>
+  .dot {
+    display: inline-block;
+    flex: none;
+    border-radius: 50%;
+    background: var(--cat-base);
+  }
+
+  .sm {
+    width: 4px;
+    height: 4px;
+  }
+
+  .lg {
+    width: 1rem;
+    height: 1rem;
+    background: linear-gradient(180deg, var(--cat-base), var(--gradient-end));
+  }
+</style>

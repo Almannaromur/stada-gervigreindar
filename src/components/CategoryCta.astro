@@ -1,0 +1,84 @@
+---
+/** Section linking to a category: "Næsti flokkur" on category pages, "Flokkur" on articles. */
+import Icon from './Icon.astro';
+import { categoryArt, categoryUrl, type Category } from '@/lib/content';
+
+interface Props {
+  heading: string;
+  category: Category;
+}
+
+const { heading, category } = Astro.props;
+---
+
+<section class="section split cta">
+  <h2 class="section-heading">{heading}</h2>
+  <a href={categoryUrl(category)} class="split-body link">
+    <img src={categoryArt(category, 'card')} alt="" width="444" height="300" loading="lazy" />
+    <span class="panel">
+      <span class="name">{category.data.name}</span>
+      <span class="open"><Icon name="arrow-circle" /> Opna flokk</span>
+    </span>
+  </a>
+</section>
+
+<style>
+  .link {
+    display: grid;
+    grid-template-columns: minmax(0, 444fr) minmax(0, 435fr);
+    gap: var(--gap-tight);
+    text-decoration: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 444 / 300;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    transition: background-color 0.15s;
+  }
+
+  .link:hover .panel {
+    background: var(--color-hover);
+  }
+
+  .name {
+    font-family: var(--font-serif);
+    font-size: var(--h4);
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+  }
+
+  .open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: var(--body-md);
+    font-weight: 600;
+  }
+
+  .open :global(.icon) {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-text-muted);
+    stroke-width: 1.5;
+  }
+
+  @media (max-width: 40rem) {
+    .link {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

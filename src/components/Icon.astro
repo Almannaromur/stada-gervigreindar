@@ -1,0 +1,18 @@
+---
+/** Small line icons used in the UI. Decorative: pair with visible text. */
+interface Props {
+  name: 'chevron-down' | 'chevron-left' | 'external' | 'arrow-circle' | 'menu' | 'close';
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<svg class:list={['icon', className]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === 'chevron-down' && <path d="m6 9 6 6 6-6" />}
+  {name === 'chevron-left' && <path d="m15 6-6 6 6 6" />}
+  {name === 'external' && <><path d="M14 4h6v6" /><path d="M20 4 11 13" /><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></>}
+  {name === 'arrow-circle' && <><circle cx="12" cy="12" r="9" /><path d="M8 12h8" /><path d="m12.5 8.5 3.5 3.5-3.5 3.5" /></>}
+  {name === 'menu' && <><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" /></>}
+  {name === 'close' && <><path d="M6 6l12 12" /><path d="M18 6 6 18" /></>}
+</svg>

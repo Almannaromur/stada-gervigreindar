@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import { formatDate, isoDate, type Article } from '@/lib/content';
+
+interface Props {
+  article: Article;
+}
+
+const { data } = Astro.props.article;
+const author = await getEntry(data.author);
+---
+
+{
+  author && (
+    <div class="byline">
+      {author.data.image && <Image src={author.data.image} alt="" width={96} height={96} class="portrait" />}
+      <div>
+        <p class="name">{author.data.name}</p>
+        <p class="role">
+          {author.data.role}
+          {data.updated && (
+            <>
+              {' · Uppfært '}
+              <time datetime={isoDate(data.updated)}>{formatDate(data.updated)}</time>
+            </>
+          )}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .portrait {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .role {
+    font-size: var(--body-xs);
+    color: var(--color-text-muted);
+  }
+</style>

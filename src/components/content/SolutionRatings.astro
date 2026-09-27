@@ -1,0 +1,216 @@
+---
+/**
+ * Icelandic support per company and product: one expandable row per company,
+ * opening to a table of products with a score badge.
+ * The data is an entry in the "einkunnir" collection (src/content/einkunnir/<source>.yaml).
+ *
+ * <SolutionRatings source="islenska-i-erlendum-lausnum" />
+ */
+import { getEntry } from 'astro:content';
+import Rating from './Rating.astro';
+
+interface Props {
+  source: string;
+}
+
+const entry = await getEntry('einkunnir', Astro.props.source);
+if (!entry) throw new Error(`Einkunnatafla fannst ekki: "${Astro.props.source}"`);
+const data = entry.data.companies;
+---
+
+<div class="solutions">
+  {
+    data.map(({ company, logo, items }) => (
+      <details>
+        <summary>
+          <span class="mark" aria-hidden="true">
+            {logo ? <img src={logo} alt="" loading="lazy" /> : <span class="more">•••</span>}
+          </span>
+          <span class="company">{company}</span>
+          <span class="count">{items.length} {items.length === 1 ? 'lausn' : 'lausnir'}</span>
+        </summary>
+        <table>
+          <thead class="visually-hidden">
+            <tr>
+              <th scope="col">Lausn</th>
+              <th scope="col">Flokkur og lýsing</th>
+              <th scope="col">Einkunn</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr>
+                <th scope="row" class="name">{item.name}</th>
+                <td class="about">
+                  {item.category && <span class="category">{item.category}</span>}
+                  <span class="description">{item.description}</span>
+                </td>
+                <td class="score">
+                  <Rating label="Einkunn" value={item.rating} compact />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .solutions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-tight);
+  }
+
+  details {
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  details[open] {
+    background: color-mix(in srgb, var(--cat-base) 12%, var(--color-bg));
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.125rem 1.5rem;
+    border-radius: var(--radius);
+    font-size: var(--body-md);
+    font-weight: 600;
+    line-height: 1.24;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: '';
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-left: 0.5rem;
+    border-right: 1.75px solid var(--color-text-muted);
+    border-bottom: 1.75px solid var(--color-text-muted);
+    transform: translateY(-25%) rotate(45deg);
+    transition: transform 0.15s;
+  }
+
+  details[open] summary::after {
+    transform: translateY(25%) rotate(-135deg);
+  }
+
+  summary:hover {
+    background: var(--color-hover);
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex: none;
+  }
+
+  .mark img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .more {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+  }
+
+  .company {
+    flex: 1;
+  }
+
+  .count {
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    font-weight: 500;
+  }
+
+  table {
+    width: calc(100% - 3rem);
+    margin: 0 1.5rem 1rem;
+    border-collapse: collapse;
+    font-size: var(--body-sm);
+    line-height: 1.45;
+  }
+
+  tr + tr {
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  th,
+  td {
+    padding: 1.125rem 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .name {
+    width: 28%;
+    padding-right: 1.5rem;
+    font-weight: 600;
+  }
+
+  .about {
+    padding-right: 1.5rem;
+  }
+
+  .category {
+    display: block;
+    font-weight: 600;
+  }
+
+  .description {
+    display: block;
+    margin-top: 0.125rem;
+    color: var(--color-text-muted);
+  }
+
+  .score {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 40rem) {
+    table,
+    tbody,
+    tr,
+    th,
+    td {
+      display: block;
+      width: auto;
+    }
+
+    table {
+      margin-inline: 1.25rem;
+    }
+
+    tr {
+      padding: 1rem 0;
+    }
+
+    th,
+    td {
+      padding: 0;
+    }
+
+    .about {
+      margin: 0.25rem 0 0.75rem;
+    }
+  }
+</style>

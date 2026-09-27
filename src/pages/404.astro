@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Síða fannst ekki">
+  <div class="container not-found">
+    <h1>Síða fannst ekki</h1>
+    <p>Síðan sem þú leitaðir að er ekki til eða hefur verið færð.</p>
+    <p><a href="/">Fara á forsíðu</a></p>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: var(--space-16);
+    max-width: var(--measure);
+  }
+
+  h1 {
+    font-weight: 500;
+  }
+</style>
