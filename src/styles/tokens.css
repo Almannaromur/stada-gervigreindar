@@ -23,8 +23,9 @@
   --cat-text: var(--color-text);
 
   /* Type */
-  --font-serif: 'Roboto Serif Variable', 'Roboto Serif', Georgia, serif;
-  --font-sans: 'Figtree Variable', 'Figtree', system-ui, sans-serif;
+  /* Families (with metric-matched fallbacks) come from the Fonts API in astro.config.mjs */
+  --font-serif: var(--font-roboto-serif);
+  --font-sans: var(--font-figtree);
 
   /* Headings: Roboto Serif Medium, 132% line height */
   --h1: clamp(2rem, 1.6rem + 1.6vw, 2.75rem); /* 44px */

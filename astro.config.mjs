@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import fs from 'node:fs';
 
 import mdx from '@astrojs/mdx';
@@ -28,6 +28,31 @@ export default defineConfig({
   build: { format: 'file' },
   // Pages are prerendered; only the editor (/keystatic, /api/keystatic) runs on the server
   adapter: vercel(),
+  // Fonts are downloaded at build time, served from the site and preloaded in <head>.
+  // display "block": text waits (briefly) for the real font instead of flashing a
+  // fallback first; the fallbacks are metric-matched, so nothing jumps either way.
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Figtree',
+      cssVariable: '--font-figtree',
+      weights: ['300 900'],
+      styles: ['normal', 'italic'],
+      subsets: ['latin'],
+      fallbacks: ['system-ui', 'sans-serif'],
+      display: 'block',
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Roboto Serif',
+      cssVariable: '--font-roboto-serif',
+      weights: ['100 900'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['Georgia', 'serif'],
+      display: 'block',
+    },
+  ],
   integrations: [
     mdx(),
     react(),
