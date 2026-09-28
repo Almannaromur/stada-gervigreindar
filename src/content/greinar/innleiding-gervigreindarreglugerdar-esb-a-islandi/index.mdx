@@ -12,7 +12,7 @@ date: 2026-09-28
 draft: true
 heimildir: []
 ---
-<Box title="Í hnotskurn" tone="tint" level="3">
+<Box title="Í hnotskurn" icon="" tone="tint" level="3">
   * Gervigreindarreglugerð Evrópusambandsins (EU AI Act) flokkar gervigreindarkerfi eftir áhættu og skyldur fyrirtækja fara eftir því í hvaða áhættuflokki gervigreindarkerfi þeirra lendir; sum notkunarsvið eru bönnuð, áhættusöm kerfi sæta ströngum kröfum, önnur kerfi bera ríkar gagnsæiskröfur eða sleppa við nýjar skyldur.
   * Reglugerðin kom að fullu til framkvæmda innan ESB 2. ágúst 2026, en sex dögum áður var gildistöku umfangsmestu kaflanna um áhættusöm kerfi frestað til áranna 2027 og 2028.
   * Á Íslandi er unnið að upptöku reglugerðarinnar í EES-samninginn. Menningar-, nýsköpunar- og háskólaráðuneytið fer með innleiðingu hennar og áætlar að lagt verði fram frumvarp á Alþingi um fulla innleiðingu hennar í íslensk lög haustið 2027.
@@ -29,51 +29,189 @@ Aðeins sex dögum fyrir gildistöku reglugerðarinnar hafði breytingarregluger
 
 Hér á Íslandi er undirbúningur hafinn fyrir innleiðingu reglugerðarinnar í gegnum EES-samninginn og er gert ráð fyrir að hún verði innleidd hér að fullu með lagasetningu á haustþingi 2027. Hafa verður þó í huga að vegna þess að reglugerðin hefur þegar tekið gildi hjá Evrópusambandinu gildir hún nú þegar einnig um alla starfsemi íslenskra fyrirtækja á ESB-markaði.
 
-# Fjórir áhættuflokkar
+## Fjórir áhættuflokkar
 
 Flokkun gervigreindarkerfa í áhættuflokka ræðst fyrst og fremst af því hvernig þau eru notuð. Flokkunin nær því til notkunartilfella, frekar en endilega til líkananna sjálfra eða undirliggjandi tækni. Lausn sem nýtir mállíkan í ákveðnu samhengi sem er metið áhættulítið getur þannig verið nánast alveg laus við nokkrar kvaðir samkvæmt reglugerðinni en sama líkan í öðru áhættumeira samhengi geta verið settar strangar kröfur.
 
-BOX: BÖNNUÐ NOTKUN
+<Box title="Bönnuð notkun" icon="" chip="Tók gildi innan ESB í febrúar 2025" tone="red" level="3">
+  Öll notkun gervigreindar sem talin er skapa óásættanlega áhættu fyrir réttindi og öryggi fólks er bönnuð með reglugerðinni, þó með nokkrum þröngum undantekningartilvikum fyrir löggæslu.
 
-BOX: ÁHÆTTUSÖM KERFI
+  #### Dæmi um bannaða notkun
 
-BOX: GAGNSÆISKRÖFUR
+  * Félagsleg einkunnagjöf með gervigreind (e. social scoring AI) þar sem hegðun fólks er metin til stiga sem ráða aðgangi þess að þjónustu eða tækifærum.
+  * Kerfi sem reyna að stýra hegðun fólks með duldum aðferðum eða nýta sér varnarleysi tiltekinna hópa, til dæmis raddstýrð leikföng sem hvetja börn til hættulegrar hegðunar.
+  * Rauntímaandlitsgreining á almannafæri í þágu löggæslu. Frá banninu eru þröngar undantekningar eins og fjallað er um hér að neðan.
+  * Tilfinningagreining starfsfólks á vinnustöðum og nemenda í skólum.
+  * Frá 2. desember 2026 bætist við bann við gerð kynferðislegs myndefnis af fólki án samþykkis þess.
 
-BOX: LÁGMARKSÁHÆTTA
+  Notkun á gervigreindartækni sem fellur undir þennan flokk er algerlega óheimil og varðar hæstu sektum reglugerðarinnar, allt að 35 milljóna evra sekt, eða mest 7% af árlegri heildarveltu fyrirtækis á heimsvísu.
+</Box>
 
-BOX: FIMMTI FLOKKUR - MÁLLÍKÖN
+<Box title="Áhættusöm kerfi" icon="" chip="Tekur gildi innan ESB í desember 2027" tone="orange" level="3">
+  Kerfi sem geta haft veruleg áhrif á heilsu, öryggi eða grundvallarréttindi fólks. Notkun á slíkum kerfum er heimil en þarf að uppfylla ströng skilyrði. Þetta er þungamiðja reglugerðarinnar og sá hluti sem var frestað rétt fyrir gildistöku, fram til loka árs 2027.
 
-BOX: ANDLITSGREININAR
+  #### Dæmi um áhættusama notkun
 
-# Sjálfsmat: Hvaða flokki tilheyrir gervigreindarkerfið þitt?&#x20;
+  * Ráðningar og starfsmannamál: Kerfi sem sía umsóknir, meta frammistöðu eða ráða framgangi í starfi.
+  * Lánshæfismat einstaklinga og áhættumat við líf- og sjúkratryggingar.
+  * Menntun: Notkun gervigreindar við námsmat, inntöku í skóla og eftirlit með prófum.
+  * Bætur og opinber þjónusta: Kerfi sem meta hvort fólk eigi rétt á bótum eða opinberri aðstoð.
+  * Gervigreind í löggæslu, við landamæraeftirlit og í réttarkerfinu.
+  * Mikilvægir innviðir: Stýring eða vöktun á öryggi í rekstri vatnsveitu-, orku- og samgöngukerfa, þar sem bilun gæti stefnt fólki í hættu.
+
+  Kerfi á þessum sviðum teljast þó ekki alltaf áhættusöm og hér gildir aðallega hvort þau hafi veruleg áhrif á eða taki sjálf ákvarðanir sem varða fólk. Geri þau það ekki og séu aðeins notuð í afmörkuð verkefni til undirbúnings eða að aðstoða fólk við verkefni á þessum sviðum sem tekur sjálft ákvarðanirnar, geta þau fallið utan flokksins.
+
+  #### Hvaða skilyrði þarf að uppfylla?
+
+  Þeir sem þróa áhættusöm kerfi þurfa meðal annars að stunda virka áhættustýringu allan líftíma kerfisins, tryggja gæði þjálfunargagna, halda tækniskjölun og atvikaskrám, tryggja mannlegt eftirlit, standast samræmismat, CE-merkja kerfið og skrá það í gagnagrunn ESB. Sá sem notar kerfi annarra á þessum sviðum ber einnig skyldur, eins og rakið er hér á eftir. Brot á kröfunum varða sektum allt að 15 milljónum evra eða allt að 3% af árlegri heildarveltu fyrirtækisins á heimsvísu.
+</Box>
+
+<Box title="Gagnsæiskröfur" icon="" chip="Tók gildi innan ESB í ágúst 2026" tone="yellow" level="3">
+  Kerfi sem eiga í beinum samskiptum við fólk eða búa til efni þurfa ekki sérstakt leyfi, en fólk á rétt á að vita af því að það sé að eiga við efni frá gervigreind. Þessum flokki fylgja minnstar nýjar kvaðir með reglugerðinni og margar þeirra eru þegar orðnar viðtekin venja meðal fyrirtækja.
+
+  #### Í reynd þýðir þetta til dæmis að:
+
+  * Spjallmenni og önnur kerfi í beinum samskiptum við fólk þurfa að upplýsa að um gervigreind sé að ræða, nema það sé augljóst af samhenginu.
+  * Efni sem gervigreind býr til, texti, myndir, hljóð og myndbönd, skal merkt á vélrænan hátt svo hugbúnaður geti greint uppruna þess. Krafan tók gildi í ágúst 2026 en kerfi sem voru komin á markað fyrir það hafa frest til 2. desember 2026.
+  * Djúpfalsanir, eða efni sem líkir eftir raunverulegu fólki, stöðum eða atburðum, skulu merktar skýrt og sýnilega þannig að sá sem það sjái viti að efnið sé búið til af gervigreind.
+  * Þeir sem verða fyrir tilfinningagreiningu eða lífkennaflokkun, þar sem hún er á annað borð heimil, eiga rétt á að vita af henni.
+
+  Brot á þessum gagnsæiskröfum varða sektum allt að 15 milljónum evra eða allt að 3% af árlegri heildarveltu fyrirtækisins á heimsvísu.
+</Box>
+
+<Box title="Lágmarksáhætta" icon="" chip="Engar nýjar sérkröfur" tone="green" level="3">
+  Langstærstur hluti gervigreindarkerfa fellur undir þennan flokk. Þar má meðal annars nefna leitarvélar, ruslpóstsíur, þýðingarforrit, gervigreind í tölvuleikjum og flest innri kerfi sem notuð eru í daglegum rekstri fyrirtækja. Reglugerðin leggur engar nýjar skyldur á þessi kerfi en almenn löggjöf gildir áfram um notkun þeirra, til dæmis persónuverndarlög.
+</Box>
+
+<Box title="Fimmta lagið: Almenn mállíkön" icon="" tone="outline" level="3">
+  Til viðbótar við flokkana fjóra gilda sérstakar reglur um almenn gervigreindarlíkön, stóru mállíkönin sem flest önnur kerfi byggja á. Framleiðendur þeirra þurfa að halda tækniskjölun, setja sér stefnu um höfundarétt og birta samantekt um þjálfunargögn. Strangari kröfur eru þá settar um áhættumat þeirra og bera þau nú ríkari tilkynningarskyldu.
+
+  Þessar skyldur hafa gilt innan ESB frá því í ágúst 2025 en fyrst nú með samþykktinni í ágúst 2026 getur gervigreindarskrifstofa ESB fylgt þessum reglum eftir með sektum.
+</Box>
+
+<Box title="Andlitsgreiningar" icon="user-focus" tone="tint" level="3">
+  Andlitsgreiningar í rauntíma í þágu löggæslu eru almennt bannaðar samkvæmt reglugerðinni. Þó er hún heimil í vissum undantekningartilvikum sem dómstólar meta hverju sinni:
+
+  * Þegar markviss leit á sér stað að tilteknum fórnarlömbum mannrána eða mansals, auk leitar að fólki sem er saknað.
+  * Til að afstýra tiltekinni verulegri yfirvofandi ógn við líf eða líkamlegt öryggi fólks, til dæmis ef metin er raunveruleg hætta á yfirvofandi hryðjuverkaárás.
+  * Til að bera kennsl á þá sem eru grunaðir um alvarleg brot sem varða að minnsta kosti fjögurra ára fangelsi.
+
+  Í leiðbeiningum sem framkvæmdastjórn Evrópusambandsins gaf út með reglugerðinni er lögð áhersla á að hvert og eitt undantekningartilvik verði að meta fyrir dómi. Það er þannig háð dómsúrskurði hvort lögregla fái heimild hverju sinni til að nýta sér andlitsgreiningarkerfi til að bera kennsl á fólk.
+</Box>
+
+## Sjálfsmat: Hvaða flokki tilheyrir gervigreindarkerfið þitt?&#x20;
 
 Framkvæmdastjórn Evrópusambandsins rekur opinbert sjálfsmatstól (e. Compliance Checker)<Ref /> fyrir fyrirtæki á upplýsingagátt sinni um reglugerðina og hollensk stjórnvöld hafa útbúið sambærilegt tól fyrir sínar stofnanir. Nokkrar markvissar spurningar eiga þar að aðstoða fyrirtæki við að átta sig á því hvaða flokki kerfi þeirra tilheyra og þá hvaða kröfur þau þurfi að uppfylla.
 
 Hér er einfölduð útgáfa af slíku sjálfsmati sem byggir á leiðbeiningum Hollendinga fyrir sínar stofnanir:
 
-GRAFÍK - SJÁLFSMAT
+<SelfAssessment />
 
-*Við tökum fram að þetta mat er einungis gert til að aðstoða fyrirtæki eða stofnanir við að glöggva sig betur á gervigreindarreglugerð ESB. Við ábyrgjumst ekki að útkoman sé alltaf rétt og hvetjum fyrirtæki til að skoða hvert tilvik með lögfræðingum og viðeigandi sérfræðingum.* *Hægt er að nálgast ítarlegra mat í gegnum sjálfsmatstól framkvæmdastjórnar ESB: [https://ai-act-service-desk.ec.europa.eu/en](https://ai-act-service-desk.ec.europa.eu/en)*
+<Note>
+  *Við tökum fram að þetta mat er einungis gert til að aðstoða fyrirtæki eða stofnanir við að glöggva sig betur á gervigreindarreglugerð ESB. Við ábyrgjumst ekki að útkoman sé alltaf rétt og hvetjum fyrirtæki til að skoða hvert tilvik með lögfræðingum og viðeigandi sérfræðingum.* *Hægt er að nálgast ítarlegra mat í gegnum sjálfsmatstól framkvæmdastjórnar ESB: [https://ai-act-service-desk.ec.europa.eu/en](https://ai-act-service-desk.ec.europa.eu/en)*
+</Note>
 
-# Þróunaraðilar og notendur
+## Þróunaraðilar og notendur
 
 Reglugerðin gerir svo skýran greinarmun á þeim sem þróar gervigreindarkerfi og setur á markað og þeim sem notar kerfi annarra í starfsemi sinni, og fara skyldur aðila því ekki aðeins eftir áhættuflokki kerfa heldur einnig eftir því hvort þeir þróa þau eða nota. Langflest íslensk fyrirtæki og stofnanir falla hér undir síðarnefnda flokkinn; eru notendur. Mörkin geta þó verið óskýr, því ef fyrirtæki breytir kerfi verulega eða markaðssetur það undir eigin vörumerki getur það tekið á sig skyldur þróunaraðila.
 
-2 BOX HLIÐ VIÐ HLIÐ
+<Columns>
+  <Box title="Þróunaraðili" icon="" tone="tint" level="3">
+    *(e. provider)*
 
-# Tímalína
+    Sá sem þróar gervigreindarkerfi eða lætur þróa það og setur á markað undir eigin nafni þarf meðal annars að:
+
+    * Meta og milda áhættu kerfisins með skipulögðum hætti allan líftíma þess.
+    * Tryggja gæði þjálfunargagna og halda tækniskjölum og atvikaskrám.
+    * Hanna kerfið þannig að það lúti mannlegu eftirliti og standist kröfur um nákvæmni og netöryggi.
+    * Standast samræmismat, CE-merkja kerfið og skrá það í gagnagrunn ESB.
+    * Fylgjast með kerfinu eftir markaðssetningu og tilkynna alvarleg atvik.
+  </Box>
+
+  <Box title="Notandi" icon="" tone="neutral" level="3">
+    *(e. deployer)*
+
+    Fyrirtæki eða stofnun sem notar gervigreindarkerfi annarra í starfsemi sinni, til dæmis ráðningarkerfi frá hugbúnaðarfyrirtæki. Fyrir áhættusöm kerfi þarf hann meðal annars að:
+
+    * Nota kerfið í samræmi við leiðbeiningar þróunaraðila og tryggja að gögnin sem það vinnur með séu viðeigandi.
+    * Fela hæfu starfsfólki mannlegt eftirlit með kerfinu og vakta virkni þess.
+    * Upplýsa starfsfólk og trúnaðarmenn áður en áhættusamt kerfi er tekið í notkun á vinnustað.
+    * Upplýsa þá sem ákvarðanir kerfisins beinast að.
+    * Varðveita atvikaskrár kerfisins.
+  </Box>
+</Columns>
+
+## Tímalína
 
 Reglugerðin kemur til framkvæmda í áföngum til ársins 2028. Innleiðing á Íslandi hangir á því hvenær frumvarp um innleiðingu reglugerðarinnar verður lagt fram og samþykkt á Alþingi.
 
-GRAFÍK
+<Timeline pastLabel="Þegar í gildi">
+  <TimelineItem date="1. ágúst 2024" region="ESB" title="Reglugerðin tekur gildi" done>
+    Framkvæmd hefst í áföngum.
+  </TimelineItem>
 
-# Áhrif og aðgerðir á Íslandi
+  <TimelineItem date="2. febrúar 2025" region="ESB" title="Bönnin og gervigreindarlæsið" done affects="Alla sem nota gervigreind">
+    Bönnuð notkun óheimil; starfsfólk sem vinnur með gervigreind á að kunna til verka.
+  </TimelineItem>
+
+  <TimelineItem date="2. ágúst 2025" region="ESB" title="Almennu líkönin og sektarramminn" done affects="Framleiðendur líkana">
+    Skjölun, höfundaréttarstefna og samantekt þjálfunargagna.
+  </TimelineItem>
+
+  <TimelineItem date="2. ágúst 2026" region="ESB" title="Eftirlit, sektir og gagnsæi" done affects="Þróunaraðila, Notendur">
+    Eftirlits- og sektarvald virkjast; fólk á að vita að það tali við vél.
+  </TimelineItem>
+
+  <TimelineToday label="Í dag · september 2026" nextLabel="Framundan" />
+
+  <TimelineItem date="2. desember 2026" region="ESB" title="Merkingar og ný bönn" done={false} affects="Þróunaraðila efnisgerðarkerfa, Alla">
+    Frestur eldri kerfa til að merkja myndað efni rennur út; bann við gerð kynferðislegs myndefnis án samþykkis tekur gildi.
+  </TimelineItem>
+
+  <TimelineItem date="Haust 2027" region="Ísland" title="Frumvarp á Alþingi" done={false} affects="Íslensk fyrirtæki og stofnanir">
+    Ráðuneytið áætlar að innleiðingarfrumvarp verði lagt fram.
+  </TimelineItem>
+
+  <TimelineItem date="2. desember 2027" region="ESB" title="Áhættusömu kerfin" done={false} affects="Þróunaraðila, Notendur áhættusamra kerfa" shift="Frestað á síðustu stundu: átti að gilda frá ~~2. ágúst 2026~~ en var fært til 2. desember 2027, sex dögum fyrir gildistöku.">
+    Strangasti hluti reglugerðarinnar tekur gildi fyrir sjálfstæð kerfi, til dæmis við ráðningar og lánshæfismat.
+  </TimelineItem>
+
+  <TimelineItem date="2. ágúst 2028" region="ESB" title="Kerfi innbyggð í vörur" done={false} affects="Vöruframleiðendur">
+    Áhættusöm kerfi í lækningatækjum, ökutækjum, vélum og öðrum vörum.
+  </TimelineItem>
+
+  <TimelineItem date="Ódagsett" region="Ísland" title="Upptaka í EES-samninginn" done={false}>
+    Í vinnslu í EFTA-vinnuhópi; frestuðu hlutarnir gilda hér í fyrsta lagi samhliða ESB.
+  </TimelineItem>
+</Timeline>
+
+<Note>
+  Kerfi sem opinberir aðilar höfðu þegar tekið í notkun fá frest til 2. ágúst 2030.
+</Note>
+
+## Áhrif og aðgerðir á Íslandi
 
 Menningar-, nýsköpunar- og háskólaráðuneytið fer með innleiðingu reglugerðarinnar á Íslandi og sem fyrr segir gerir það ráð fyrir að frumvarp um hana verði klárt og lagt fyrir Alþingi haustið 2027. Reglugerðin er þannig leidd inn í íslenskan rétt í gegnum EES-samninginn og verður hluti af íslenskum rétti þegar hún hefur verið tekin upp í samninginn og svo innleidd með lögum frá Alþingi.
 
 Samkvæmt upplýsingum frá ráðuneytinu er nú verið að vinna að því innan EFTA-vinnuhóps að skoða mögulegar aðlaganir á gerðinni og enn sé óljóst hvernig ýmsu verður háttað.
 
-LITLIR KASSAR
+<Columns>
+  <Box title="Upptaka í EES-samninginn" icon="" chip="Í vinnslu" tone="tint" level="3">
+    Unnið er að upptöku reglugerðarinnar og mögulegar aðlaganir eru til skoðunar hjá vinnuhópi EFTA. Engin tímasetning liggur fyrir.
+  </Box>
+
+  <Box title="Frumvarp á Alþingi" icon="" chip="Haust 2027" tone="tint" level="3">
+    Ráðuneytið áætlar að frumvarp um innleiðingu reglugerðarinnar í íslenskan rétt verði lagt fram haustið 2027.
+  </Box>
+
+  <Box title="Eftirlit" icon="" chip="Óráðið" tone="tint" level="3">
+    Ekki liggur fyrir hvaða stofnanir fara með eftirlit með reglugerðinni hér á landi, en samkvæmt ráðuneytinu verða þær væntanlega fleiri en ein. Verkaskipting stofnana er í skoðun.
+  </Box>
+
+  <Box title="Fræðsla og leiðbeiningar" icon="" chip="Á dagskrá" tone="tint" level="3">
+    Við innleiðinguna verður lögð áhersla á fræðslu fyrir fyrirtæki og stofnanir. Tímasetning innlendra leiðbeininga liggur ekki fyrir.
+  </Box>
+</Columns>
 
 Í raun má líta svo á að íslensk fyrirtæki fái lengri aðdraganda en keppinautar þeirra innan ESB, þar sem reglugerðin kemur seinna hingað til lands í gegnum EES-samninginn. Aftur er þó vert að minna á að starfsemi íslenskra fyrirtækja eða íslenskra gervigreindarlausna á ESB-svæðinu heyrir strax undir reglugerðina. Jafnvel má líta svo á að við getum þá nýtt okkur þá reynslu sem verður komin á ýmsa þætti hennar innan Evrópu þegar hún tekur hér gildi, lært af því sem vel hefur verið gert en forðast ógöngur sem aðrir hafa lent í.
 
@@ -83,11 +221,33 @@ LITLIR KASSAR
 
 Hér er því um að gera fyrir íslensk fyrirtæki að byrja að kynna sér þær kvaðir sem gætu verið á leiðinni strax en þau hafa til þess nægan tíma, líklega allavega út næsta ár.
 
-# Hvað geta fyrirtæki gert strax?
+## Hvað geta fyrirtæki gert strax?
 
-BOX BOX BOX
+<Steps>
+  1. **Kortleggðu notkunina**
 
-# Afar umdeild reglugerð
+     Taktu saman yfirlit yfir gervigreindarkerfin sem þú ert með í notkun innan fyrirtækisins, tilgang þeirra og ábyrgðaraðila innanhúss. Yfirlitið er forsenda alls annars og svarar fyrstu spurningu eftirlitsaðila þegar þar að kemur.
+  2. **Flokkaðu eftir áhættu**
+
+     Farðu í gegnum flokkana fjóra hér að ofan fyrir hvert kerfi og staldraðu sérstaklega við ráðningar, mat á einstaklingum og aðra notkun sem reglugerðin skilgreinir sem áhættusama. Þú getur byrjað á [sjálfsmatskerfinu sem við setjum hér fram](/sjalfsmat) og kynnt þér leiðbeiningar ESB um reglugerðina betur á [sérstakri upplýsingasíðu sambandsins](https://ai-act-service-desk.ec.europa.eu/en).
+  3. **Skilgreindu hlutverk þitt**
+
+     Ertu þróunaraðili eða notandi? Gerðu greinarmun á þeim kerfum sem fyrirtækið þitt þróar sjálft og þeim kerfum sem þið kaupið frá öðrum; skyldur ykkar eru ólíkar eftir því hvort á við og innkaupasamningar þurfa að endurspegla þær.
+  4. **Tryggðu gagnsæi**
+
+     Kröfurnar um að upplýsa fólk um það þegar það á í samskiptum við gervigreind og merkingar á myndefni sem gervigreind framleiðir eru einfaldar í framkvæmd og gilda þegar innan ESB. Þær eru góður upphafspunktur.
+  5. **Byggðu upp gervigreindarlæsi**
+
+     Krafan um fullnægjandi þekkingu starfsfólks á gervigreind nær til allra sem nota gervigreind í rekstri og fræðsla verður þungamiðja í innleiðingu ráðuneytisins á reglugerðinni hér á landi. Byrjaðu strax að fræða starfsfólkið um gervigreind og þjálfa upp gervigreindarlæsi innan starfshópsins.
+</Steps>
+
+<Box title="Hjálpartæki sem þegar eru til" icon="" tone="neutral" level="3">
+  * [Sjálfsmatstól Almannaróms](/sjalfsmat), sem byggir bæði á framsetningu leiðbeininga hollenskra stjórnvalda fyrir sínar stofnanir og tóli framkvæmdastjórnar Evrópusambandsins.
+  * [Upplýsingagátt ESB um reglugerðina](https://ai-act-service-desk.ec.europa.eu/en): Miðlæg gátt framkvæmdastjórnarinnar með sjálfsmatsprófi, þjónustuborði og yfirliti yfir viðeigandi tengiliði í hverju landi.
+  * [AI Act Explorer:](https://ai-act-service-desk.ec.europa.eu/en/ai-act-explorer) Opinbert hjálpartól frá ESB til að einfalda uppflettingar í reglugerðinni. Hægt er að lesa hverja grein hennar sérstaklega með viðeigandi skýringum.
+</Box>
+
+## Afar umdeild reglugerð
 
 Þegar pólitískt samkomulag náðist um reglugerðina fyrst í desember 2023 lýsti Ursula von der Leyen, forseti framkvæmdastjórnar Evrópusambandsins, henni sem „fyrstu heildstæðu löggjöf heims um gervigreind" og kallaði þá stund sögulega. Hálfu öðru ári síðar, sumarið 2025, þegar fyrstu stóru nýju ákvæðin og kvaðir reglugerðarinnar áttu að fara að taka gildi, barst framkvæmdastjórninni opið bréf sem hátt í fimmtíu leiðandi fyrirtæki í Evrópu skrifuðu undir undir yfirskriftinni „Stoppið tímann" (e. Stop the Clock). Þar kröfðust fyrirtækin þess að beðið yrði í tvö ár með að taka þyngstu atriði reglugerðarinnar í gildi þar sem reglurnar væru óskýrar og flóknar, nauðsynlegir tæknistaðlar til að útfæra þær væru ekki tilbúnir og samkeppnishæfni Evrópu væri í húfi. Undir þetta rituðu stórfyrirtæki á borð við Airbus, ASML, Lufthansa, Mercedes-Benz, Philips og Siemens Energy auk helstu gervigreindarsprota álfunnar: Mistral, ElevenLabs og Black Forest Labs.
 
@@ -97,4 +257,16 @@ Framkvæmdastjórnin svaraði daginn eftir og neitaði að verða við þessari 
 
 Þá snerist gagnrýnin reyndar við og fóru réttindasamtök á borð við EDRi og Amnesty International að gagnrýna frestunina. Héldu þau því fram að með henni væri verið að veikja lögin rétt fyrir gildistöku mikilvægustu ákvæða þeirra; engin áhrifagreining hefði farið fram á þessum breytingum, samráð verið lítið og aðeins til málamynda og niðurstaðan endurspeglaði fyrst og fremst hagsmunagæslu stórfyrirtækja. Breytingartillögurnar náðu þó ekki allar fram að ganga. Til dæmis var hætt við afnám skyldu til opinberra skráninga áhættusamra kerfa eins og stóð fyrst til með *Digital Omnibus*.
 
-TVÖ BOX - HILÐVIÐHLIÐ
+<Columns>
+  <Box title="Röksemdir gagnrýnenda úr atvinnulífinu" icon="" tone="tint" level="3">
+    Reglurnar eru flóknar og óskýrar. Staðlarnir sem eiga að útfæra þær eru ekki tilbúnir og fyrirtæki eiga að fylgja kröfum sem enginn veit nákvæmlega hvernig á að uppfylla.
+
+    Á meðan keppinautar í Bandaríkjunum og Asíu búa við miklu sveigjanlegra umhverfi dregur reglugerðin úr fjárfestingu og nýsköpun í Evrópu.
+  </Box>
+
+  <Box title="Röksemdir gagnrýnenda úr röðum réttindasamtaka" icon="" tone="neutral" level="3">
+    Lögin voru opnuð upp á nýtt áður en mikilvægustu verndarákvæði fyrir almenning tóku gildi, án áhrifamats og á methraða, undir því yfirskyni að einfalda þau.
+
+    Frestunin veikir réttarvernd almennings og skapar fordæmi um að þrýstingur dugi til að fresta óþægilegum lögum fyrir fyrirtæki.
+  </Box>
+</Columns>
