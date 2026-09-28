@@ -47,7 +47,7 @@ export function nextArticle(article: Article, path: Article[]): Article | undefi
 
 export const articleUrl = (article: Article) => `/greinar/${article.id}`;
 export const categoryUrl = (category: Category) => `/flokkar/${category.id}`;
-export const categoryArt = (category: Category, kind: 'card' | 'hero') => `/flokkar/${category.id}/${kind}.svg`;
+export const categoryArt = (category: Category, kind: 'card' | 'hero') => `/flokkar/${category.data.art}/${kind}.svg`;
 
 const dateFormat = new Intl.DateTimeFormat('is-IS', { day: 'numeric', month: 'long', year: 'numeric' });
 

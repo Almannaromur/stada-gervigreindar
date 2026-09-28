@@ -1,6 +1,6 @@
 import { collection, config, fields } from '@keystatic/core';
 import { components } from './src/editor/components';
-import { categoryColors } from './src/lib/colors';
+import { categoryArtwork, categoryColors } from './src/lib/colors';
 
 // Locally (npm run dev) the editor writes straight to the files on disk.
 // On the live site editors log in through Keystatic Cloud, and every save
@@ -28,7 +28,7 @@ export default config({
       schema: {
         title: fields.slug({
           name: { label: 'Titill', validation: { length: { min: 1 } } },
-          slug: { label: 'Slóð', description: 'Birtist sem /greinar/<slóð>. Breytið ekki eftir birtingu.' },
+          slug: { label: 'Slóð', description: 'Birtist sem /greinar/<slóð>. Breytið ekki eftir birtingu (ekki ýta á „Regenerate“ / ↻): tenglar á greinina hætta þá að virka.' },
         }),
         category: fields.relationship({ label: 'Flokkur', collection: 'flokkar', validation: { isRequired: true } }),
         description: fields.text({
@@ -75,12 +75,24 @@ export default config({
       format: 'yaml',
       columns: ['name', 'order'],
       schema: {
-        name: fields.slug({ name: { label: 'Heiti' }, slug: { label: 'Slóð', description: 'Birtist sem /flokkar/<slóð>' } }),
+        name: fields.slug({
+          name: { label: 'Heiti', description: 'Óhætt að breyta. Slóðin breytist ekki við það.' },
+          slug: {
+            label: 'Slóð',
+            description: 'Birtist sem /flokkar/<slóð>. Breytið ekki eftir birtingu (ekki ýta á „Regenerate“ / ↻): gamlir tenglar og greinar í flokknum hætta þá að virka.',
+          },
+        }),
         description: fields.text({ label: 'Lýsing', multiline: true }),
         color: fields.select({
           label: 'Litur',
           options: Object.keys(categoryColors).map((key) => ({ label: key, value: key })),
           defaultValue: 'army',
+        }),
+        art: fields.select({
+          label: 'Myndskreyting',
+          description: 'Mynstrið á flokkaspjaldi og efst á flokkasíðu',
+          options: Object.entries(categoryArtwork).map(([value, label]) => ({ label, value })),
+          defaultValue: 'skodanapistlar',
         }),
         order: fields.integer({ label: 'Röð', description: 'Staða í valmynd og á forsíðu' }),
       },

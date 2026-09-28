@@ -1,7 +1,7 @@
 import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { categoryColors } from './lib/colors';
+import { categoryArtwork, categoryColors } from './lib/colors';
 
 const authors = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/authors' }),
@@ -14,13 +14,15 @@ const authors = defineCollection({
 });
 
 // One file per category: src/content/flokkar/<slug>.yaml → /flokkar/<slug>
-// Artwork lives in public/flokkar/<slug>/card.svg and hero.svg
+// Artwork: public/flokkar/<art>/card.svg and hero.svg, chosen with the `art` field
 const flokkar = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/flokkar' }),
   schema: z.object({
     name: z.string(),
     description: z.string(),
     color: z.enum(Object.keys(categoryColors) as [keyof typeof categoryColors, ...(keyof typeof categoryColors)[]]),
+    /** Which artwork set in public/flokkar/ to show (independent of the category's name and address) */
+    art: z.enum(Object.keys(categoryArtwork) as [keyof typeof categoryArtwork, ...(keyof typeof categoryArtwork)[]]),
     /** Position in menus and on the homepage */
     order: z.number(),
   }),

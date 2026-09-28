@@ -48,10 +48,11 @@ Go to **stadagervigreindar.is/ritstjori** (or `/admin`; both lead to `/keystatic
 ```
 src/content/
   greinar/<slug>/index.mdx     → /greinar/<slug>   (images sit in the same folder)
-  flokkar/<slug>.yaml          → /flokkar/<slug>   (name, description, colour, order)
+  flokkar/<slug>.yaml          → /flokkar/<slug>   (name, description, colour, artwork, order)
   authors/<slug>.yaml          name, role; photo in authors/<slug>/
   einkunnir/<slug>.yaml        data for an "Einkunnatafla" (companies, products, scores)
-public/flokkar/<slug>/         card.svg and hero.svg artwork for each category
+public/flokkar/<art>/          card.svg and hero.svg artwork sets; a category picks one with `art`
+                               (list in src/lib/colors.ts), so renaming a category never breaks it
 public/logos/<slug>/           logos used in an Einkunnatafla
 ```
 

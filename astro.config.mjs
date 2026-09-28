@@ -65,6 +65,8 @@ export default defineConfig({
     // Easy-to-remember addresses for the editor (Keystatic itself must live at /keystatic)
     '/admin': '/keystatic',
     '/ritstjori': '/keystatic',
+    // Categories whose address changed
+    '/flokkar/rannsoknir-og-faernisuppbygging': '/flokkar/rannsoknir-og-faerniuppbygging',
     // Addresses from the old report site (Framer), so existing links keep working
     '/inngangur': '/greinar/inngangur',
     '/kafli-1': '/greinar/stefna-og-adgerdir-islands',
