@@ -63,6 +63,8 @@ export default config({
             image: false,
             divider: false,
             codeBlock: false,
+            // Level 1 is the article's title; sections start at level 2
+            heading: [2, 3, 4],
           },
         }),
       },

@@ -32,6 +32,21 @@ export const categoryArtwork = {
 
 export type CategoryArtwork = keyof typeof categoryArtwork;
 
+/**
+ * Scale from red to green, from the original site: score badges (Rating, 1 → 5),
+ * coloured box headers (Kassi) and the self-assessment results.
+ * `text` is the text colour to use on the full colour.
+ */
+export const scaleColors = {
+  red: { base: '#FD5252', text: '#fff' },
+  orange: { base: '#FF8D58', text: 'var(--color-text)' },
+  yellow: { base: '#FFCA58', text: 'var(--color-text)' },
+  blue: { base: '#58B6FF', text: 'var(--color-text)' },
+  green: { base: '#6CE459', text: 'var(--color-text)' },
+} as const;
+
+export type ScaleColor = keyof typeof scaleColors;
+
 /** CSS custom properties for a category, for use in a `style` attribute. */
 export function categoryVars(color: CategoryColor): string {
   const { base, text } = categoryColors[color];

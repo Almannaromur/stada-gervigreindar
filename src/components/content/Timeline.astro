@@ -1,0 +1,49 @@
+---
+/**
+ * Timeline of dated events. A <TimelineToday> divider separates what has already
+ * happened (above) from what is ahead (below).
+ *
+ * <Timeline>
+ *   <TimelineItem date="1. ágúst 2024" region="ESB" title="Reglugerðin tekur gildi" done>Framkvæmd hefst í áföngum.</TimelineItem>
+ *   <TimelineToday label="Í dag · september 2026" />
+ *   <TimelineItem date="Haust 2027" region="Ísland" title="Frumvarp á Alþingi" affects="Íslensk fyrirtæki, stofnanir">…</TimelineItem>
+ * </Timeline>
+ */
+interface Props {
+  /** Heading above the items before the "today" divider (shown only when there is one) */
+  pastLabel?: string;
+}
+
+const { pastLabel = 'Þegar í gildi' } = Astro.props;
+---
+
+<div class="timeline">
+  {pastLabel && <p class="phase past">{pastLabel}</p>}
+  <ol class="items"><slot /></ol>
+</div>
+
+<style>
+  .timeline {
+    font-size: var(--body-sm);
+  }
+
+  .phase {
+    display: none;
+    margin: 0 0 1rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .timeline:has(:global(.today)) .past {
+    display: block;
+  }
+
+  .items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

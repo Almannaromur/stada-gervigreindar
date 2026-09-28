@@ -28,6 +28,9 @@ Consult these guides before working on related tasks:
 - Article MDX must stay editor-compatible: no `import` lines, no JS expressions/comments, no HTML tags, no GFM footnotes (sources are the `heimildir` frontmatter list + `<Ref n={…} />`). Components are passed globally by `src/pages/greinar/[slug].astro`.
 - Image props are strings "/src/content/greinar/<slug>/<file>" (what Keystatic writes); resolve with `resolveImage` in `src/lib/images.ts`. Keystatic drops image values that don't start with `<publicPath>/<slug>/`.
 - New component = `src/components/content/X.astro` + export in `index.ts` + entry in `src/editor/components.ts` (`npm run check` enforces the last two).
+- Icons: Phosphor Icons only (brand guide), regular weight; Box icons in `src/lib/icons.ts`. Scale colours (red → green) shared by Rating, Box headers and the self-assessment: `scaleColors` in `src/lib/colors.ts`.
+- Editor headings are levels 2–4 (level 1 is the article title). Keystatic writes empty selects as `icon=""` / `region=""` and unchecked boxes as `done={false}`; components treat these as unset.
+- The self-assessment (`SelfAssessment.astro`, text in `src/data/sjalfsmat.ts`) is also the page `/sjalfsmat`, which follows the EU AI Act article's draft status (noindex + left out of the sitemap in `astro.config.mjs`).
 - Design tokens in `src/styles/tokens.css` come from the Figma design system ("Vefskýrsla Sept"). Figma exports live in `design/` (git-ignored).
 - Markdown is processed by Sätteri (Astro 7 default), configured in `astro.config.mjs`.
 - Text is Icelandic: keep `lang="is"`, „…“ quotes, and don't "fix" content wording without asking.

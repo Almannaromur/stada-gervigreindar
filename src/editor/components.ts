@@ -4,12 +4,17 @@
  * for its props. Names must match the exports in src/components/content/index.ts
  * (`npm run check` verifies this).
  *
- *   wrapper: has content between the tags  <Box title="…">…</Box>
- *   block:   stands alone                  <Rating value={3} />
- *   inline:  sits inside a line of text    …text<Ref n={2} />
+ *   wrapper:   has content between the tags  <Box title="…">…</Box>
+ *   block:     stands alone                  <Rating value={3} />
+ *   inline:    sits inside a line of text    …text<Ref n={2} />
+ *   repeating: holds only the listed components  <Timeline><TimelineItem …>…</TimelineItem></Timeline>
+ *
+ * `forSpecificLocations: true` keeps a component out of the insert menu, so it can
+ * only be added inside the repeating component that lists it (its "Insert" button).
  */
 import { fields } from '@keystatic/core';
-import { block, inline, wrapper } from '@keystatic/core/content-components';
+import { block, inline, repeating, wrapper } from '@keystatic/core/content-components';
+import { boxIcons } from '../lib/icons';
 
 // Images are stored in the article's own folder and written as
 // /src/content/greinar/<article>/<file>, which the components resolve (src/lib/images.ts)
@@ -29,11 +34,24 @@ export const components = {
       logo,
       logoAlt: fields.text({ label: 'Nafn á merki', description: 'Fyrir skjálesara, t.d. „Apple“' }),
       rating: fields.integer({ label: 'Íslenskustuðningur (1–5)', description: 'Valfrjálst', validation: { min: 1, max: 5 } }),
+      icon: fields.select({
+        label: 'Tákn',
+        description: 'Valfrjálst. Birtist við hlið titilsins. Fleiri tákn má bæta við í src/lib/icons.ts.',
+        options: [{ label: 'Ekkert', value: '' }, ...Object.entries(boxIcons).map(([value, { label }]) => ({ label, value }))],
+        defaultValue: '',
+      }),
+      chip: fields.text({ label: 'Merki', description: 'Valfrjálst. Lítill miði, t.d. dagsetning eða staða („Í vinnslu“).' }),
       tone: fields.select({
         label: 'Litur',
+        description: 'Litaður haus hentar t.d. fyrir áhættuflokka: titill og merki fara þá í hausinn.',
         options: [
           { label: 'Litur flokksins', value: 'tint' },
           { label: 'Grár', value: 'neutral' },
+          { label: 'Rammi (enginn bakgrunnur)', value: 'outline' },
+          { label: 'Rauður haus', value: 'red' },
+          { label: 'Appelsínugulur haus', value: 'orange' },
+          { label: 'Gulur haus', value: 'yellow' },
+          { label: 'Grænn haus', value: 'green' },
         ],
         defaultValue: 'tint',
       }),
@@ -138,6 +156,115 @@ export const components = {
     description: 'Númer heimildar í listanum „Heimildir“ (fyrsta = 1).',
     schema: {
       n: fields.integer({ label: 'Númer heimildar', validation: { min: 1, isRequired: true } }),
+    },
+  }),
+
+  Lead: wrapper({
+    label: 'Inngangur',
+    description: 'Upphafsmálsgrein greinarinnar, í stærra letri.',
+    schema: {},
+  }),
+
+  Question: wrapper({
+    label: 'Spurning',
+    description: 'Spurning í viðtali sem fléttast inn í greinina. Svarið kemur á eftir sem venjulegur texti.',
+    schema: {},
+  }),
+
+  Note: wrapper({
+    label: 'Smáletur',
+    description: 'Smátt, grátt letur, t.d. fyrirvari eða athugasemd.',
+    schema: {},
+  }),
+
+  Steps: wrapper({
+    label: 'Skref',
+    description: 'Tölusett skref með stórum tölum. Skrifið venjulegan tölusettan lista, með feitletraða fyrstu línu í hverjum lið.',
+    schema: {},
+  }),
+
+  Columns: repeating({
+    label: 'Dálkar',
+    description: 'Kassar hlið við hlið: tveir dálkar, einn í síma. Bætið við kassa með „Insert“.',
+    children: ['Box'],
+    validation: { children: { min: 2 } },
+    schema: {},
+  }),
+
+  BarChart: repeating({
+    label: 'Súlurit',
+    description: 'Láréttar súlur með tölum. Bætið við súlu með „Insert“.',
+    children: ['Bar'],
+    validation: { children: { min: 1 } },
+    schema: {
+      title: fields.text({ label: 'Fyrirsögn' }),
+      caption: fields.text({ label: 'Skýring og heimild', description: 'Birtist undir súlunum', multiline: true }),
+      max: fields.number({ label: 'Hámark', description: 'Gildi sem fyllir heila súlu', defaultValue: 100 }),
+      unit: fields.text({ label: 'Eining', description: 'Birtist á eftir tölunni, t.d. %', defaultValue: '%' }),
+    },
+  }),
+
+  Bar: block({
+    label: 'Súla',
+    forSpecificLocations: true,
+    schema: {
+      label: fields.text({ label: 'Heiti', description: 'T.d. ártal', validation: { length: { min: 1 } } }),
+      value: fields.number({ label: 'Gildi', validation: { isRequired: true } }),
+    },
+  }),
+
+  Timeline: repeating({
+    label: 'Tímalína',
+    description: 'Atburðir í tímaröð. Bætið við atburði eða „Í dag“-línu með „Insert“.',
+    children: ['TimelineItem', 'TimelineToday'],
+    validation: { children: { min: 1 } },
+    schema: {
+      pastLabel: fields.text({
+        label: 'Fyrirsögn fyrir liðna atburði',
+        description: 'Birtist efst ef tímalínan hefur „Í dag“-línu',
+        defaultValue: 'Þegar í gildi',
+      }),
+    },
+  }),
+
+  TimelineItem: wrapper({
+    label: 'Atburður',
+    description: 'Nánari lýsing fer í reitinn fyrir neðan.',
+    forSpecificLocations: true,
+    schema: {
+      date: fields.text({ label: 'Dagsetning', description: 'T.d. 2. ágúst 2026 eða Haust 2027', validation: { length: { min: 1 } } }),
+      region: fields.select({
+        label: 'Merki',
+        options: [
+          { label: 'Ekkert', value: '' },
+          { label: 'ESB', value: 'ESB' },
+          { label: 'Ísland', value: 'Ísland' },
+        ],
+        defaultValue: '',
+      }),
+      title: fields.text({ label: 'Titill', validation: { length: { min: 1 } } }),
+      done: fields.checkbox({ label: 'Liðið', description: 'Merkt með haki' }),
+      affects: fields.text({ label: 'Snertir', description: 'Valfrjálst. Aðskilið með kommu, t.d. Þróunaraðila, Notendur' }),
+      shift: fields.text({
+        label: 'Breyting á dagsetningu',
+        description: 'Valfrjálst. Texti milli ~~ ~~ er yfirstrikaður, t.d. Átti að gilda frá ~~2. ágúst 2026~~.',
+        multiline: true,
+      }),
+    },
+  }),
+
+  SelfAssessment: block({
+    label: 'Sjálfsmat (EU AI Act)',
+    description: 'Gagnvirkt sjálfsmat: í hvaða áhættuflokk fellur gervigreindarkerfi? Spurningunum er breytt í src/data/sjalfsmat.ts. Einnig á sinni eigin síðu, /sjalfsmat.',
+    schema: {},
+  }),
+
+  TimelineToday: block({
+    label: '„Í dag“-lína',
+    forSpecificLocations: true,
+    schema: {
+      label: fields.text({ label: 'Texti', description: 'T.d. Í dag · september 2026', defaultValue: 'Í dag' }),
+      nextLabel: fields.text({ label: 'Fyrirsögn fyrir komandi atburði', defaultValue: 'Framundan' }),
     },
   }),
 };

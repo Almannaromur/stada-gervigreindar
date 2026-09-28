@@ -1,0 +1,61 @@
+---
+/**
+ * Numbered steps with large numerals. The content is an ordinary numbered list,
+ * each item a bold first line followed by text:
+ *
+ * <Steps>
+ *   1. **Kortleggðu notkunina**
+ *
+ *      Taktu saman yfirlit…
+ * </Steps>
+ */
+---
+
+<div class="steps"><slot /></div>
+
+<style>
+  .steps :global(ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps :global(li) {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    counter-increment: step;
+    font-size: 0.9em;
+  }
+
+  .steps :global(li + li) {
+    margin-top: var(--gap-tight);
+  }
+
+  .steps :global(li)::before {
+    content: counter(step);
+    grid-row: 1 / span 20;
+    color: var(--cat-text);
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .steps :global(li > *) {
+    grid-column: 2;
+    margin: 0;
+  }
+
+  .steps :global(li > * + *) {
+    margin-top: 0.4em;
+  }
+
+  .steps :global(li strong) {
+    font-size: 1.1em;
+  }
+</style>

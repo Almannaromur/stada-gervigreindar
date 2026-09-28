@@ -1,0 +1,21 @@
+---
+/** Opening paragraph, larger than the body text: <Lead>…</Lead> */
+---
+
+<div class="lead"><slot /></div>
+
+<style>
+  .lead {
+    font-size: 1.125em;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .lead :global(p) {
+    margin: 0;
+  }
+
+  .lead :global(p + p) {
+    margin-top: 1em;
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+/**
+ * An interviewer's question in the running text, followed by the answer as
+ * ordinary paragraphs: <Question>Hvernig lítur sá nýi veruleiki út?</Question>
+ * (For a self-contained Q&A in a box, use Interview.)
+ */
+---
+
+<div class="question"><slot /></div>
+
+<style>
+  .question {
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--cat-base);
+    color: var(--cat-text);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .question :global(p) {
+    margin: 0;
+  }
+
+  .question :global(p + p) {
+    margin-top: 0.75em;
+  }
+</style>

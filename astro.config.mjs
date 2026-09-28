@@ -15,6 +15,8 @@ const draftPaths = fs
   .readdirSync(articlesDir)
   .filter((slug) => /^draft:\s*true\s*$/m.test(fs.readFileSync(new URL(`${slug}/index.mdx`, articlesDir), 'utf8')))
   .map((slug) => `/greinar/${slug}`);
+// The self-assessment page (src/pages/sjalfsmat.astro) follows its article's draft status
+if (draftPaths.includes('/greinar/innleiding-gervigreindarreglugerdar-esb-a-islandi')) draftPaths.push('/sjalfsmat');
 
 // https://astro.build/config
 // Absolute URLs (canonical, link-preview image, sitemap) use the site's production

@@ -1,0 +1,21 @@
+---
+/** Small print: a disclaimer or a remark set apart from the text: <Note>…</Note> */
+---
+
+<div class="note"><slot /></div>
+
+<style>
+  .note {
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    line-height: 1.5;
+  }
+
+  .note :global(p) {
+    margin: 0;
+  }
+
+  .note :global(p + p) {
+    margin-top: 0.75em;
+  }
+</style>

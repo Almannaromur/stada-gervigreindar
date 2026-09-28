@@ -6,11 +6,19 @@
  * <Box title="Ókeypis aðgangur að mállíkani">…</Box>
  * <Box title="Sérstök áskorun: Apple" logo="/src/content/greinar/<grein>/apple.svg" logoAlt="Apple" rating={1}>…</Box>
  * <Box tone="neutral">…</Box>          grey instead of the category colour
+ * <Box tone="outline">…</Box>          outline only
+ * <Box title="Andlitsgreiningar" icon="user-focus">…</Box>           icon next to the title (src/lib/icons.ts)
+ * <Box title="Frumvarp á Alþingi" chip="Haust 2027">…</Box>          small label above the title
+ * <Box title="Bönnuð notkun" tone="red" chip="Tók gildi 2025">…</Box> coloured header (red, orange, yellow, green)
  *
  * Boxes that follow each other are stacked closely as a group.
  */
 import Rating from './Rating.astro';
 import { resolveImage } from '@/lib/images';
+import { boxIcons, type BoxIcon } from '@/lib/icons';
+import { scaleColors } from '@/lib/colors';
+
+const headerTones = ['red', 'orange', 'yellow', 'green'] as const;
 
 interface Props {
   title?: string;
@@ -22,27 +30,51 @@ interface Props {
   /** Icelandic-support score shown top right */
   rating?: number;
   ratingLabel?: string;
-  tone?: 'tint' | 'neutral';
+  /** Icon next to the title */
+  icon?: BoxIcon;
+  /** Small label, e.g. a date or a status */
+  chip?: string;
+  tone?: 'tint' | 'neutral' | 'outline' | (typeof headerTones)[number];
   /** Heading level for the title */
   level?: 3 | 4 | '3' | '4';
 }
 
-const { title, href, logo, logoAlt = '', rating, ratingLabel = 'Íslenskustuðningur', tone = 'tint', level = 3 } = Astro.props;
+const { title, href, logo, logoAlt = '', rating, ratingLabel = 'Íslenskustuðningur', icon, chip, tone = 'tint', level = 3 } = Astro.props;
 const Heading = `h${Number(level)}` as 'h3' | 'h4';
 const logoImage = logo ? resolveImage(logo, Astro.locals.articleId) : undefined;
 const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
+const iconSvg = icon ? boxIcons[icon]?.svg : undefined;
+const headerTone = headerTones.find((t) => t === tone);
+const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : undefined;
 ---
 
-<section class:list={['box', tone]}>
+<section class:list={['box', headerTone ? 'has-head' : tone]} style={style}>
   {
-    (logoSrc || rating) && (
-      <div class="top">
-        {logoSrc && <img src={logoSrc} alt={logoAlt} class="logo" loading="lazy" />}
-        {rating && <Rating label={ratingLabel} value={rating} />}
-      </div>
+    headerTone ? (
+      <header class="head">
+        {title && <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>}
+        {chip && <span class="chip">{chip}</span>}
+      </header>
+    ) : (
+      <>
+        {(logoSrc || rating) && (
+          <div class="top">
+            {logoSrc && <img src={logoSrc} alt={logoAlt} class="logo" loading="lazy" />}
+            {rating && <Rating label={ratingLabel} value={rating} />}
+          </div>
+        )}
+        {chip && <span class="chip">{chip}</span>}
+        {(title || iconSvg) && (
+          <div class="heading">
+            {iconSvg && (
+              <svg class="icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />
+            )}
+            {title && <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>}
+          </div>
+        )}
+      </>
     )
   }
-  {title && <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>}
   <div class="body"><slot /></div>
 </section>
 
@@ -55,6 +87,36 @@ const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
 
   .neutral {
     background: var(--color-surface);
+  }
+
+  .outline {
+    background: none;
+    box-shadow: inset 0 0 0 1.5px var(--cat-base);
+  }
+
+  /* Coloured header: a light tint of the scale colour, the body in the surface colour */
+  .has-head {
+    padding: 0;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 1.125rem 2rem;
+    background: color-mix(in srgb, var(--head) 30%, var(--color-bg));
+  }
+
+  .head .title {
+    margin: 0;
+  }
+
+  .has-head .body {
+    padding: 1.5rem 2rem 2rem;
   }
 
   .top {
@@ -77,8 +139,43 @@ const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
     justify-content: flex-end;
   }
 
+  .chip {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--cat-base) 35%, var(--color-bg));
+    font-size: var(--body-xs);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .neutral .chip,
+  .outline .chip {
+    background: color-mix(in srgb, var(--cat-base) 25%, var(--color-bg));
+  }
+
+  .head .chip {
+    margin: 0;
+    background: rgb(255 255 255 / 0.6);
+  }
+
+  .heading {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .icon {
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--cat-text);
+  }
+
   .title {
-    margin: 0 0 0.625rem;
+    margin: 0;
     font-family: var(--font-sans);
     font-size: var(--body-md);
     font-weight: 600;

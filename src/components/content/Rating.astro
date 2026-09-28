@@ -5,6 +5,8 @@
  * <Rating label="Íslenskustuðningur" value={4} />   → "Íslenskustuðningur: [4 af 5]"
  * <Rating value={4} compact />                       → "[4]"
  */
+import { scaleColors, type ScaleColor } from '@/lib/colors';
+
 interface Props {
   label?: string;
   value: number;
@@ -14,15 +16,8 @@ interface Props {
 
 const { label, value, max = 5, compact = false } = Astro.props;
 
-// Score colours from the original site
-const colours: Record<number, [string, string]> = {
-  1: ['#FD5252', '#fff'],
-  2: ['#FF8D58', 'var(--color-text)'],
-  3: ['#FFCA58', 'var(--color-text)'],
-  4: ['#58B6FF', 'var(--color-text)'],
-  5: ['#6CE459', 'var(--color-text)'],
-};
-const [bg, fg] = colours[Math.round((value / max) * 5)] ?? colours[3];
+const scale: ScaleColor[] = ['red', 'orange', 'yellow', 'blue', 'green'];
+const { base: bg, text: fg } = scaleColors[scale[Math.round((value / max) * 5) - 1] ?? 'yellow'];
 ---
 
 <span class="rating">

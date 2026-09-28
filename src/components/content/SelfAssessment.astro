@@ -1,0 +1,480 @@
+---
+/**
+ * Interactive self-assessment: which EU AI Act risk category does a system fall in?
+ * <SelfAssessment />
+ *
+ * Editors only place it; the questions, results and wording live in
+ * src/data/sjalfsmat.ts, the order of questions in the script below.
+ * Also available as its own page, /sjalfsmat.
+ */
+import { labels, totalProgress } from '@/data/sjalfsmat';
+
+interface Props {
+  /** Heading level of the questions (3 inside an article, 2 on a page of its own) */
+  level?: 2 | 3;
+}
+
+const { level = 3 } = Astro.props;
+---
+
+<div class="self-assessment" id="sjalfsmat" data-self-assessment data-level={level}>
+  <div class="progress" aria-hidden="true">
+    {Array.from({ length: totalProgress }, () => <span />)}
+  </div>
+  <div class="view">
+    <p class="no-script">{labels.noScript}</p>
+  </div>
+</div>
+
+<script>
+  import { labels, marketNote, obligations, results, steps, totalProgress, transparency, type ResultCard, type Step, type StepId } from '@/data/sjalfsmat';
+  import { scaleColors } from '@/lib/colors';
+
+  interface State {
+    market?: string;
+    role?: string;
+    banned?: boolean;
+    /** High-risk classification */
+    hr?: 'product' | 'area' | 'exempt' | null;
+    areas?: string[];
+    trans?: string[];
+    gpai?: boolean;
+  }
+
+  type Answer = string | string[];
+  type Outcome = 'notAI' | 'outOfScope' | 'result';
+
+  /** Which step (or outcome) follows an answer. Mirrors the flow in the article draft. */
+  function next(id: StepId, answer: Answer, s: State): StepId | Outcome {
+    switch (id) {
+      case 'ai':
+        return answer === 'no' ? 'notAI' : 'scope';
+      case 'scope':
+        return answer === 'yes' ? 'outOfScope' : 'market';
+      case 'market':
+        s.market = answer as string;
+        return 'role';
+      case 'role':
+        s.role = answer as string;
+        return 'banned';
+      case 'banned':
+        s.banned = answer === 'yes';
+        return s.banned ? 'result' : 'product';
+      case 'product':
+        if (answer === 'yes') {
+          s.hr = 'product';
+          return 'transparency';
+        }
+        return 'areas';
+      case 'areas':
+        s.areas = answer as string[];
+        if (s.areas.length) return 'impact';
+        s.hr = null;
+        return 'transparency';
+      case 'impact':
+        s.hr = answer === 'yes' ? 'area' : 'exempt';
+        return 'transparency';
+      case 'transparency':
+        s.trans = answer as string[];
+        return s.role === 'provider' ? 'gpai' : 'result';
+      case 'gpai':
+        s.gpai = answer === 'yes';
+        return 'result';
+    }
+  }
+
+  function el<K extends keyof HTMLElementTagNameMap>(tag: K, props: Record<string, string> = {}, ...children: (Node | string | null | undefined | false)[]) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) node.setAttribute(k, v);
+    for (const c of children) if (c) node.append(c);
+    return node;
+  }
+
+  function setup(root: HTMLElement) {
+    const view = root.querySelector<HTMLElement>('.view')!;
+    const bars = [...root.querySelectorAll<HTMLElement>('.progress span')];
+    const level = Number(root.dataset.level) || 3;
+    const heading = (text: string, sub = false) => el(`h${Math.min(level + (sub ? 1 : 0), 6)}` as 'h3', { class: sub ? 'subtitle' : 'title', tabindex: '-1' }, text);
+
+    let state: State = {};
+    let history: { id: StepId; state: State; answer: Answer }[] = [];
+
+    const progress = (n: number) => bars.forEach((b, i) => b.classList.toggle('on', i < n));
+
+    function show(nodes: Node[], focus: boolean) {
+      view.replaceChildren(...nodes);
+      if (!focus) return;
+      const rect = root.getBoundingClientRect();
+      if (rect.top < 0 || rect.top > window.innerHeight * 0.6) root.scrollIntoView({ block: 'start' });
+      view.querySelector<HTMLElement>('[tabindex="-1"]')?.focus({ preventScroll: true });
+    }
+
+    function answer(id: StepId, value: Answer) {
+      const before = structuredClone(state);
+      const to = next(id, value, state);
+      history.push({ id, state: before, answer: value });
+      if (to === 'notAI' || to === 'outOfScope') renderOutcome([results[to]], false);
+      else if (to === 'result') renderResult();
+      else renderStep(to, true);
+    }
+
+    function backButton() {
+      if (!history.length) return null;
+      const b = el('button', { type: 'button', class: 'ghost' }, labels.back);
+      b.addEventListener('click', () => {
+        const prev = history.pop()!;
+        state = prev.state;
+        renderStep(prev.id, true, prev.answer);
+      });
+      return b;
+    }
+
+    function renderStep(id: StepId, focus: boolean, previous?: Answer) {
+      const step: Step = steps[id];
+      progress(step.progress);
+      const nodes: Node[] = [el('p', { class: 'part' }, step.part), heading(step.question)];
+      if ('explanation' in step && step.explanation) nodes.push(el('p', { class: 'explanation' }, step.explanation));
+      if ('criteria' in step && step.criteria) nodes.push(el('ul', { class: 'criteria' }, ...step.criteria.map((c) => el('li', {}, c))));
+      if ('help' in step && step.help) nodes.push(el('details', { class: 'help' }, el('summary', {}, step.help.summary), el('p', {}, step.help.body)));
+
+      if (step.kind === 'choice') {
+        const choices = step.choices.map((c) => {
+          const b = el('button', { type: 'button', class: 'choice' }, el('span', { class: 'label' }, c.label), c.hint && el('span', { class: 'hint' }, c.hint));
+          b.addEventListener('click', () => answer(id, c.value));
+          return b;
+        });
+        nodes.push(el('div', { class: 'choices' }, ...choices));
+        nodes.push(el('div', { class: 'nav' }, backButton()));
+      } else {
+        const picked = Array.isArray(previous) ? previous : [];
+        const boxes = step.checks.map((c) => {
+          const input = el('input', { type: 'checkbox', value: c.value });
+          input.checked = picked.includes(c.value);
+          return el('label', { class: 'check' }, input, el('span', {}, c.label));
+        });
+        const fieldset = el('fieldset', { class: 'checks' }, el('legend', { class: 'visually-hidden' }, step.question), ...boxes);
+        const go = el('button', { type: 'button', class: 'primary' }, step.nextLabel);
+        go.addEventListener('click', () => answer(id, [...fieldset.querySelectorAll<HTMLInputElement>('input:checked')].map((i) => i.value)));
+        nodes.push(fieldset, el('div', { class: 'nav' }, go, backButton()));
+      }
+      show(nodes, focus);
+    }
+
+    function card(c: ResultCard) {
+      const node = el(
+        'div',
+        { class: `card tone-${c.tone}` },
+        c.title && heading(c.title),
+        ...(c.paragraphs ?? []).map((p) => el('p', {}, p)),
+        c.subtitle && heading(c.subtitle, true),
+        c.items && el('ul', {}, ...c.items.map((i) => el('li', {}, i))),
+        ...(c.after ?? []).map((p) => el('p', {}, p)),
+      );
+      if (c.tone !== 'neutral') node.style.setProperty('--tone', scaleColors[c.tone].base);
+      return node;
+    }
+
+    function restartButton() {
+      const b = el('button', { type: 'button', class: 'primary' }, labels.restart);
+      b.addEventListener('click', () => {
+        state = {};
+        history = [];
+        renderStep('ai', true);
+      });
+      return el('div', { class: 'nav' }, b, backButton());
+    }
+
+    function renderOutcome(cards: ResultCard[], withMarket: boolean, extra: Node[] = []) {
+      progress(totalProgress);
+      const nodes: Node[] = cards.map(card);
+      if (withMarket) nodes.push(el('p', { class: 'market' }, state.market === 'is' ? marketNote.is : marketNote.eu));
+      show([...nodes, ...extra, restartButton()], true);
+    }
+
+    function renderResult() {
+      if (state.banned) return renderOutcome([results.banned], true);
+      const cards: ResultCard[] = [];
+      const duties = obligations[(state.role ?? 'importer') as keyof typeof obligations];
+      if (state.hr === 'product') cards.push({ ...results.highRiskProduct, ...duties });
+      else if (state.hr === 'area') cards.push({ ...results.highRisk, ...duties });
+      else if (state.hr === 'exempt') cards.push(results.exempt);
+      else cards.push(results.minimal);
+      if (state.trans?.length) {
+        cards.push({ tone: 'yellow', title: transparency.title, items: state.trans.map((t) => transparency.items[t]), after: transparency.after });
+      }
+      if (state.gpai) cards.push(results.gpai);
+
+      const basis = [
+        `${labels.basisRole}: ${labels.role[state.role ?? 'importer']}`,
+        state.areas?.length ? labels.basisAreas(state.areas.length) : '',
+        state.trans?.length ? labels.basisTransparency(state.trans.length) : '',
+        labels.basisMarket(state.market ?? 'eu'),
+      ].filter(Boolean);
+      renderOutcome(cards, true, [card(results.nextSteps), el('p', { class: 'basis' }, el('strong', {}, labels.basis), ` ${basis.join(' · ')}`)]);
+    }
+
+    renderStep('ai', false);
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-self-assessment]').forEach(setup);
+</script>
+
+<style>
+  .self-assessment {
+    padding: 1.75rem 2rem 2rem;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--cat-base) 18%, var(--color-bg));
+    font-size: var(--body-sm);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 30rem) {
+    .self-assessment {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+
+  .progress {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .progress span {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--cat-base) 30%, var(--color-bg));
+  }
+
+  .progress :global(span.on) {
+    background: var(--cat-text);
+  }
+
+  .view :global(p),
+  .view :global(ul) {
+    margin: 0;
+  }
+
+  .view > :global(* + *) {
+    margin-top: 1rem;
+  }
+
+  .view :global(.part) {
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .view :global(.part + .title) {
+    margin-top: 0.375rem;
+  }
+
+  .view :global(.title) {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    line-height: 1.32;
+  }
+
+  .view :global(.subtitle) {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  .view :global([tabindex='-1']:focus) {
+    outline: none;
+  }
+
+  .view :global(.explanation) {
+    color: var(--color-text-muted);
+  }
+
+  .view :global(.criteria) {
+    padding-left: 1.25em;
+  }
+
+  .view :global(li + li) {
+    margin-top: 0.35em;
+  }
+
+  .view :global(.help) {
+    border-radius: var(--radius);
+    background: var(--color-bg);
+  }
+
+  .view :global(.help summary) {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: var(--body-xs);
+    font-weight: 600;
+    list-style: none;
+  }
+
+  .view :global(.help summary::-webkit-details-marker) {
+    display: none;
+  }
+
+  .view :global(.help summary::after) {
+    content: '+';
+    color: var(--cat-text);
+  }
+
+  .view :global(.help[open] summary::after) {
+    content: '\2212';
+  }
+
+  .view :global(.help p) {
+    padding: 0 1rem 0.875rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+  }
+
+  .view :global(.choices),
+  .view :global(.checks) {
+    display: grid;
+    gap: 0.5rem;
+    margin-inline: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .view :global(.choice),
+  .view :global(.check) {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    border: 1.5px solid color-mix(in srgb, var(--cat-base) 70%, var(--color-bg));
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .view :global(.choice:hover),
+  .view :global(.check:hover) {
+    background: color-mix(in srgb, var(--cat-base) 12%, var(--color-bg));
+  }
+
+  .view :global(.choice .label) {
+    display: block;
+    font-weight: 600;
+  }
+
+  .view :global(.choice .hint) {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+  }
+
+  .view :global(.check) {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .view :global(.check:has(input:checked)) {
+    border-color: var(--cat-text);
+    background: color-mix(in srgb, var(--cat-base) 20%, var(--color-bg));
+  }
+
+  .view :global(.check input) {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0.15rem 0 0;
+    accent-color: var(--cat-text);
+  }
+
+  .view :global(.check:has(input:focus-visible)) {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+  }
+
+  .view :global(.nav) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .view :global(.nav:empty) {
+    display: none;
+  }
+
+  .view :global(.primary),
+  .view :global(.ghost) {
+    padding: 0.625rem 1.5rem;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .view :global(.primary) {
+    border: 1.5px solid var(--cat-text);
+    background: var(--cat-text);
+    color: var(--color-white);
+  }
+
+  .view :global(.ghost) {
+    border: 1.5px solid var(--color-line-soft);
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  /* Results */
+  .view :global(.card) {
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--tone) 30%, var(--color-bg));
+  }
+
+  .view :global(.card.tone-neutral) {
+    background: var(--color-bg);
+  }
+
+  .view :global(.card > * + *) {
+    margin-top: 0.75rem;
+  }
+
+  .view :global(.card .subtitle + ul) {
+    margin-top: 0.35rem;
+  }
+
+  .view :global(.card ul) {
+    padding-left: 1.25em;
+  }
+
+  .view :global(.card + .card) {
+    margin-top: 0.75rem;
+  }
+
+  .view :global(.market) {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    font-size: var(--body-xs);
+  }
+
+  .view :global(.basis) {
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line-soft);
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+  }
+
+  .no-script {
+    color: var(--color-text-muted);
+  }
+</style>

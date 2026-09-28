@@ -1,0 +1,58 @@
+---
+/** One bar in a BarChart: <Bar label="2026" value={69} /> */
+interface Props {
+  label: string;
+  value: number;
+}
+
+const { label, value } = Astro.props;
+---
+
+<div class="bar">
+  <span class="label">{label}</span>
+  <span class="track" aria-hidden="true"><span class="fill" style={`--value: ${Number(value) || 0}`}></span></span>
+  <span class="value">{Number(value).toLocaleString('is-IS')}</span>
+</div>
+
+<style>
+  .bar {
+    display: grid;
+    grid-template-columns: minmax(3rem, max-content) minmax(0, 1fr) 3.5rem;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .label {
+    font-size: var(--body-sm);
+    font-weight: 600;
+  }
+
+  .track {
+    height: 1.75rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--cat-base) 18%, var(--color-bg));
+  }
+
+  .fill {
+    display: block;
+    width: min(100%, calc(var(--value) / var(--max) * 100%));
+    height: 100%;
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--cat-base) 50%, var(--color-bg));
+  }
+
+  .bar:last-child .fill {
+    background: var(--cat-base);
+  }
+
+  .value {
+    color: var(--cat-text);
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .value::after {
+    content: var(--unit);
+  }
+</style>

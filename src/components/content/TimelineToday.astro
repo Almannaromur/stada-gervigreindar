@@ -1,0 +1,63 @@
+---
+/**
+ * The "today" divider in a Timeline, between what has happened and what is ahead.
+ * <TimelineToday label="Í dag · september 2026" nextLabel="Framundan" />
+ */
+interface Props {
+  label?: string;
+  /** Heading for the items below the divider */
+  nextLabel?: string;
+}
+
+const { label = 'Í dag', nextLabel = 'Framundan' } = Astro.props;
+---
+
+<li class="today">
+  <p class="marker"><span>{label}</span></p>
+  {nextLabel && <p class="phase">{nextLabel}</p>}
+</li>
+
+<style>
+  .today {
+    padding: 0.75rem 0 1rem;
+  }
+
+  .today p {
+    margin: 0;
+  }
+
+  .marker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .marker::before,
+  .marker::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--cat-base);
+  }
+
+  .marker span {
+    padding: 0.3rem 0.9rem;
+    border: 1.5px solid var(--cat-base);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--cat-base) 25%, var(--color-bg));
+    font-size: var(--body-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .today .phase {
+    margin-top: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>

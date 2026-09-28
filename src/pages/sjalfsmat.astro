@@ -1,0 +1,141 @@
+---
+// The EU AI Act self-assessment on a page of its own, so it can be linked to directly.
+// It belongs to the article about the regulation: same category colour, a link back,
+// and kept out of search engines while that article is a draft.
+import { getEntry } from 'astro:content';
+import '@/styles/prose.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticlePanel from '@/components/ArticlePanel.astro';
+import BackButton from '@/components/BackButton.astro';
+import CategoryDot from '@/components/CategoryDot.astro';
+import Note from '@/components/content/Note.astro';
+import SelfAssessment from '@/components/content/SelfAssessment.astro';
+import { categoryVars } from '@/lib/colors';
+import { articleUrl, categoryUrl, getCategory } from '@/lib/content';
+
+const articleId = 'innleiding-gervigreindarreglugerdar-esb-a-islandi';
+const article = await getEntry('greinar', articleId);
+if (!article) throw new Error(`Greinin ${articleId} fannst ekki (src/pages/sjalfsmat.astro)`);
+const category = await getCategory(article);
+const title = 'Sjálfsmat: Hvaða flokki tilheyrir gervigreindarkerfið þitt?';
+---
+
+<BaseLayout
+  title={title}
+  description="Einfaldað sjálfsmat Almannaróms um áhættuflokka gervigreindarreglugerðar ESB."
+  style={categoryVars(category.data.color)}
+  noindex={article.data.draft}
+>
+  <div class="container layout">
+    <div class="back"><BackButton href={articleUrl(article)} /></div>
+
+    <article class="article">
+      <header>
+        <p class="meta">
+          <a href={categoryUrl(category)} class="category">
+            <CategoryDot color={category.data.color} size="lg" />
+            {category.data.name}
+          </a>
+        </p>
+        <h1>{title}</h1>
+      </header>
+
+      <div class="prose">
+        <p>
+          Framkvæmdastjórn Evrópusambandsins rekur <a href="https://ai-act-service-desk.ec.europa.eu/en/eu-ai-act-compliance-checker">opinbert sjálfsmatstól (e. Compliance Checker)</a> fyrir fyrirtæki á upplýsingagátt sinni um reglugerðina og hollensk stjórnvöld hafa útbúið sambærilegt tól fyrir sínar stofnanir. Nokkrar markvissar spurningar eiga þar að aðstoða fyrirtæki við að átta sig á því hvaða flokki kerfi þeirra tilheyra og þá hvaða kröfur þau þurfi að uppfylla.
+        </p>
+        <p>Hér er einfölduð útgáfa af slíku sjálfsmati sem byggir á leiðbeiningum Hollendinga fyrir sínar stofnanir:</p>
+
+        <SelfAssessment level={2} />
+
+        <Note>
+          <p>
+            Við tökum fram að þetta mat er einungis gert til að aðstoða fyrirtæki eða stofnanir við að glöggva sig betur á gervigreindarreglugerð ESB. Við ábyrgjumst ekki að útkoman sé alltaf rétt og hvetjum fyrirtæki til að skoða hvert tilvik með lögfræðingum og viðeigandi sérfræðingum. Hægt er að nálgast ítarlegra mat í gegnum sjálfsmatstól framkvæmdastjórnar ESB: <a href="https://ai-act-service-desk.ec.europa.eu/en">https://ai-act-service-desk.ec.europa.eu/en</a>
+          </p>
+        </Note>
+      </div>
+    </article>
+
+    <div class="related">
+      <ArticlePanel title="Nánar um reglugerðina" items={[{ article, category }]} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--article-width)) minmax(0, 1fr);
+    column-gap: 2rem;
+    padding-top: clamp(1.5rem, 5vw, 4.5rem);
+  }
+
+  .back {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .article,
+  .related {
+    grid-column: 2;
+  }
+
+  .article {
+    grid-row: 1 / span 2;
+  }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    margin-bottom: 2.75rem;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+
+  .meta {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .category {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .category:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-size: var(--h1);
+  }
+
+  .related {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  @media (max-width: 63.99rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .back,
+    .article,
+    .related {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .back {
+      margin-bottom: 2rem;
+    }
+  }
+</style>
