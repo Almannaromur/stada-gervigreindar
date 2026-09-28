@@ -65,7 +65,10 @@ const current = Astro.url.pathname.replace(/\/$/, '');
     document.addEventListener('click', (e) => {
       if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
     });
-    menu.addEventListener('toggle', () => document.documentElement.classList.toggle('menu-open', menu.open));
+    menu.addEventListener('toggle', () => {
+      document.documentElement.classList.toggle('menu-open', menu.open);
+      menu.closest('[data-site-header]')?.toggleAttribute('data-menu-open', menu.open);
+    });
   }
 
   // Sticky header, always visible. Transparent at the very top (over the coloured
@@ -265,12 +268,22 @@ const current = Astro.url.pathname.replace(/\/$/, '');
       z-index: 2;
     }
 
+    /* The top row (logo + close) stays solid white while the menu is open, and the
+       list scrolls in its own area below it, never underneath the logo */
+    .site-header[data-menu-open] {
+      background: var(--color-white);
+    }
+
     .panel {
       position: fixed;
-      inset: 0;
+      top: 5.5rem; /* height of the header row: 1.5rem padding × 2 + 2.5rem button */
+      right: 0;
+      bottom: 0;
+      left: 0;
       width: auto;
-      padding: 6.5rem var(--gutter) 2rem;
+      padding: 1rem var(--gutter) 2rem;
       overflow-y: auto;
+      overscroll-behavior: contain;
       border-radius: 0;
       box-shadow: none;
     }
