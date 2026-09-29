@@ -27,7 +27,7 @@ export { default as Timeline } from './Timeline.astro';
 export { default as TimelineItem } from './TimelineItem.astro';
 export { default as TimelineToday } from './TimelineToday.astro';
 
-// Figures and cards for "Hvað er gervigreindarfullveldi?" (version B, for comparison)
+// Figures and cards for "Hvað er gervigreindarfullveldi?"
 export { default as FvCard } from './fullveldi/FvCard.astro';
 export { default as FvFigure } from './fullveldi/FvFigure.astro';
 export { default as FvFrame } from './fullveldi/FvFrame.astro';

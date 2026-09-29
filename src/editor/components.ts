@@ -319,10 +319,10 @@ export const components = {
     },
   }),
 
-  // For "Hvað er gervigreindarfullveldi?" (version B, a design comparison)
+  // For "Hvað er gervigreindarfullveldi?"
   FvFigure: block({
-    label: 'Fullveldi B: skýringarmynd',
-    description: 'Skýringarmyndir greinarinnar „Hvað er gervigreindarfullveldi?“ (útgáfa B). Veljið mynd.',
+    label: 'Fullveldi: skýringarmynd',
+    description: 'Skýringarmyndir greinarinnar „Hvað er gervigreindarfullveldi?“. Veljið mynd.',
     schema: {
       figure: fields.select({
         label: 'Mynd',
@@ -333,7 +333,7 @@ export const components = {
   }),
 
   FvCard: wrapper({
-    label: 'Fullveldi B: spjald',
+    label: 'Fullveldi: spjald',
     description: 'Spjald með fyrirsögn undir línu, með merki greinarinnar við hlið eða smáum miða fyrir ofan.',
     schema: {
       title: fields.text({ label: 'Fyrirsögn', validation: { length: { min: 1 } } }),
@@ -358,7 +358,7 @@ export const components = {
   }),
 
   FvFrame: wrapper({
-    label: 'Fullveldi B: rammi',
+    label: 'Fullveldi: rammi',
     description: 'Rammi utan um annað efni, með heiti fyrir ofan og texta á hverri hlið.',
     schema: {
       label: fields.text({ label: 'Heiti', validation: { length: { min: 1 } } }),
