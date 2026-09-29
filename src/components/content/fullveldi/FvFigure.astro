@@ -1,0 +1,28 @@
+---
+/**
+ * The figures of "Hvað er gervigreindarfullveldi?" (version B), chosen by name.
+ * They share one visual grammar: the four-station line (bare and filled in), the
+ * two-question plot, and the marks beside the claims (FvCard).
+ *
+ * <FvFigure figure="stations" />
+ */
+import Stations from './Stations.astro';
+import Matrix from './Matrix.astro';
+import Weave from './Weave.astro';
+import Dots from './Dots.astro';
+import Stack from './Stack.astro';
+import type { FvFigureName } from './figures';
+
+interface Props {
+  figure: FvFigureName;
+}
+
+const { figure } = Astro.props;
+---
+
+{figure === 'stations' && <Stations />}
+{figure === 'stations-status' && <Stations status />}
+{figure === 'matrix' && <Matrix />}
+{figure === 'weave' && <Weave />}
+{figure === 'dots' && <Dots />}
+{figure === 'stack' && <Stack />}

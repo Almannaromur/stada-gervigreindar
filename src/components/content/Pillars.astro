@@ -1,0 +1,183 @@
+---
+/**
+ * Diagram: pillars with layers running across them, e.g. three pillars of capability
+ * and five cross-cutting conditions. Lists are comma separated.
+ *
+ * <Pillars pillarsLabel="Þrjár stoðir" pillars="Gögn, Færni, Reiknigeta"
+ *          layersLabel="Fimm þverlæg skilyrði" layers="Hýsing, Líkön, Staðlar, Samningar, Lög" />
+ */
+interface Props {
+  pillars: string;
+  layers: string;
+  pillarsLabel?: string;
+  layersLabel?: string;
+  /** Text under the diagram */
+  caption?: string;
+}
+
+const { pillarsLabel, layersLabel, caption } = Astro.props;
+const split = (s?: string) =>
+  (s ?? '')
+    .split(',')
+    .map((x) => x.trim())
+    .filter(Boolean);
+const pillars = split(Astro.props.pillars);
+const layers = split(Astro.props.layers);
+---
+
+<figure class="pillars">
+  <div class="grid" style={`grid-template-columns: repeat(${Math.max(pillars.length, 1)}, minmax(0, 1fr)); grid-template-rows: auto repeat(${layers.length}, auto)`}>
+    {pillars.map((_, i) => <span class="pillar" style={`grid-column: ${i + 1}`} aria-hidden="true" />)}
+    {
+      pillars.map((name, i) => (
+        <p class="head" style={`grid-column: ${i + 1}`}>
+          {pillarsLabel && <span class="visually-hidden">{pillarsLabel}: </span>}
+          {name}
+        </p>
+      ))
+    }
+    {
+      layers.map((name, i) => (
+        <p class="band" style={`grid-row: ${i + 2}`}>
+          {layersLabel && <span class="visually-hidden">{layersLabel}: </span>}
+          {name}
+        </p>
+      ))
+    }
+  </div>
+  {
+    (pillarsLabel || layersLabel || caption) && (
+      <figcaption>
+        {(pillarsLabel || layersLabel) && (
+          <span class="legend" aria-hidden="true">
+            {pillarsLabel && (
+              <span class="key">
+                <span class="swatch pillar-swatch" />
+                {pillarsLabel}
+              </span>
+            )}
+            {layersLabel && (
+              <span class="key">
+                <span class="swatch band-swatch" />
+                {layersLabel}
+              </span>
+            )}
+          </span>
+        )}
+        {caption && <span class="caption">{caption}</span>}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .pillars {
+    margin-inline: 0;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .grid {
+    display: grid;
+    column-gap: 0.75rem;
+    row-gap: 0.375rem;
+  }
+
+  /* Each pillar is a tinted column behind the layers */
+  .pillar {
+    grid-row: 1 / -1;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--cat-base) 35%, var(--color-bg));
+  }
+
+  .head,
+  .band {
+    position: relative;
+    margin: 0;
+  }
+
+  .head {
+    grid-row: 1;
+    padding: 1.25rem 0.75rem 1rem;
+    color: var(--cat-text);
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+    hyphens: auto;
+  }
+
+  /* Layers run across all pillars */
+  .band {
+    grid-column: 1 / -1;
+    margin-inline: -0.375rem;
+    padding: 0.55rem 1rem;
+    border: 1.5px solid var(--cat-base);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+    font-size: var(--body-sm);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .band:last-child {
+    margin-bottom: 0.75rem;
+  }
+
+  figcaption {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    line-height: 1.5;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 3px;
+  }
+
+  .pillar-swatch {
+    background: color-mix(in srgb, var(--cat-base) 35%, var(--color-bg));
+  }
+
+  .band-swatch {
+    border: 1.5px solid var(--cat-base);
+    background: var(--color-bg);
+  }
+
+  @media (max-width: 30rem) {
+    .pillars {
+      padding: 1.25rem;
+    }
+
+    .grid {
+      column-gap: 0.5rem;
+    }
+
+    .head {
+      padding-inline: 0.25rem;
+      font-size: var(--body-sm);
+      hyphens: manual;
+    }
+  }
+</style>

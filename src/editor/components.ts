@@ -15,6 +15,7 @@
 import { fields } from '@keystatic/core';
 import { block, inline, repeating, wrapper } from '@keystatic/core/content-components';
 import { boxIcons } from '../lib/icons';
+import { fvFigures } from '../components/content/fullveldi/figures';
 
 // Images are stored in the article's own folder and written as
 // /src/content/greinar/<article>/<file>, which the components resolve (src/lib/images.ts)
@@ -281,6 +282,18 @@ export const components = {
     },
   }),
 
+  Pillars: block({
+    label: 'Stoðir og þverlæg skilyrði',
+    description: 'Skýringarmynd: stoðir (lóðréttar) með lögum sem liggja þvert yfir þær. Listar aðskildir með kommu.',
+    schema: {
+      pillarsLabel: fields.text({ label: 'Heiti stoða', description: 'T.d. Þrjár stoðir', defaultValue: 'Stoðir' }),
+      pillars: fields.text({ label: 'Stoðir', description: 'Aðskildar með kommu, t.d. Gögn, Færni, Reiknigeta', validation: { length: { min: 1 } } }),
+      layersLabel: fields.text({ label: 'Heiti laga', description: 'T.d. Fimm þverlæg skilyrði', defaultValue: 'Þverlæg skilyrði' }),
+      layers: fields.text({ label: 'Lög', description: 'Aðskilin með kommu, t.d. Hýsing, Líkön, Staðlar', validation: { length: { min: 1 } } }),
+      caption: fields.text({ label: 'Skýring', description: 'Valfrjálst. Smátt letur undir myndinni', multiline: true }),
+    },
+  }),
+
   SeeAlso: block({
     label: 'Sjá einnig',
     description: 'Tengill á aðra grein eða flokk. Veljið annað hvort. Tengill á grein í drögum birtist þegar hún er birt.',
@@ -303,6 +316,47 @@ export const components = {
     schema: {
       label: fields.text({ label: 'Texti', description: 'T.d. Í dag · september 2026', defaultValue: 'Í dag' }),
       nextLabel: fields.text({ label: 'Fyrirsögn fyrir komandi atburði', defaultValue: 'Framundan' }),
+    },
+  }),
+
+  // For "Hvað er gervigreindarfullveldi?" (version B, a design comparison)
+  FvFigure: block({
+    label: 'Fullveldi B: skýringarmynd',
+    description: 'Skýringarmyndir greinarinnar „Hvað er gervigreindarfullveldi?“ (útgáfa B). Veljið mynd.',
+    schema: {
+      figure: fields.select({
+        label: 'Mynd',
+        options: Object.entries(fvFigures).map(([value, label]) => ({ label, value })),
+        defaultValue: 'stations',
+      }),
+    },
+  }),
+
+  FvCard: wrapper({
+    label: 'Fullveldi B: spjald',
+    description: 'Spjald með fyrirsögn undir línu, með merki greinarinnar við hlið eða smáum miða fyrir ofan.',
+    schema: {
+      title: fields.text({ label: 'Fyrirsögn', validation: { length: { min: 1 } } }),
+      kicker: fields.text({ label: 'Miði', description: 'Valfrjálst. Smátt fyrir ofan fyrirsögnina, t.d. land' }),
+      mark: fields.select({
+        label: 'Merki',
+        options: [
+          { label: 'Ekkert', value: '' },
+          { label: 'Hringir: staðsetning', value: 'stadsetning' },
+          { label: 'Hringir: aðgangur', value: 'adgangur' },
+          { label: 'Kassi í kassa: samningur og lög', value: 'samningur' },
+        ],
+        defaultValue: '',
+      }),
+    },
+  }),
+
+  FvFrame: wrapper({
+    label: 'Fullveldi B: rammi',
+    description: 'Rammi utan um annað efni, með heiti fyrir ofan og texta á hverri hlið.',
+    schema: {
+      label: fields.text({ label: 'Heiti', validation: { length: { min: 1 } } }),
+      edges: fields.text({ label: 'Textar á hliðum', description: 'Fjórir, aðskildir með kommu: efst, hægri, neðst, vinstri' }),
     },
   }),
 };

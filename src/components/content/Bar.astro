@@ -15,11 +15,9 @@ const { label, value } = Astro.props;
 </div>
 
 <style>
+  /* The label, bar and value take part in the chart's grid (BarChart), so all bars line up */
   .bar {
-    display: grid;
-    grid-template-columns: minmax(3rem, max-content) minmax(0, 1fr) 3.5rem;
-    align-items: center;
-    gap: 0.875rem;
+    display: contents;
   }
 
   .label {

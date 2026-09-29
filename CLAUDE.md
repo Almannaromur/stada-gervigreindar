@@ -32,6 +32,8 @@ Consult these guides before working on related tasks:
 - Editor headings are levels 2–4 (level 1 is the article title). Keystatic writes empty selects as `icon=""` / `region=""` and unchecked boxes as `done={false}`; components treat these as unset.
 - Box numbering (`icon="number"`) is a CSS counter: any other element at `.prose` level (or a `.columns`) resets it. Tight 4px stacking applies only to plain boxes of the same tone at `.prose` level; other consecutive boxes get 1rem.
 - A draft never breaks the build: components show a notice in drafts (`Astro.locals.articleDraft`). Links to other articles (Sjá einnig, `tengt`) quietly leave out drafts and missing targets in published articles; missing data components (Einkunnatafla) still fail a published build.
+- Sources: when `slod` is empty, URLs in `texti` are linked (`sourceHtml` in `src/pages/greinar/[slug].astro`), so one source can cite several pages. Author `role` is optional.
+- `Fv*` components (`src/components/content/fullveldi/`) exist only for `hvad-er-gervigreindarfullveldi-b`, a design comparison with the A version. Remove them (index.ts, editor entries, folder) together with whichever version is not chosen.
 - The self-assessment (`SelfAssessment.astro`, text in `src/data/sjalfsmat.ts`) is also the page `/sjalfsmat`, which follows the EU AI Act article's draft status (noindex + left out of the sitemap in `astro.config.mjs`).
 - Design tokens in `src/styles/tokens.css` come from the Figma design system ("Vefskýrsla Sept"). Figma exports live in `design/` (git-ignored).
 - Markdown is processed by Sätteri (Astro 7 default), configured in `astro.config.mjs`.

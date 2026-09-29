@@ -100,9 +100,15 @@
 }
 
 .prose > table td:first-child {
-  white-space: nowrap;
   padding-right: 1.5rem;
   font-weight: 600;
+}
+
+/* The first column stays on one line where there is room; on phones it may wrap */
+@media (min-width: 40rem) {
+  .prose > table td:first-child {
+    white-space: nowrap;
+  }
 }
 
 /* Sources ("Heimildaskrá"), rendered from the article's heimildir list */
@@ -130,6 +136,11 @@
 
 .prose .sources li + li {
   margin-top: 0.5rem;
+}
+
+/* Long web addresses in a source break instead of overflowing on phones */
+.prose .sources a {
+  overflow-wrap: anywhere;
 }
 
 .prose .sources li:target {

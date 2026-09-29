@@ -1,0 +1,95 @@
+---
+/**
+ * A typographic card for "Hvað er gervigreindarfullveldi?" (version B): a serif
+ * title under a rule, with the article's recurring mark beside it (the three
+ * claims) or a small label above it (the country cases).
+ *
+ * <FvCard title="Staðsetning er ekki það sama og aðgangur" mark="stadsetning">…</FvCard>
+ * <FvCard title="Eistland tryggir samfellu" kicker="Eistland">…</FvCard>
+ */
+import FvMark from './FvMark.astro';
+
+interface Props {
+  title: string;
+  /** Small label above the title */
+  kicker?: string;
+  mark?: '' | 'stadsetning' | 'adgangur' | 'samningur';
+}
+
+const { title, kicker, mark = '' } = Astro.props;
+---
+
+<section class:list={['card', { 'has-mark': mark }]}>
+  {mark === 'stadsetning' && <FvMark kind="rings" highlight={1} class="card-mark" />}
+  {mark === 'adgangur' && <FvMark kind="rings" highlight={2} class="card-mark" />}
+  {mark === 'samningur' && <FvMark kind="nested" class="card-mark" />}
+  <div class="content">
+    {kicker && <p class="kicker">{kicker}</p>}
+    <h3 class="title">{title}</h3>
+    <div class="body"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .card {
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--cat-base);
+  }
+
+  .has-mark {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    column-gap: 1.25rem;
+  }
+
+  .card :global(.card-mark) {
+    width: 4rem;
+    margin-top: 0.3rem;
+  }
+
+  .kicker {
+    margin: 0 0 0.35rem;
+    color: var(--cat-text);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .title {
+    margin: 0 0 0.625rem;
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: -0.0125em;
+  }
+
+  .body {
+    font-size: 0.95em;
+  }
+
+  .body > :global(*) {
+    margin: 0;
+  }
+
+  .body > :global(* + *) {
+    margin-top: 1em;
+  }
+
+  /* Cards that follow each other */
+  :global(.prose > .card + .card) {
+    margin-top: 2rem !important;
+  }
+
+  @media (max-width: 30rem) {
+    .has-mark {
+      grid-template-columns: 2.75rem minmax(0, 1fr);
+      column-gap: 0.875rem;
+    }
+
+    .card :global(.card-mark) {
+      width: 2.75rem;
+    }
+  }
+</style>

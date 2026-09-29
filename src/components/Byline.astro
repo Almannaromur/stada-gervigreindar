@@ -17,15 +17,17 @@ const author = await getEntry(data.author);
       {author.data.image && <Image src={author.data.image} alt="" width={96} height={96} class="portrait" />}
       <div>
         <p class="name">{author.data.name}</p>
-        <p class="role">
-          {author.data.role}
-          {data.updated && (
-            <>
-              {' · Uppfært '}
-              <time datetime={isoDate(data.updated)}>{formatDate(data.updated)}</time>
-            </>
-          )}
-        </p>
+        {(author.data.role || data.updated) && (
+          <p class="role">
+            {author.data.role}
+            {data.updated && (
+              <>
+                {author.data.role ? ' · Uppfært ' : 'Uppfært '}
+                <time datetime={isoDate(data.updated)}>{formatDate(data.updated)}</time>
+              </>
+            )}
+          </p>
+        )}
       </div>
     </div>
   )

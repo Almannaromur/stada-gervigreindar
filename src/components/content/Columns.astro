@@ -39,9 +39,34 @@ const three = Number(Astro.props.columns) === 3;
     padding: 1.5rem;
   }
 
+  /* Boxes with a coloured header: the header runs edge to edge, the padding moves inside */
+  .columns > :global(.box.has-head) {
+    padding: 0;
+  }
+
+  .columns > :global(.box.has-head .head),
+  .columns > :global(.box.has-head .body) {
+    padding-inline: 1.5rem;
+  }
+
   /* Three narrow columns: a little less padding, smaller titles and text */
-  .three > :global(.box) {
+  .three > :global(.box:not(.has-head)) {
     padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .three > :global(.box.has-head .head),
+  .three > :global(.box.has-head .body) {
+    padding-inline: 1.25rem;
+  }
+
+  /* Numbered boxes in three columns: the number above the title, not beside it */
+  .three > :global(.box.numbered) {
+    display: block;
+  }
+
+  .three > :global(.box.numbered .number) {
+    display: block;
+    margin-bottom: 0.5rem;
   }
 
   .three > :global(.box .title) {

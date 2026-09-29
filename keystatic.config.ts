@@ -47,7 +47,13 @@ export default config({
         }),
         heimildir: fields.array(
           fields.object({
-            texti: fields.text({ label: 'Heimild', description: 'T.d. Hagstofa Íslands. (2026, 10. mars). *Titill*. Stjörnur um texta gera hann skáletraðan.', validation: { length: { min: 1 } } }),
+            texti: fields.text({
+              label: 'Heimild',
+              description:
+                'T.d. Hagstofa Íslands. (2026, 10. mars). *Titill*. Stjörnur um texta gera hann skáletraðan. Ef reiturinn Slóð er tómur verða vefslóðir í textanum (https://…) að tenglum, svo ein heimild getur vísað á fleiri síður.',
+              multiline: true,
+              validation: { length: { min: 1 } },
+            }),
             slod: fields.url({ label: 'Slóð', description: 'Valfrjálst' }),
           }),
           {

@@ -1,0 +1,193 @@
+---
+/**
+ * Pillars and cross-cutting conditions as a weave: three vertical threads (warp),
+ * five across them (weft), a knot at every crossing. "Valið getur þrengst þegar
+ * þessir þættir mætast" is a statement about crossings, so the ones the text
+ * discusses are emphasised: gögn × samningar (EEA storage), and the líkön and lög
+ * threads (the June 2026 lockout; both are conditions, so they are drawn as
+ * tightened threads rather than a crossing).
+ */
+const warp = ['Gögn', 'Færni', 'Reiknigeta'];
+const weft = ['Hýsing', 'Líkön', 'Staðlar', 'Samningar', 'Lög'];
+const tight = new Set(['Líkön', 'Lög']);
+const knot = { warp: 'Gögn', weft: 'Samningar' };
+---
+
+<figure class="weave">
+  <p class="title">Stoðir og þverlæg skilyrði</p>
+  <div class="grid" role="img" aria-label="Þrjár stoðir (gögn, færni, reiknigeta) og fimm þverlæg skilyrði (hýsing, líkön, staðlar, samningar, lög) sem mætast. Áherslur: gögn og samningar (vistun innan EES); líkön og lög (lokunin í júní 2026).">
+    {warp.map((w, c) => <span class="warp-label" style={`grid-column: ${c + 2}`}>{w}</span>)}
+    {weft.map((w, r) => <span class:list={['weft-label', { tight: tight.has(w) }]} style={`grid-row: ${r + 2}`}>{w}</span>)}
+    {warp.map((_, c) => <span class="warp" style={`grid-column: ${c + 2}`} />)}
+    {weft.map((w, r) => <span class:list={['weft', { tight: tight.has(w) }]} style={`grid-row: ${r + 2}`} />)}
+    {
+      weft.flatMap((wf, r) =>
+        warp.map((wp, c) => (
+          <span class:list={['knot', { key: wp === knot.warp && wf === knot.weft }]} style={`grid-row: ${r + 2}; grid-column: ${c + 2}`} />
+        )),
+      )
+    }
+  </div>
+  <figcaption>
+    <span class="legend">
+      <span class="key"><span class="swatch knot-swatch" />Gögn × samningar: vistun innan EES</span>
+      <span class="key"><span class="swatch thread-swatch" />Líkön og lög: lokunin í júní 2026</span>
+    </span>
+    <span>Valið getur þrengst þar sem þræðirnir mætast.</span>
+  </figcaption>
+</figure>
+
+<style>
+  .weave {
+    margin-inline: 0;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .title {
+    margin: 0 0 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 6.5rem repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto repeat(5, 2.75rem);
+    max-width: 32rem;
+    margin-inline: auto;
+  }
+
+  .warp-label {
+    grid-row: 1;
+    padding-bottom: 0.625rem;
+    color: var(--cat-text);
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .weft-label {
+    grid-column: 1;
+    align-self: center;
+    padding-right: 1rem;
+    font-size: var(--body-sm);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .weft-label.tight {
+    color: var(--cat-text);
+  }
+
+  /* Threads */
+  .warp {
+    grid-row: 2 / -1;
+    justify-self: center;
+    width: 3px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--cat-base) 70%, var(--color-bg));
+  }
+
+  .weft {
+    grid-column: 2 / -1;
+    align-self: center;
+    height: 3px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--cat-base) 70%, var(--color-bg));
+  }
+
+  .weft.tight {
+    height: 5px;
+    background: var(--cat-text);
+  }
+
+  /* Knots at the crossings */
+  .knot {
+    z-index: 1;
+    place-self: center;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 2px solid var(--cat-text);
+    border-radius: 50%;
+    background: var(--color-surface);
+  }
+
+  .knot.key {
+    width: 1.25rem;
+    height: 1.25rem;
+    background: var(--cat-text);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--cat-base) 45%, transparent);
+  }
+
+  figcaption {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    line-height: 1.5;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .swatch {
+    display: inline-block;
+    flex: none;
+  }
+
+  .knot-swatch {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: var(--cat-text);
+  }
+
+  .thread-swatch {
+    width: 1.25rem;
+    height: 5px;
+    border-radius: 2px;
+    background: var(--cat-text);
+  }
+
+  @media (max-width: 30rem) {
+    .weave {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .grid {
+      grid-template-columns: 5rem repeat(3, minmax(0, 1fr));
+      grid-template-rows: auto repeat(5, 2.5rem);
+    }
+
+    /* Smaller labels that never break mid-word */
+    .warp-label,
+    .weft-label {
+      font-size: var(--body-xs);
+      white-space: nowrap;
+    }
+
+    .warp-label {
+      font-family: var(--font-sans);
+      font-weight: 700;
+    }
+
+    .weft-label {
+      padding-right: 0.5rem;
+    }
+  }
+</style>

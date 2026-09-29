@@ -244,6 +244,11 @@ const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
     margin-top: 0.4em;
   }
 
+  /* A box inside a box (e.g. Dálkar in a framing box) keeps its text size */
+  .body .body {
+    font-size: 1em;
+  }
+
   .body > :global(* + *) {
     margin-top: 1.1em;
   }

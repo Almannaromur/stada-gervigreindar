@@ -1,0 +1,137 @@
+---
+/**
+ * "Dreifð milli margra notenda en samþjöppuð hjá fáum birgjum" as a density figure:
+ * 210 dots per row, tinted where the visible provider is US-based. The caveat and
+ * the attribution sit inside the figure, so they travel with a screenshot.
+ */
+const total = 210;
+const rows = [
+  { name: 'Tölvupóstur', pct: 91, note: 'Microsoft 365' },
+  { name: 'Vefir', pct: 74 },
+  { name: 'Nafnaþjónar', pct: 53 },
+];
+---
+
+<figure class="dots">
+  <p class="title">210 stofnanir, fáir birgjar</p>
+  {
+    rows.map((row) => {
+      const tinted = Math.round((total * row.pct) / 100);
+      return (
+        <div class="row">
+          <p class="row-head">
+            <span class="name">
+              {row.name}
+              {row.note && <span class="sub"> · {row.note}</span>}
+            </span>
+            <span class="pct">{row.pct}%</span>
+          </p>
+          <div class="grid" role="img" aria-label={`${row.name}: ${row.pct}% með bandarískan veitanda`}>
+            {Array.from({ length: total }, (_, i) => (
+              <span class:list={['d', { us: i < tinted }]} />
+            ))}
+          </div>
+        </div>
+      );
+    })
+  }
+  <p class="legend">
+    <span class="key"><span class="d us" />Bandarískur veitandi sýnilegur</span>
+    <span class="key"><span class="d" />Annar veitandi</span>
+  </p>
+  <p class="caveat">
+    Sýnir sýnilegan þjónustuveitanda, ekki geymslustað gagna, aðgangsheimildir eða samningsskilmála. Tölvupóstur: hlutfall stofnana. Vefir og nafnaþjónar: hlutfall vefja og nafnaþjóna, sýnt á sama kvarða.
+  </p>
+  <p class="source">Heimild: Atli Þór Jóhannsson, Iceland's Government Agencies Infrastructure, digitalmap.atli.io</p>
+</figure>
+
+<style>
+  .dots {
+    margin-inline: 0;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .title {
+    margin: 0 0 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .row + .row {
+    margin-top: 1.25rem;
+  }
+
+  .row-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 0 0.5rem;
+    font-size: var(--body-sm);
+    font-weight: 600;
+  }
+
+  .sub {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .pct {
+    color: var(--cat-text);
+    font-weight: 700;
+  }
+
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .d {
+    display: inline-block;
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-line-soft);
+  }
+
+  .d.us {
+    background: var(--cat-text);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 1.5rem 0 0;
+    font-size: var(--body-xs);
+    font-weight: 600;
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .caveat,
+  .source {
+    margin: 0.75rem 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    line-height: 1.5;
+  }
+
+  .source {
+    margin-top: 0.375rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 30rem) {
+    .dots {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+</style>

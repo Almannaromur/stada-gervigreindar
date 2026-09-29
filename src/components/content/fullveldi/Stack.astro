@@ -1,0 +1,118 @@
+---
+/**
+ * What carries over between models: four layers that stay, on top of a base model
+ * drawn as a swappable slot. Deliberately shows only what stays the same, not the
+ * contested paths side by side (which would invite scoring them).
+ */
+const layers = ['Íslensk gögn', 'Matspróf', 'Sérþekking', 'Aðlögunarferli'];
+---
+
+<figure class="stack">
+  <p class="title">Hvað flyst á milli líkana?</p>
+  <div class="diagram">
+    <ol class="layers" aria-label="Haldast hér">
+      {layers.map((l) => <li class="layer">{l}</li>)}
+    </ol>
+    <p class="side stay" aria-hidden="true">haldast hér</p>
+    <div class="slot">
+      <span class="slot-name">Grunnlíkan</span>
+      <span class="slot-gen">kynslóð n → n+1</span>
+    </div>
+    <p class="side swap" aria-hidden="true">skiptanlegt</p>
+  </div>
+</figure>
+
+<style>
+  .stack {
+    margin-inline: 0;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .title {
+    margin: 0 0 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .diagram {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 6.5rem;
+    column-gap: 1rem;
+    row-gap: 0.625rem;
+    max-width: 30rem;
+    margin-inline: auto;
+  }
+
+  .layers {
+    display: grid;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .layer {
+    margin: 0;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--cat-base) 40%, var(--color-bg));
+    font-size: var(--body-sm);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .side {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding-left: 0.875rem;
+    border-left: 2px solid var(--cat-text);
+    color: var(--cat-text);
+    font-size: var(--body-xs);
+    font-weight: 600;
+  }
+
+  .side.swap {
+    border-left-style: dashed;
+    border-left-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+  }
+
+  /* The base model: an empty slot a new generation slides into */
+  .slot {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border: 2px dashed var(--color-text-muted);
+    border-radius: var(--radius);
+    font-size: var(--body-sm);
+    font-weight: 600;
+  }
+
+  .slot-gen {
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 30rem) {
+    .stack {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .diagram {
+      grid-template-columns: minmax(0, 1fr) 4.75rem;
+      column-gap: 0.625rem;
+    }
+
+    .slot {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+</style>

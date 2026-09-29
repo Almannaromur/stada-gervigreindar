@@ -1,0 +1,82 @@
+---
+/**
+ * The marks beside the claims in "Hvað er gervigreindarfullveldi?" (used by FvCard, not in the editor on its own).
+ *
+ * rings:  three rings that overlap only partly (staðsetning · aðgangur · stjórn):
+ *         having one does not give you the next. `highlight` fills one ring (1–3)
+ *         and outlines the next, as beside the claims.
+ * nested: a small box inside a larger one, a contract inside the law.
+ */
+interface Props {
+  kind: 'rings' | 'nested';
+  /** Which ring to fill (rings only) */
+  highlight?: 0 | 1 | 2 | 3;
+  class?: string;
+}
+
+const { kind, highlight = 0, class: className } = Astro.props;
+const rings = [14, 36, 58];
+const ringClass = (i: number) => {
+  if (!highlight) return 'ring';
+  if (i === highlight) return 'ring on';
+  if (i === highlight + 1) return 'ring next';
+  return 'ring faint';
+};
+---
+
+{
+  kind === 'rings' ? (
+    <svg class:list={['mark', className]} viewBox="0 0 72 28" aria-hidden="true" focusable="false">
+      {rings.map((cx, i) => (
+        <circle class={ringClass(i + 1)} cx={cx} cy="14" r="12.5" />
+      ))}
+    </svg>
+  ) : (
+    <svg class:list={['mark', className]} viewBox="0 0 40 28" aria-hidden="true" focusable="false">
+      <rect class="outer" x="1.5" y="1.5" width="37" height="25" rx="3" />
+      <rect class="inner" x="11" y="8" width="18" height="12" rx="2" />
+    </svg>
+  )
+}
+
+<style>
+  .mark {
+    display: block;
+    overflow: visible;
+  }
+
+  /* Lines keep the same weight at any size, so the small and large marks match */
+  .mark :is(circle, rect) {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ring {
+    fill: none;
+    stroke: var(--cat-text);
+    stroke-width: 1.5px;
+  }
+
+  .ring.on {
+    fill: color-mix(in srgb, var(--cat-base) 55%, transparent);
+  }
+
+  .ring.next {
+    stroke-dasharray: 3 2.5;
+  }
+
+  .ring.faint {
+    opacity: 0.3;
+  }
+
+  .outer {
+    fill: color-mix(in srgb, var(--cat-base) 30%, transparent);
+    stroke: var(--cat-text);
+    stroke-width: 1.5px;
+  }
+
+  .inner {
+    fill: var(--color-bg);
+    stroke: var(--cat-text);
+    stroke-width: 1.5px;
+  }
+</style>

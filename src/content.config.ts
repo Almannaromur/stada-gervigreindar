@@ -8,7 +8,7 @@ const authors = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
-      role: z.string(),
+      role: z.string().default(''),
       image: image().optional(),
     }),
 });

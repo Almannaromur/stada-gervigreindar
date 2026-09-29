@@ -1,0 +1,109 @@
+---
+/**
+ * A frame around other content, labelled, with a short text along each of its four
+ * edges (top, right, bottom, left). For "Hvað er gervigreindarfullveldi?" (version B):
+ * the fourth criterion as the frame around the other three.
+ *
+ * <FvFrame label="Vernda samfélagslegt svigrúm" edges="gagnsæi, skýringar og endurmat, ábyrgð sem færist ekki, þekking til að meta">
+ *   <Columns columns="3">…</Columns>
+ * </FvFrame>
+ */
+interface Props {
+  label: string;
+  /** Four texts, comma separated: top, right, bottom, left */
+  edges?: string;
+}
+
+const { label, edges = '' } = Astro.props;
+const [top, right, bottom, left] = edges.split(',').map((s) => s.trim());
+---
+
+<figure class="frame">
+  <p class="label">{label}</p>
+  <div class="box">
+    {top && <span class="edge top">{top}</span>}
+    {right && <span class="edge right">{right}</span>}
+    {bottom && <span class="edge bottom">{bottom}</span>}
+    {left && <span class="edge left">{left}</span>}
+    <div class="inside"><slot /></div>
+  </div>
+</figure>
+
+<style>
+  .frame {
+    margin-inline: 0;
+  }
+
+  .label {
+    margin: 0 0 1.25rem;
+    font-family: var(--font-serif);
+    font-size: var(--h5);
+    font-weight: 500;
+    line-height: 1.32;
+    text-align: center;
+  }
+
+  .box {
+    position: relative;
+    padding: 2.5rem 2.75rem;
+    border: 2px solid var(--cat-base);
+    border-radius: var(--radius-lg);
+  }
+
+  /* The frame's four elements sit on its edges, cutting the line */
+  .edge {
+    position: absolute;
+    padding: 0.15rem 0.625rem;
+    background: var(--color-bg);
+    color: var(--cat-text);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .top,
+  .bottom {
+    left: 50%;
+  }
+
+  .top {
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  .bottom {
+    bottom: 0;
+    transform: translate(-50%, 50%);
+  }
+
+  .left,
+  .right {
+    top: 50%;
+    writing-mode: vertical-rl;
+  }
+
+  .right {
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+  .left {
+    left: 0;
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  .inside > :global(*) {
+    margin: 0;
+  }
+
+  .inside > :global(* + *) {
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 30rem) {
+    .box {
+      padding: 2.25rem 1.75rem;
+    }
+  }
+</style>

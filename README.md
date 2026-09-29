@@ -44,6 +44,7 @@ Go to **stadagervigreindar.is/ritstjori** (or `/admin`; both lead to `/keystatic
 | Smáletur | Small grey text, e.g. a disclaimer |
 | Fellikassi | A box that opens on click, for supplementary material or a long list. A numbered list inside gets large numerals |
 | Sjá einnig | "Sjá einnig:" with a link to another article or a category |
+| Stoðir og þverlæg skilyrði | Diagram: pillars (e.g. Gögn, Færni, Reiknigeta) with layers running across them (e.g. Hýsing, Líkön, …). Both lists comma separated |
 | Einkunn | Coloured score badge (1 red → 5 green) |
 | Einkunnatafla | Company/product table; the data is edited under *Einkunnatöflur* |
 | Sjálfsmat (EU AI Act) | The interactive self-assessment. Its questions are changed in `src/data/sjalfsmat.ts`; it is also a page of its own, /sjalfsmat |
@@ -53,7 +54,7 @@ Icons for *Kassi* come from [Phosphor Icons](https://phosphoricons.com) (the bra
 
 **Related articles:** pick them under *Tengdar greinar* at the side of the article; they appear under "Tengt efni" after the text (drafts appear once they are published).
 
-**Sources:** add them in the *Heimildir* list (text + link) at the side of the article. Then, where the text should cite one, insert **Tilvísun í heimild** with its number in the list (first = 1). The sources appear as "Heimildaskrá" at the end of the article. `*Title*` in a source makes it italic.
+**Sources:** add them in the *Heimildir* list (text + link) at the side of the article. Then, where the text should cite one, insert **Tilvísun í heimild** with its number in the list (first = 1). The sources appear as "Heimildaskrá" at the end of the article. `*Title*` in a source makes it italic. A source can cite several pages: leave *Slóð* empty and put the web addresses in the text, where they become links.
 
 **Don't** change an article's *Slóð* (address) after it has been published: links to it would break.
 

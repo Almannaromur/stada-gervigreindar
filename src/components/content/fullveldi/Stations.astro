@@ -1,0 +1,270 @@
+---
+/**
+ * The frame the article runs on: four stations on one line, and a fifth, dashed,
+ * outside the scale. Used twice: bare, and filled in with what is known about
+ * Iceland at each station (an epistemic state, not a score).
+ */
+interface Props {
+  status?: boolean;
+}
+
+const { status = false } = Astro.props;
+
+type State = 'full' | 'half' | 'none';
+const stations: { q: string; state: State; note: string }[] = [
+  {
+    q: 'Vitum við hvað við notum?',
+    state: 'half',
+    note: 'Kerfi og veitendur kortlögð að hluta; heildarmynd af samningum og kostnaði við að skipta vantar.',
+  },
+  {
+    q: 'Höfum við valið meðvitað?',
+    state: 'none',
+    note: 'Engin sameiginleg mæling á getu stofnana til að meta kerfi og semja við birgja.',
+  },
+  {
+    q: 'Höfum við sett skilyrði?',
+    state: 'half',
+    note: 'Skilyrði sett um suma þætti; enginn einn rammi nær til allra nýrra verkefna ríkisins.',
+  },
+  {
+    q: 'Getum við skipt?',
+    state: 'half',
+    note: 'Að hluta ljóst; kostnaður og tími við að skipta um þá stærstu liggja ekki fyrir.',
+  },
+];
+const stateLabel: Record<State, string> = { full: 'Liggur fyrir', half: 'Að hluta', none: 'Liggur ekki fyrir' };
+---
+
+<figure class:list={['stations', { status }]}>
+  <p class="title">{status ? 'Hvar stendur Ísland — hvað liggur fyrir' : 'Fjögur þrep — og eitt utan kvarða'}</p>
+  <ol class="track">
+    {
+      stations.map((s) => (
+        <li class="station">
+          <span class="dot" aria-hidden="true" />
+          <span class="q">{s.q}</span>
+          {status && (
+            <span class="state">
+              <span class:list={['sym', s.state]} aria-hidden="true" />
+              <span class="visually-hidden">{stateLabel[s.state]}: </span>
+              <span class="note">{s.note}</span>
+            </span>
+          )}
+        </li>
+      ))
+    }
+    <li class="station outside">
+      <span class="dot" aria-hidden="true" />
+      <span class="q">Þróa og reka allt sjálft</span>
+      <span class="sub">utan kvarða</span>
+    </li>
+  </ol>
+  <figcaption>
+    {
+      status ? (
+        <span class="legend" aria-hidden="true">
+          {(['full', 'half', 'none'] as State[]).map((s) => (
+            <span class="key">
+              <span class:list={['sym', s]} />
+              {stateLabel[s].toLowerCase()}
+            </span>
+          ))}
+        </span>
+      ) : (
+        'Sama samfélag getur staðið á ólíkum stöðum eftir sviðum.'
+      )
+    }
+  </figcaption>
+</figure>
+
+<style>
+  .stations {
+    margin-inline: 0;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .title {
+    margin: 0 0 1.75rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .track {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 0.75fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .station {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    margin: 0; /* no list spacing from the article */
+    align-content: start;
+    justify-items: center;
+    padding: 0 0.375rem;
+    text-align: center;
+  }
+
+  .dot {
+    position: relative;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    margin-bottom: 0.875rem;
+    border-radius: 50%;
+    background: var(--cat-text);
+    box-shadow: 0 0 0 4px var(--color-surface);
+  }
+
+  /* The line to the next station: solid along the scale, dashed to the one outside it */
+  .station:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: calc(0.5rem - 1px);
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--cat-text);
+  }
+
+  .station:nth-last-child(2)::after {
+    background: repeating-linear-gradient(90deg, var(--color-text-muted) 0 6px, transparent 6px 11px);
+  }
+
+  .outside .dot {
+    border: 2px dashed var(--color-text-muted);
+    background: var(--color-surface);
+  }
+
+  .q {
+    font-size: var(--body-sm);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .outside .q,
+  .sub {
+    color: var(--color-text-muted);
+  }
+
+  .sub {
+    margin-top: 0.2rem;
+    font-size: var(--body-xs);
+    font-style: italic;
+  }
+
+  .state {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    margin-top: 0.875rem;
+  }
+
+  .note {
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    line-height: 1.45;
+  }
+
+  /* ● liggur fyrir  ◐ að hluta  ○ liggur ekki fyrir */
+  .sym {
+    display: inline-block;
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 1.5px solid var(--cat-text);
+    border-radius: 50%;
+  }
+
+  .sym.full {
+    background: var(--cat-text);
+  }
+
+  .sym.half {
+    background: linear-gradient(90deg, var(--cat-text) 50%, transparent 50%);
+  }
+
+  figcaption {
+    margin-top: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    line-height: 1.5;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  /* Phones: the line runs downwards */
+  @media (max-width: 40rem) {
+    .stations {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .track {
+      grid-template-columns: 1fr;
+    }
+
+    .station {
+      grid-template-columns: 1rem minmax(0, 1fr);
+      column-gap: 1rem;
+      justify-items: start;
+      padding: 0 0 1.5rem;
+      text-align: left;
+    }
+
+    .station:last-child {
+      padding-bottom: 0;
+    }
+
+    .dot {
+      grid-row: 1 / span 3;
+      margin: 0.15rem 0 0;
+    }
+
+    .station > :not(.dot) {
+      grid-column: 2;
+    }
+
+    .station:not(:last-child)::after {
+      top: 0.5rem;
+      left: calc(0.5rem - 1px);
+      width: 2px;
+      height: 100%;
+    }
+
+    .station:nth-last-child(2)::after {
+      background: repeating-linear-gradient(180deg, var(--color-text-muted) 0 6px, transparent 6px 11px);
+    }
+
+    .state {
+      justify-items: start;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .state .sym {
+      margin-top: 0.15rem;
+    }
+  }
+</style>
