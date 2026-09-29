@@ -1,28 +1,33 @@
 ---
 /**
  * A typographic card for "Hvað er gervigreindarfullveldi?" (version B): a serif
- * title under a rule, with the article's recurring mark beside it (the three
- * claims) or a small label above it (the country cases).
+ * title under a rule, with a mark (the three claims) or an icon (the country
+ * cases) in a column beside it, and optionally a small label above the title.
  *
  * <FvCard title="Staðsetning er ekki það sama og aðgangur" mark="stadsetning">…</FvCard>
- * <FvCard title="Eistland tryggir samfellu" kicker="Eistland">…</FvCard>
+ * <FvCard title="Eistland tryggir samfellu" kicker="Eistland" icon="shield-check">…</FvCard>
  */
 import FvMark from './FvMark.astro';
+import { boxIcons, type BoxIcon } from '@/lib/icons';
 
 interface Props {
   title: string;
   /** Small label above the title */
   kicker?: string;
   mark?: '' | 'stadsetning' | 'adgangur' | 'samningur';
+  /** Icon in the side column (src/lib/icons.ts), when there is no mark */
+  icon?: BoxIcon | '';
 }
 
-const { title, kicker, mark = '' } = Astro.props;
+const { title, kicker, mark = '', icon = '' } = Astro.props;
+const iconSvg = !mark && icon ? boxIcons[icon as BoxIcon]?.svg : undefined;
 ---
 
-<section class:list={['card', { 'has-mark': mark }]}>
+<section class:list={['card', { 'has-mark': mark || iconSvg }]}>
   {mark === 'stadsetning' && <FvMark kind="rings" highlight={1} class="card-mark" />}
   {mark === 'adgangur' && <FvMark kind="rings" highlight={2} class="card-mark" />}
   {mark === 'samningur' && <FvMark kind="nested" class="card-mark" />}
+  {iconSvg && <svg class="card-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />}
   <div class="content">
     {kicker && <p class="kicker">{kicker}</p>}
     <h3 class="title">{title}</h3>
@@ -45,6 +50,12 @@ const { title, kicker, mark = '' } = Astro.props;
   .card :global(.card-mark) {
     width: 4rem;
     margin-top: 0.3rem;
+  }
+
+  .card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--cat-text);
   }
 
   .kicker {
@@ -90,6 +101,11 @@ const { title, kicker, mark = '' } = Astro.props;
 
     .card :global(.card-mark) {
       width: 2.75rem;
+    }
+
+    .card-icon {
+      width: 2rem;
+      height: 2rem;
     }
   }
 </style>

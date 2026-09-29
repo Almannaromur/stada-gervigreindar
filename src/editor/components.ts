@@ -348,6 +348,12 @@ export const components = {
         ],
         defaultValue: '',
       }),
+      icon: fields.select({
+        label: 'Tákn',
+        description: 'Valfrjálst, ef ekkert merki er valið. Birtist í sama dálki og merkin.',
+        options: [{ label: 'Ekkert', value: '' }, ...Object.entries(boxIcons).map(([value, { label }]) => ({ label, value }))],
+        defaultValue: '',
+      }),
     },
   }),
 
