@@ -10,15 +10,25 @@ import { getEntry } from 'astro:content';
 import Rating from './Rating.astro';
 
 interface Props {
-  source: string;
+  source?: string;
 }
 
-const entry = await getEntry('einkunnir', Astro.props.source);
-if (!entry) throw new Error(`Einkunnatafla fannst ekki: "${Astro.props.source}"`);
-const data = entry.data.companies;
+const { source } = Astro.props;
+const entry = source ? await getEntry('einkunnir', source) : undefined;
+// A draft shows a notice (the editor may not have picked a table yet); a published article fails the build
+if (!entry && !Astro.locals.articleDraft) throw new Error(`Einkunnatafla fannst ekki: "${source ?? ''}" (grein: ${Astro.locals.articleId ?? '?'})`);
+const data = entry?.data.companies ?? [];
 ---
 
-<div class="solutions">
+{
+  !entry ? (
+    <p class="missing" role="note">
+      Einkunnatafla: {source ? `taflan „${source}“ fannst ekki` : 'engin tafla valin'}. Veljið töflu í ritstjóranum (sést aðeins í drögum).
+    </p>
+  ) : null
+}
+
+<div class="solutions" hidden={!entry}>
   {
     data.map(({ company, logo, items }) => (
       <details>
@@ -58,6 +68,18 @@ const data = entry.data.companies;
 </div>
 
 <style>
+  .missing {
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius);
+    background: #ffca58;
+    font-size: var(--body-xs);
+    font-weight: 600;
+  }
+
+  .solutions[hidden] {
+    display: none;
+  }
+
   .solutions {
     display: flex;
     flex-direction: column;

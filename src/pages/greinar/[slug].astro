@@ -35,6 +35,7 @@ const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
 const sourceHtml = (s: string) => escapeHtml(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
 // Lets content components find images stored next to this article
 Astro.locals.articleId = article.id;
+Astro.locals.articleDraft = article.data.draft;
 ---
 
 <BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
