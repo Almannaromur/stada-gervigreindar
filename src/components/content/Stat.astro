@@ -1,8 +1,39 @@
 ---
-/** A key figure, usually inside a Callout or Box: <Stat>25% aukning VLF</Stat> */
+/**
+ * A key figure.
+ *
+ * <Stat>25% aukning VLF</Stat>   inside a Callout or Box: the whole text in large type
+ *
+ * On its own, with the figure large and the explanation beside it:
+ * <Stat value="2.079" note="Gagnagrunnur Damiens Charlotin, staðan 27. september 2026.">
+ *   dómsúrlausnir um allan heim þar sem tilbúið efni úr gervigreind hefur komið við sögu
+ * </Stat>
+ */
+interface Props {
+  /** The figure, shown large */
+  value?: string;
+  /** Source or explanation, in small type under the text */
+  note?: string;
+}
+
+const { value, note } = Astro.props;
 ---
 
-<div class="stat"><slot /></div>
+{
+  value ? (
+    <div class="stat figure">
+      <p class="value">{value}</p>
+      <div class="label">
+        <slot />
+        {note && <p class="note">{note}</p>}
+      </div>
+    </div>
+  ) : (
+    <div class="stat">
+      <slot />
+    </div>
+  )
+}
 
 <style>
   /* Spacing comes from the surrounding box or article */
@@ -16,5 +47,46 @@
 
   .stat :global(p) {
     margin: 0;
+  }
+
+  /* With a figure: a box of its own */
+  .figure {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.5rem 1.75rem;
+    padding: 1.75rem 2rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    font-family: var(--font-sans);
+    font-size: var(--body-sm);
+    letter-spacing: 0;
+  }
+
+  .value {
+    color: var(--cat-text);
+    font-family: var(--font-serif);
+    font-size: clamp(2.75rem, 2rem + 2.5vw, 3.75rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .label {
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .label .note {
+    margin-top: 0.35rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+  }
+
+  @media (max-width: 30rem) {
+    .figure {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

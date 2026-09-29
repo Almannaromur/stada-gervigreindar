@@ -56,6 +56,11 @@ export default config({
             itemLabel: (props) => props.fields.texti.value || 'Ný heimild',
           },
         ),
+        tengt: fields.array(fields.relationship({ label: 'Grein', collection: 'greinar', validation: { isRequired: true } }), {
+          label: 'Tengdar greinar',
+          description: 'Birtast neðst undir „Tengt efni“. Greinar í drögum birtast þegar þær eru birtar.',
+          itemLabel: (props) => props.value ?? 'Veldu grein',
+        }),
         content: fields.mdx({
           label: 'Texti',
           components,

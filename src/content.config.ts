@@ -54,6 +54,8 @@ const greinar = defineCollection({
         }),
       )
       .default([]),
+    /** Related articles, shown under "Tengt efni" after the article */
+    tengt: z.array(reference('greinar')).default([]),
   }),
 });
 

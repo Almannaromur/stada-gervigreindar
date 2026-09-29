@@ -1,0 +1,70 @@
+---
+/**
+ * "Sjá einnig:" with a link to another article or a category.
+ *
+ * <SeeAlso article="virdi-logfraedinga" />
+ * <SeeAlso category="gervigreindarfullveldi" label="Umfjöllun um fullveldisgervigreind" />
+ *
+ * Links never break the build: a link to a draft only shows while this article is
+ * also a draft (it appears once the target is published), and a missing target
+ * shows a notice in drafts and is left out of published articles.
+ */
+import { getEntry } from 'astro:content';
+import { articleUrl, categoryUrl } from '@/lib/content';
+
+interface Props {
+  article?: string;
+  category?: string;
+  /** Link text; the article's title or the category's name if empty */
+  label?: string;
+}
+
+const { article, category, label } = Astro.props;
+const draft = Astro.locals.articleDraft ?? false;
+async function findTarget(): Promise<{ href: string; name: string } | undefined> {
+  if (article) {
+    const entry = await getEntry('greinar', article);
+    if (entry && (!entry.data.draft || draft)) return { href: articleUrl(entry), name: entry.data.title };
+  } else if (category) {
+    const entry = await getEntry('flokkar', category);
+    if (entry) return { href: categoryUrl(entry), name: entry.data.name };
+  }
+  return undefined;
+}
+const target = await findTarget();
+const missing = !target;
+if (missing && !draft) console.warn(`Sjá einnig: tengill á „${article ?? category ?? ''}“ sleppt (grein: ${Astro.locals.articleId ?? '?'})`);
+---
+
+{
+  target ? (
+    <p class="see-also">
+      <span class="lead-in">Sjá einnig:</span> <a href={target.href}>{label || target.name}</a>
+    </p>
+  ) : (
+    draft && (
+      <p class="missing" role="note">
+        Sjá einnig: {article || category ? `„${article ?? category}“ fannst ekki` : 'engin grein eða flokkur valinn'}. (Sést aðeins í drögum.)
+      </p>
+    )
+  )
+}
+
+<style>
+  .see-also {
+    font-size: var(--body-sm);
+    font-weight: 600;
+  }
+
+  .lead-in {
+    color: var(--color-text-muted);
+  }
+
+  .missing {
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius);
+    background: #ffca58;
+    font-size: var(--body-xs);
+    font-weight: 600;
+  }
+</style>

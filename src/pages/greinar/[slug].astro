@@ -1,5 +1,5 @@
 ---
-import { render } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import '@/styles/prose.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ArticlePanel from '@/components/ArticlePanel.astro';
@@ -36,6 +36,17 @@ const sourceHtml = (s: string) => escapeHtml(s).replace(/\*([^*]+)\*/g, '<em>$1<
 // Lets content components find images stored next to this article
 Astro.locals.articleId = article.id;
 Astro.locals.articleDraft = article.data.draft;
+// Related articles ("Tengt efni"): missing ones, the article itself and drafts are left out
+// (drafts are shown when this article is a draft too, for preview)
+const related = (
+  await Promise.all(
+    article.data.tengt.map(async (ref) => {
+      const entry = await getEntry(ref);
+      if (!entry || entry.id === article.id || (entry.data.draft && !draft)) return undefined;
+      return { article: entry, category: await getCategory(entry) };
+    }),
+  )
+).filter((item) => item !== undefined);
 ---
 
 <BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
@@ -75,6 +86,14 @@ Astro.locals.articleDraft = article.data.draft;
     </article>
 
     {
+      related.length > 0 && (
+        <div class="related">
+          <ArticlePanel title="Tengt efni" items={related} />
+        </div>
+      )
+    }
+
+    {
       next && nextCategory && (
         <div class="next-article">
           <ArticlePanel title="Næsta grein" items={[{ article: next, category: nextCategory }]} />
@@ -102,6 +121,7 @@ Astro.locals.articleDraft = article.data.draft;
   }
 
   .article,
+  .related,
   .next-article {
     grid-column: 2;
   }
@@ -160,10 +180,18 @@ Astro.locals.articleDraft = article.data.draft;
     font-size: var(--h1);
   }
 
+  .related,
   .next-article {
     margin-top: 3rem;
     padding-top: 3rem;
     border-top: 1px solid var(--color-line-soft);
+  }
+
+  /* "Næsta grein" right after "Tengt efni": one section, no second rule */
+  .related + .next-article {
+    margin-top: 1.5rem;
+    padding-top: 0;
+    border-top: 0;
   }
 
   .category-cta {
@@ -177,6 +205,7 @@ Astro.locals.articleDraft = article.data.draft;
 
     .back,
     .article,
+    .related,
     .next-article {
       grid-column: 1;
       grid-row: auto;

@@ -36,8 +36,13 @@ export const components = {
       rating: fields.integer({ label: 'Íslenskustuðningur (1–5)', description: 'Valfrjálst', validation: { min: 1, max: 5 } }),
       icon: fields.select({
         label: 'Tákn',
-        description: 'Valfrjálst. Birtist við hlið titilsins. Fleiri tákn má bæta við í src/lib/icons.ts.',
-        options: [{ label: 'Ekkert', value: '' }, ...Object.entries(boxIcons).map(([value, { label }]) => ({ label, value }))],
+        description:
+          'Valfrjálst. Birtist við hlið titilsins. „Númer“ tölusetur kassa sem koma hver á eftir öðrum (1, 2, 3…) sjálfkrafa. Fleiri tákn má bæta við í src/lib/icons.ts.',
+        options: [
+          { label: 'Ekkert', value: '' },
+          { label: 'Númer (1, 2, 3…)', value: 'number' },
+          ...Object.entries(boxIcons).map(([value, { label }]) => ({ label, value })),
+        ],
         defaultValue: '',
       }),
       chip: fields.text({ label: 'Merki', description: 'Valfrjálst. Lítill miði, t.d. dagsetning eða staða („Í vinnslu“).' }),
@@ -84,8 +89,12 @@ export const components = {
 
   Stat: wrapper({
     label: 'Lykiltala',
-    description: 'Stór tala eða staðreynd, oftast inni í kassa.',
-    schema: {},
+    description:
+      'Stór tala eða staðreynd. Inni í kassa: skrifið allan textann í reitinn. Ein og sér: setjið töluna í „Tala“ og skýringuna í reitinn; þá fær hún eigin kassa.',
+    schema: {
+      value: fields.text({ label: 'Tala', description: 'Valfrjálst. Birtist stór, t.d. 2.079' }),
+      note: fields.text({ label: 'Heimild eða skýring', description: 'Valfrjálst. Smátt letur undir textanum' }),
+    },
   }),
 
   PullQuote: wrapper({
@@ -96,9 +105,9 @@ export const components = {
 
   Quote: wrapper({
     label: 'Tilvitnun',
-    description: 'Tilvitnun í nafngreindan einstakling, með mynd.',
+    description: 'Tilvitnun í nafngreindan einstakling, með eða án myndar.',
     schema: {
-      name: fields.text({ label: 'Nafn', validation: { length: { min: 1 } } }),
+      name: fields.text({ label: 'Nafn', description: 'Valfrjálst ef ljóst er af samhenginu hver talar' }),
       role: fields.text({ label: 'Starfsheiti' }),
       image: articleImage('Mynd af viðkomandi'),
     },
@@ -185,10 +194,19 @@ export const components = {
 
   Columns: repeating({
     label: 'Dálkar',
-    description: 'Kassar hlið við hlið: tveir dálkar, einn í síma. Bætið við kassa með „Insert“.',
+    description: 'Kassar hlið við hlið: tveir eða þrír dálkar, einn í síma. Bætið við kassa með „Insert“.',
     children: ['Box'],
     validation: { children: { min: 2 } },
-    schema: {},
+    schema: {
+      columns: fields.select({
+        label: 'Fjöldi dálka',
+        options: [
+          { label: '2 dálkar', value: '2' },
+          { label: '3 dálkar', value: '3' },
+        ],
+        defaultValue: '2',
+      }),
+    },
   }),
 
   BarChart: repeating({
@@ -250,6 +268,26 @@ export const components = {
         description: 'Valfrjálst. Texti milli ~~ ~~ er yfirstrikaður, t.d. Átti að gilda frá ~~2. ágúst 2026~~.',
         multiline: true,
       }),
+    },
+  }),
+
+  Collapsible: wrapper({
+    label: 'Fellikassi',
+    description:
+      'Kassi sem opnast við smell, t.d. fyrir aukaefni eða langan lista. Tölusettur listi inni í honum fær stórar tölur; skáletur strax á eftir feitletruðu heiti birtist smátt og grátt.',
+    schema: {
+      label: fields.text({ label: 'Merkimiði', description: 'Smátt fyrir ofan titilinn', defaultValue: 'Aukaefni' }),
+      title: fields.text({ label: 'Titill', validation: { length: { min: 1 } } }),
+    },
+  }),
+
+  SeeAlso: block({
+    label: 'Sjá einnig',
+    description: 'Tengill á aðra grein eða flokk. Veljið annað hvort. Tengill á grein í drögum birtist þegar hún er birt.',
+    schema: {
+      article: fields.relationship({ label: 'Grein', collection: 'greinar' }),
+      category: fields.relationship({ label: 'Eða flokkur', collection: 'flokkar' }),
+      label: fields.text({ label: 'Texti tengils', description: 'Valfrjálst. Annars titill greinarinnar eða heiti flokksins' }),
     },
   }),
 

@@ -3,12 +3,13 @@
  * A quote from a named person, with portrait.
  *
  * <Quote name="Jón Jónsson" role="Framkvæmdastjóri" image="jon-jonsson.png">…</Quote>
+ * <Quote>…</Quote>   without a name, when it's clear from the text who is speaking
  */
 import { Image } from 'astro:assets';
 import { resolveImage } from '@/lib/images';
 
 interface Props {
-  name: string;
+  name?: string;
   role?: string;
   /** File next to the article, e.g. "jon-jonsson.png" */
   image?: string;
@@ -20,13 +21,17 @@ const portrait = image ? resolveImage(image, Astro.locals.articleId) : undefined
 
 <figure class="quote">
   <blockquote><slot /></blockquote>
-  <figcaption>
-    {portrait && (typeof portrait === 'string' ? <img src={portrait} alt="" class="portrait" /> : <Image src={portrait} alt="" width={96} height={96} class="portrait" />)}
-    <span>
-      <span class="name">{name}</span>
-      {role && <span class="role">{role}</span>}
-    </span>
-  </figcaption>
+  {
+    name && (
+      <figcaption>
+        {portrait && (typeof portrait === 'string' ? <img src={portrait} alt="" class="portrait" /> : <Image src={portrait} alt="" width={96} height={96} class="portrait" />)}
+        <span>
+          <span class="name">{name}</span>
+          {role && <span class="role">{role}</span>}
+        </span>
+      </figcaption>
+    )
+  }
 </figure>
 
 <style>

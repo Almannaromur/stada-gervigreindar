@@ -10,8 +10,10 @@
  * <Box title="Andlitsgreiningar" icon="user-focus">…</Box>           icon next to the title (src/lib/icons.ts)
  * <Box title="Frumvarp á Alþingi" chip="Haust 2027">…</Box>          small label above the title
  * <Box title="Bönnuð notkun" tone="red" chip="Tók gildi 2025">…</Box> coloured header (red, orange, yellow, green)
+ * <Box title="Gagnaöryggi" icon="number">…</Box>                     numbered: consecutive numbered boxes count 1, 2, 3…
  *
- * Boxes that follow each other are stacked closely as a group.
+ * Plain boxes of the same colour that follow each other stack closely as a group
+ * (a list of options); other boxes that follow each other keep a normal gap.
  */
 import Rating from './Rating.astro';
 import { resolveImage } from '@/lib/images';
@@ -30,8 +32,8 @@ interface Props {
   /** Icelandic-support score shown top right */
   rating?: number;
   ratingLabel?: string;
-  /** Icon next to the title */
-  icon?: BoxIcon;
+  /** Icon next to the title, or "number" to number the box */
+  icon?: BoxIcon | 'number' | '';
   /** Small label, e.g. a date or a status */
   chip?: string;
   tone?: 'tint' | 'neutral' | 'outline' | (typeof headerTones)[number];
@@ -43,12 +45,16 @@ const { title, href, logo, logoAlt = '', rating, ratingLabel = 'Íslenskustuðni
 const Heading = `h${Number(level)}` as 'h3' | 'h4';
 const logoImage = logo ? resolveImage(logo, Astro.locals.articleId) : undefined;
 const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
-const iconSvg = icon ? boxIcons[icon]?.svg : undefined;
 const headerTone = headerTones.find((t) => t === tone);
+const numbered = icon === 'number' && !headerTone;
+const iconSvg = icon && icon !== 'number' ? boxIcons[icon]?.svg : undefined;
 const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : undefined;
+// Plain boxes (no header, icon or number) stack closely with others of the same colour
+const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
 ---
 
-<section class:list={['box', headerTone ? 'has-head' : tone]} style={style}>
+<section class:list={['box', headerTone ? 'has-head' : tone, { numbered, plain }]} style={style}>
+  {numbered && <span class="number" />}
   {
     headerTone ? (
       <header class="head">
@@ -191,12 +197,51 @@ const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : undefined
     text-decoration: underline;
   }
 
+  /* Numbered: a large numeral beside the content, counted by CSS (see the reset below) */
+  .numbered {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    column-gap: 1rem;
+    counter-increment: box-number;
+  }
+
+  .numbered > :global(*) {
+    grid-column: 2;
+  }
+
+  .numbered > .number {
+    grid-column: 1;
+    grid-row: 1 / span 9;
+  }
+
+  .number::before {
+    content: counter(box-number);
+    display: block;
+    color: var(--cat-text);
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  /* Any other element in the article starts a new run of numbers, so consecutive
+     numbered boxes count 1, 2, 3… and restart after text or other components */
+  :global(.prose > :not(.numbered)),
+  :global(.columns) {
+    counter-reset: box-number;
+  }
+
   .body {
     font-size: 0.9em;
+    line-height: 1.5;
   }
 
   .body > :global(*) {
     margin: 0;
+  }
+
+  .body :global(li + li) {
+    margin-top: 0.4em;
   }
 
   .body > :global(* + *) {
@@ -216,8 +261,14 @@ const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : undefined
     margin-top: 0.25em;
   }
 
-  /* Stacked group */
-  :global(.box + .box) {
+  /* Boxes that follow each other in the text: a normal gap… (in Dálkar, the grid spaces them) */
+  :global(.prose > .box + .box) {
+    margin-top: 1rem !important;
+  }
+
+  /* …except plain boxes of the same colour, which stack closely as a group */
+  :global(.prose > .box.plain.tint + .box.plain.tint),
+  :global(.prose > .box.plain.neutral + .box.plain.neutral) {
     margin-top: var(--gap-tight) !important;
   }
 </style>

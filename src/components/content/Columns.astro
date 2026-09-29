@@ -1,34 +1,54 @@
 ---
 /**
- * Boxes side by side: two columns on wide screens, one on phones.
+ * Boxes side by side: two (or three) columns on wide screens, one on phones.
  *
  * <Columns>
  *   <Box title="Þróunaraðili">…</Box>
  *   <Box title="Notandi" tone="neutral">…</Box>
  * </Columns>
+ *
+ * <Columns columns="3">…three boxes…</Columns>
  */
+interface Props {
+  /** Boxes per row on wide screens */
+  columns?: 2 | 3 | '2' | '3';
+}
+
+const three = Number(Astro.props.columns) === 3;
 ---
 
-<div class="columns"><slot /></div>
+<div class:list={['columns', { three }]}><slot /></div>
 
 <style>
   .columns {
     display: grid;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   @media (min-width: 40rem) {
     .columns {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
 
-  /* The grid gap spaces the boxes; cancel the stacking rule for boxes in a row */
-  .columns > :global(.box + .box) {
-    margin-top: 0 !important;
+    .columns.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .columns > :global(.box) {
     padding: 1.5rem;
+  }
+
+  /* Three narrow columns: a little less padding, smaller titles and text */
+  .three > :global(.box) {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .three > :global(.box .title) {
+    font-size: var(--body-sm);
+  }
+
+  .three > :global(.box .body) {
+    font-size: 0.85em;
   }
 </style>

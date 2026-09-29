@@ -28,13 +28,13 @@ Go to **stadagervigreindar.is/ritstjori** (or `/admin`; both lead to `/keystatic
 
 | In the menu | What it is |
 |---|---|
-| Kassi | Box for an example, question, scenario or company. Optional title, logo, Icelandic-support score, icon (*Tákn*) and a small label (*Merki*, e.g. a date or status). *Litur*: category colour, grey, outline only (*Rammi*), or a red/orange/yellow/green header (e.g. risk levels; title and label go in the header) |
-| Dálkar | Boxes side by side: two columns, one on phones. Add boxes with *Insert* |
+| Kassi | Box for an example, question, scenario or company. Optional title, logo, Icelandic-support score, icon (*Tákn*) and a small label (*Merki*, e.g. a date or status). *Litur*: category colour, grey, outline only (*Rammi*), or a red/orange/yellow/green header (e.g. risk levels; title and label go in the header). *Tákn → Númer* numbers boxes that follow each other (1, 2, 3…) automatically |
+| Dálkar | Boxes side by side: two or three columns (*Fjöldi dálka*), one on phones. Add boxes with *Insert* |
 | Staðan / Markmið | Box with a "Staðan í dag" or "Markmið" badge, usually holding key figures |
-| Lykiltala | A key figure in large type (inside a box, or on its own) |
+| Lykiltala | A key figure. Inside a box: the whole text in large type. On its own: put the figure in *Tala* (and a source in *Heimild eða skýring*) and it gets a box of its own |
 | Áhersla | A key sentence lifted out of the text |
 | Inngangur | The article's opening paragraph, in larger type |
-| Tilvitnun | A quote from a named person, with or without a photo |
+| Tilvitnun | A quote from a named person, with or without a photo. The name can be left out when it is clear from the text who is speaking |
 | Viðtal | An interview in a box: questions in **bold**, answers as paragraphs |
 | Spurning | An interviewer's question in the running text; the answer follows as ordinary paragraphs |
 | Mynd eða graf | Image with number and caption. Write the caption in the block itself |
@@ -42,12 +42,16 @@ Go to **stadagervigreindar.is/ritstjori** (or `/admin`; both lead to `/keystatic
 | Tímalína | Dated events (*Atburður*) and an optional "Í dag" line between what has happened and what is ahead. Add them with *Insert* |
 | Skref | Numbered steps with large numerals: write an ordinary numbered list, with a bold first line in each item |
 | Smáletur | Small grey text, e.g. a disclaimer |
+| Fellikassi | A box that opens on click, for supplementary material or a long list. A numbered list inside gets large numerals |
+| Sjá einnig | "Sjá einnig:" with a link to another article or a category |
 | Einkunn | Coloured score badge (1 red → 5 green) |
 | Einkunnatafla | Company/product table; the data is edited under *Einkunnatöflur* |
 | Sjálfsmat (EU AI Act) | The interactive self-assessment. Its questions are changed in `src/data/sjalfsmat.ts`; it is also a page of its own, /sjalfsmat |
 | Tilvísun í heimild | Reference number [1], [2] … in the text |
 
 Icons for *Kassi* come from [Phosphor Icons](https://phosphoricons.com) (the brand guide's set); to add one, see `src/lib/icons.ts`.
+
+**Related articles:** pick them under *Tengdar greinar* at the side of the article; they appear under "Tengt efni" after the text (drafts appear once they are published).
 
 **Sources:** add them in the *Heimildir* list (text + link) at the side of the article. Then, where the text should cite one, insert **Tilvísun í heimild** with its number in the list (first = 1). The sources appear as "Heimildaskrá" at the end of the article. `*Title*` in a source makes it italic.
 
