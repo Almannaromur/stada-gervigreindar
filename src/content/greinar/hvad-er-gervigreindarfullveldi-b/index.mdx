@@ -1,0 +1,354 @@
+---
+title: Hvað er gervigreindarfullveldi? (útgáfa B)
+category: gervigreindarfullveldi
+description: >-
+  Þessi grein skýrir hvað gervigreindarfullveldi getur merkt fyrir Ísland, hvers
+  vegna það skiptir máli, á hvaða tækni og þjónustu landið reiðir sig, hvernig
+  önnur ríki nálgast málið og hvar Ísland stendur.
+author: atli-thor-johannsson
+date: 2026-09-29
+draft: true
+heimildir:
+  - texti: >-
+      Logi Einarsson, „Sjálfstæðisbarátta nútímans", Vísir, 25. mars 2026,
+      https://www.visir.is/g/20262860449d/sjalf-staedis-bar-atta-nu-timans;
+      Linda Heimisdóttir og Vilhjálmur Þorsteinsson, „Gervigreind og fullveldi",
+      Vísir, 8. apríl 2026,
+      https://www.visir.is/g/20262866181d/gervi-greind-og-full-veldi; Jón
+      Guðnason o.fl., „Íslenskt mállíkan – fullveldi eða útvistunarsamningur?",
+      Vísir, 13. apríl 2026,
+      https://www.visir.is/g/20262868510d/is-lenskt-mallikan-full-veldi-eda-ut-vistunar-samningur-;
+      Hafsteinn Einarsson, „Við þurfum ekki að kaupa gervigreindarfullveldið að
+      utan", Vísir, 22. júlí 2026,
+      https://www.visir.is/g/20262912397d/vid-thurfum-ekki-ad-kaupa-gervigreindarfullveldid-ad-utan.
+      Um aðgerðaáætlunina og svör ráðherra, sjá 4. og 5. nmgr.
+  - texti: >-
+      Anthropic, „Statement on the US government directive to suspend access to
+      Fable 5 and Mythos 5", 12. júní 2026,
+      https://www.anthropic.com/news/fable-mythos-access.
+  - texti: >-
+      Juan N. Pava, Caroline Meinhardt, Elena Cryst og James A. Landay, „AI
+      Sovereignty's Definitional Dilemma", Stanford Institute for Human-Centered
+      Artificial Intelligence, 17. febrúar 2026,
+      https://hai.stanford.edu/news/ai-sovereigntys-definitional-dilemma.
+  - texti: >-
+      Logi Einarsson, sama heimild; Stjórnarráð Íslands, Aðgerðaáætlun um
+      gervigreind 2025–2027,
+      https://www.stjornarradid.is/library/04-Raduneytin/Menningar---nyskopunar--og-haskolaraduneytid/A%C3%B0ger%C3%B0a%C3%A1%C3%A6tlun%20um%20gervigreind.pdf.
+  - texti: >-
+      Alþingi, níu svör ráðherra við samhljóða fyrirspurnum Þórdísar Kolbrúnar
+      Reykfjörð Gylfadóttur um stafrænt fullveldi Íslands, 157. löggjafarþing
+      2025–2026: þingskjöl 1187, 1283, 1308, 1320, 1339, 1365, 1388, 1480 og
+      1527, https://www.althingi.is/altext/157/s/1187.html,
+      https://www.althingi.is/altext/157/s/1283.html,
+      https://www.althingi.is/altext/157/s/1308.html,
+      https://www.althingi.is/altext/157/s/1320.html,
+      https://www.althingi.is/altext/157/s/1339.html,
+      https://www.althingi.is/altext/157/s/1365.html,
+      https://www.althingi.is/altext/157/s/1388.html,
+      https://www.althingi.is/altext/157/s/1480.html,
+      https://www.althingi.is/altext/157/s/1527.html.
+  - texti: >-
+      Alþingi, þingskjal 1308 — 549. mál á 157. löggjafarþingi, svar menningar-,
+      nýsköpunar- og háskólaráðherra,
+      https://www.althingi.is/altext/157/s/1308.html. Í svarinu er bæði lýst
+      prófun Hljóðbókasafnsins og viðbragðsáætlun um tölvupóst.
+  - texti: >-
+      Evrópuráðið, Framework Convention on Artificial Intelligence and Human
+      Rights, Democracy and the Rule of Law, einkum 5. gr.,
+      https://rm.coe.int/1680afae3c; tilkynning Evrópuráðsins um opnun
+      samningsins til undirritunar og undirritun Íslands, 5. september 2024,
+      https://www.coe.int/en/web/portal/-/council-of-europe-opens-first-ever-global-treaty-on-ai-for-signature.
+  - texti: >-
+      Logi Einarsson, sama heimild, um takmarkaðan aðgang íslenskra verkefna að
+      reiknigetu í landinu; Stjórnarráð Íslands, „1,4 milljarða
+      samstarfsverkefni stóreflir gervigreindarinnviði Íslands", 13. október
+      2025,
+      https://www.stjornarradid.is/raduneyti/utanrikisraduneytid/utanrikisradherra/stok-raeda-utanrikirradherra/2025-10-13--1-4-milljarda-samstarfsverkefni-storeflir-gervigreindarinnvidi-Islands/.
+  - texti: >-
+      Umhverfis- og orkustofnun, Uppsett rafafl og raforkuframleiðsla í
+      virkjunum á Íslandi 2025 (samtals 18,83 TWh),
+      https://vefskrar.orkustofnun.is/Talnaefni/UppsettRafaflOgRaforkuvinnsla2025.xlsx;
+      École Polytechnique, „MGX, Bpifrance, Mistral AI, and NVIDIA Launch Joint
+      Venture to Build Europe's Largest AI Campus in France", 19. maí 2025,
+      https://www.polytechnique.edu/en/press-room/press-releases/mgx-bpifrance-mistral-ai-and-nvidia-launch-joint-venture-build-europes-largest-ai-campus-france.
+      Útreikningur: 1,4 GW × 8.760 klst. ≈ 12,3 TWh; hámark við fulla nýtingu,
+      ekki spá um raunnotkun.
+  - texti: >-
+      Alþingi, þingskjal 1480 — 548. mál á 157. löggjafarþingi, svar
+      atvinnuvegaráðherra, https://www.althingi.is/altext/157/s/1480.html.
+  - texti: >-
+      U.S. Bureau of Industry and Security, Framework for Artificial
+      Intelligence Diffusion, janúar 2025, einkum viðauki 5 við 15 CFR 740,
+      https://public-inspection.federalregister.gov/2025-00636.pdf; tilkynning
+      BIS um afturköllun reglnanna, maí 2025,
+      https://www.bis.gov/sites/default/files/documents/05.07%20Recission%20of%20AI%20Diffusion%20Press%20Release.pdf.
+  - texti: >-
+      U.S. Department of Justice, CLOUD Act Resources,
+      https://www.justice.gov/dag/cloudact.
+  - texti: >-
+      LUMI, LUMI consortium, https://lumi-supercomputer.eu/lumi-consortium/; ETH
+      Zürich, „Apertus: a fully open, transparent, multilingual language model",
+      2. september 2025,
+      https://ethz.ch/en/news-and-events/eth-news/news/2025/09/press-release-apertus-a-fully-open-transparent-multilingual-language-model.html.
+  - texti: >-
+      e-Estonia, Data Embassy,
+      https://e-estonia.com/service/e-governance/data-embassy/.
+  - texti: >-
+      Stafrænt Ísland, Straumurinn (X-Road),
+      https://island.is/s/stafraent-island/straumurinn-x-road; Nordic Institute
+      for Interoperability Solutions, „Iceland joins the Nordic Institute for
+      Interoperability Solutions", 31. maí 2021,
+      https://www.niis.org/news-archive/2021/5/31/iceland-joins-the-nordic-institute-for-interoperability-solutions.
+  - texti: >-
+      Nasjonal kommunikasjonsmyndighet, Datasenterveileder,
+      https://nkom.no/datasenter/datasenterveileder; norska stafræna
+      stjórnsýsluráðuneytið, „Ny datasenterforskrift",
+      https://www.regjeringen.no/no/aktuelt/ny-datasenterforskrift/id3080690/.
+  - texti: >-
+      Microsoft og G42, „Microsoft and G42 announce $1 billion comprehensive
+      digital ecosystem initiative for Kenya", 22. maí 2024,
+      https://news.microsoft.com/source/2024/05/22/microsoft-and-g42-announce-1-billion-comprehensive-digital-ecosystem-initiative-for-kenya/;
+      Business Insider Africa, „Kenya suspends $1 billion Microsoft data centre
+      as energy shortfall raises doubts over Africa's AI ambitions", 6. maí
+      2026,
+      https://africa.businessinsider.com/local/markets/kenya-suspends-dollar1-billion-microsoft-data-centre-as-energy-shortfall-raises/hdtfmxz.
+  - texti: >-
+      Stjórnarráð Íslands, Íslenskan okkar, alls staðar: Áætlun um íslenska
+      máltækni, 2024,
+      https://www.stjornarradid.is/library/04-Raduneytin/Menningar--og-vidskiptaraduneytid/240125%20Menningarraduneytid%20Maltaekniskyrsla%202%20VEFUR%20-%2014.3.2024.pdf;
+      EuroHPC Joint Undertaking, AI Factory Antennas,
+      https://www.eurohpc-ju.europa.eu/ai-factory-antennas_en; Stjórnarráð
+      Íslands, „Ísland stofnaðili nýrrar gervigreindarmiðstöðvar", 24. október
+      2025,
+      https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2025/10/24/Island-stofnadili-nyrrar-gervigreindarmidstodvar/.
+  - texti: >-
+      Atli Þór Jóhannsson, Iceland's Government Agencies Infrastructure,
+      https://digitalmap.atli.io/. Sjálfstæð úttekt byggð á opinberum tækniskrám
+      210 stofnana á skrá Ísland.is (MX-færslur, þjónandi veitendur vefja og
+      nafnaþjónar). Sýnir sýnilegan þjónustuveitanda, ekki geymslustað allra
+      gagna, aðgangsheimildir eða samningsskilmála.
+  - texti: >-
+      Proton AG, Europe's Tech Sovereignty Watch,
+      https://proton.me/business/europe-tech-watch. Nær til skráðra fyrirtækja
+      og telur bæði póst- og póstöryggisþjónustu. Proton selur evrópska valkosti
+      við bandaríska þjónustu; heimildin er notuð fyrir birtar tölur og aðferð,
+      ekki ályktanir fyrirtækisins.
+  - texti: >-
+      Stjórnarráð Íslands, Aðgerðaáætlun um gervigreind 2025–2027, einkum aðgerð
+      16 (sjá 4. nmgr.).
+      https://www.stjornarradid.is/library/04-Raduneytin/Menningar-nyskopunar-og-haskolaraduneytid/A%C3%B0ger%C3%B0a%C3%A1%C3%A6tlun%20um%20gervigreind.pdf.
+      Sjá fyrirvara um hlutverk Almannaróms í upphafi greinar.
+tengt:
+  - stefna-og-adgerdir-islands
+  - islenska-i-erlendum-lausnum
+---
+<Note>
+  Almannarómur er stofnaðili New Nordics AI, kemur að framkvæmd aðgerða í aðgerðaáætlun stjórnvalda um gervigreind og er meðhöfundur Íslensku aðferðarinnar.
+</Note>
+
+<Lead>
+  Á fáeinum árum er gervigreind orðin hluti af mikilvægum innviðum og daglegri starfsemi samfélagsins. Hún er notuð í stjórnsýslu, heilbrigðisþjónustu, menntun, atvinnulífi og upplýsingamiðlun. Þróun og rekstur þeirra er að miklu leyti á hendi fárra fyrirtækja. Flest þeirra eru utan Evrópu og ekkert þeirra er íslenskt. Ísland nýtir því að mestu tækni sem er þróuð og rekin annars staðar. Það er ekki nýtt; við höfum lengi flutt inn tækni og þekkingu með góðum árangri.
+</Lead>
+
+Í þessu samhengi hefur orðið „gervigreindarfullveldi“ rutt sér til rúms um heiminn allan og er rætt jafnt á þjóðþingum, alþjóðaráðstefnum og í fyrirtækjum. Við höfum ekki farið varhluta af því hér á Íslandi. Ráðherrar nota það, aðgerðaáætlun stjórnvalda um gervigreind byggir á því, níu ráðherrar hafa svarað fyrirspurnum á Alþingi um stafrænt fullveldi og í vor og sumar var deilt um það í blaðagreinum um íslenskt mállíkan.<Ref n={1} />
+
+Það leggja ekki endilega allir sama skilning í hvað orðið gervigreindarfullveldi merkir. Sumir þættir þess urðu þó áþreifanlegir í júní þegar bandarísk stjórnvöld, með vísan til þjóðaröryggis, lokuðu fyrir aðgang allra annarra en bandarískra ríkisborgara að tveimur nýjustu gervigreindarlíkönum fyrirtækisins Anthropic. Fyrirtækið lokaði líkönunum fyrir öllum notendum samdægurs, íslenskum sem öðrum, en lýsti sig ósammála ákvörðuninni og sagðist vinna að því að opna aðganginn aftur.<Ref n={2} />
+
+Þessi grein skýrir hvað gervigreindarfullveldi getur merkt fyrir Ísland, hvers vegna það skiptir máli, á hvaða tækni og þjónustu landið reiðir sig, hvernig önnur ríki nálgast málið og hvar Ísland stendur. Hún leggur ekki til eina leið. Hún spyr hvaða getu og valkosti við þurfum til að geta mótað notkun tækninnar á eigin forsendum.
+
+## Hvað er gervigreindarfullveldi og fyrir hvern?
+
+Engin ein viðurkennd skilgreining er til.<Ref n={3} /> Í þessari grein er miðað við eftirfarandi vinnuskilgreiningu:
+
+<Box icon="" chip="Vinnuskilgreining" tone="tint" level="3">
+  <Stat>
+    Gervigreindarfullveldi er geta samfélags til að gera sér grein fyrir því á hvaða tækni það reiðir sig, setja mikilvægri tækni skilyrði og varðveita raunhæfa möguleika á að breyta um leið.
+  </Stat>
+</Box>
+
+Orðið er notað um að minnsta kosti fimm ólíka hluti:
+
+* getu til að þróa og reka tæknina
+* stjórn á gögnum
+* lagalegt vald til að setja tækninni reglur
+* stöðu tungumáls og menningar í kerfunum
+* efnahagslega getu innlendra fyrirtækja til að skapa verðmæti úr henni
+
+Þetta eru skyld atriði en ólík.
+
+Í gögnum stjórnvalda birtast tvær áherslur.
+
+<Columns columns="2">
+  <Box title="Stefna stjórnvalda" icon="" tone="tint" level="3">
+    Í stefnu stjórnvalda er lögð áhersla á að byggja upp innviði til að hýsa og þróa líkön, efla sérfræðiþekkingu og þróa íslenskt mállíkan á heimsmælikvarða.<Ref n={4} />
+  </Box>
+
+  <Box title="Svör ráðuneytanna á Alþingi" icon="" tone="neutral" level="3">
+    Í svörum ráðuneytanna á Alþingi er sjónum fremur beint að kerfum sem þegar eru í notkun: yfirráðum yfir gögnum, öryggi, staðsetningu vinnslu og hættunni á að ríkið verði of háð einum þjónustuaðila.<Ref n={5} />
+  </Box>
+</Columns>
+
+Önnur áherslan snýr að getu sem þarf að byggja upp, hin að stjórn á tækni sem þegar er notuð. Hvorug felur í sér að Ísland þurfi að þróa og reka alla tæknina sjálft. Báðar rúmast innan vinnuskilgreiningarinnar hér að ofan.
+
+Hér er talað um samfélag vegna þess að ákvarðanir um tæknina snerta fleiri en ríkið.
+
+<Columns columns="2">
+  <Box title="Stjórnvöld" icon="bank" tone="tint" level="3">
+    Stjórnvöld þurfa að gæta ákvörðunarvalds, samfellu mikilvægrar þjónustu og þjóðaröryggis.
+  </Box>
+
+  <Box title="Stofnanir" icon="file-text" tone="tint" level="3">
+    Stofnanir þurfa lausnir sem virka og hægt er að skipta út.
+  </Box>
+
+  <Box title="Fyrirtæki" icon="buildings" tone="tint" level="3">
+    Fyrirtæki þurfa valkosti og kjör á við erlenda keppinauta.
+  </Box>
+
+  <Box title="Almenningur" icon="users" tone="tint" level="3">
+    Fyrir almenning skipta réttindi, gagnsæi og þjónusta á íslensku máli.
+  </Box>
+</Columns>
+
+Hagsmunirnir fara oft saman, en ekki alltaf. Ein sameiginleg lausn fyrir stjórnsýsluna getur til dæmis styrkt samningsstöðu ríkisins en þrengt val einstakra stofnana.
+
+<PullQuote>
+  Fullveldi er því ekki allt eða ekkert.
+</PullQuote>
+
+<FvFigure figure="stations" />
+
+Það getur verið óljóst á hvaða kerfum starfsemi samfélagsins byggir, eða kerfin verið kortlögð og notkun þeirra valin meðvitað. Notkuninni geta verið sett skilyrði um gögn, aðgang, verð og lögsögu. Einnig getur verið raunhæft að skipta um kerfi, til dæmis ef gögn eru færanleg, hægt er að skipta um líkön eða hugbúnað eða fleiri en einn birgir kemur til greina. Sama samfélag getur staðið á ólíkum stöðum eftir sviðum.
+
+## Hvers vegna skiptir það máli?
+
+Fullveldi er ekki markmið í sjálfu sér heldur leið til að verja ákveðna hagsmuni. Þörfin fyrir stjórn ræðst af því hvað er í húfi hverju sinni. Þegar samfélagið reiðir sig á gervigreindarkerfi geta áhrifin náð til sex sviða:
+
+* lýðræðislegt ákvörðunarvald
+* réttindi og friðhelgi
+* samfellu mikilvægrar þjónustu
+* íslensku og menningarlega þátttöku
+* samkeppni og valkosti
+* þekkingu og getu innanlands
+
+Þau kalla ekki öll á sömu viðbrögð.
+
+Tvö þeirra sýna breiddina. Samfella snýst um að þjónusta sem samfélagið getur ekki verið án haldi áfram þótt kerfi eða tengingar bregðist, og að hún sé mælanleg. Hljóðbókasafn Íslands prófaði dreifingarkerfi sitt og komst að því að lánþegar ættu að geta hlustað á bækur þótt Ísland yrði sambandslaust við útlönd. Fyrir tölvupóst ráðuneytanna liggur fyrir viðbragðsáætlun í tveimur þrepum: varaleið um gervihnetti, sem er komin í prófanir, og endurreisn póstkerfis úr afritum á Íslandi ef allt samband rofnar.<Ref n={6} /> Lýðræðislegt ákvörðunarvald er annað dæmi. Þegar gervigreind verður viðmót fyrir upplýsingar færist hluti opinberrar umræðu inn í kerfi sem samfélagið rekur ekki sjálft. Rammasamningur Evrópuráðsins um gervigreind, sem Ísland undirritaði í september 2024, skuldbindur aðila til að vernda lýðræðislega ferla og getu og frelsi einstaklinga til að mynda sér skoðanir.<Ref n={7} />
+
+Ekki þarf sömu stjórn á allri tækni. Tvær spurningar hjálpa til við að meta hvert tilvik: Hvað er í húfi ef kerfið bregst eða er misnotað? Og hve erfitt er að skipta?
+
+<FvFigure figure="matrix" />
+
+Þýðingartól fyrir innri vinnu stofnunar skorar lágt á báðum. Kerfi sem undirbýr ákvarðanir um bætur skorar hátt á þeirri fyrri. Sjúkraskrárkerfi skorar hátt á báðum.
+
+Til að meta hvar þörf er á stjórn þarf að vita á hvaða tækni kerfin byggja og hver ræður henni.
+
+## Hvar þrengist valið?
+
+Gervigreind er ekki einn innviður heldur keðja. Þrjár stoðir byggja upp getu samfélagsins: gögn, færni og reiknigeta. Fimm þverlæg skilyrði ráða því hvort sú geta veitir raunverulegt val: hýsing, líkön, staðlar, samningar og lög. Valið getur þrengst þegar þessir þættir mætast.
+
+<FvFigure figure="weave" />
+
+Þrjú atriði skýra hvers vegna eignarhald og staðsetning svara ekki ein og sér:
+
+<FvCard title="Staðsetning er ekki það sama og aðgangur" mark="stadsetning">
+  Orka og staðsetning geta veitt Íslandi samningsstöðu gagnvart aðilum sem vilja byggja upp eða reka reiknigetu hér á landi. Gagnaver á Íslandi tryggir íslenskum verkefnum þó ekki sjálfkrafa aðgang að þeirri reiknigetu. Eins og íslensk stjórnvöld hafa bent á í umfjöllun um nýja gervigreindarinnviði er núverandi aðgangur íslenskra verkefna takmarkaður.<Ref n={8} />
+
+  Um hvert kerfi þarf að svara fjórum spurningum:
+
+  * hvar keyrir það
+  * hver á og rekur það
+  * hver hefur aðgang að gögnum og reikniafli
+  * hvaða lög og skilmálar gilda
+</FvCard>
+
+<FvCard title="Aðgangur er ekki það sama og stjórn" mark="adgangur">
+  Aðgangur að örgjörvum og líkönum getur ráðist af ákvörðunum annarra ríkja. Í janúar 2025 birtu bandarísk stjórnvöld reglur um útflutning öflugra gervigreindarörgjörva og líkana. Danmörk, Finnland, Noregur og Svíþjóð voru í hópi nítján ríkja sem fengu rýmstan aðgang; Ísland var ekki á listanum. Reglurnar voru afturkallaðar í maí 2025 áður en meginákvæði þeirra tóku gildi.<Ref n={11} /> Lokunin í júní 2026 tók hins vegar gildi samdægurs. Aðgangur sem er fyrir hendi í dag er því ekki endilega varanlegur.
+</FvCard>
+
+<FvCard title="Samningar ganga ekki framar lögum" mark="samningur">
+  Bandarísk lög geta við tilteknar aðstæður heimilað yfirvöldum að krefja bandarísk fyrirtæki um gögn sem þau varðveita eða ráða yfir, einnig þegar gögnin eru vistuð utan Bandaríkjanna.<Ref n={12} /> Í svörum ráðuneytanna kemur fram að mörg gögn ríkisins séu vistuð innan EES, þótt þjónustuveitendur eða endanlegir eigendur séu bandarískir. Samningur um vistun innan EES segir til um hvar gögnin eru geymd, en svarar ekki einn og sér því hvort bandarísk yfirvöld geti krafist þeirra. Þegar slík þjónusta er valin þarf að taka afstöðu til þeirrar áhættu og hafa raunhæfa leið til að skipta um þjónustuveitanda.
+</FvCard>
+
+## Hvað gera aðrir?
+
+Engin ein leið er til. Ríki hafa ólíka stærð, innviði, áhættu, auðlindir og tungumál og eru ekki öll að reyna að leysa sama vandamál. Evrópusambandið getur vegna stærðar markaðarins sett skilyrði sem fyrirtæki utan þess þurfa að taka mið af; Frakkland og Þýskaland geta byggt stóran hluta tæknikeðjunnar sjálf því þau búa að iðnaðar- og rannsóknariðnaði á heimsmælikvarða. Ísland hefur ekki sömu forsendur, og sýna næstu dæmi þrjú viðfangsefni sem Ísland getur betur tekið mið af: samstarf um reiknigetu og opna þróun líkana, viðbúnað til að tryggja samfellu mikilvægrar þjónustu og skilyrði fyrir rekstri gagnavera.
+
+<FvCard title="Smærri ríki samnýta" kicker="Finnland · Sviss" mark="">
+  LUMI-ofurtölvan í Finnlandi er rekin í samstarfi EuroHPC og ellefu Evrópuríkja, þar á meðal Íslands, og veitir rannsakendum aðgang að reiknigetu sem hvert ríki þyrfti annars að byggja upp sjálft. Sviss fór svipaða leið með líkanið Apertus, sem opinberar rannsóknarstofnanir þróuðu og birtu með opnum vigtum, þjálfunargögnum og aðferðum.<Ref n={13} /> Samnýting veitir ekki fullt vald yfir forgangsröðun, en hún tryggir aðgang, dreifir kostnaði og byggir upp sameiginlega þekkingu.
+</FvCard>
+
+<FvCard title="Eistland tryggir samfellu" kicker="Eistland" mark="">
+  Afrit af mikilvægum skrám ríkisins eru varðveitt í gagnasendiráði í Lúxemborg: innviðirnir eru utan eistnesks landsvæðis en undir stjórn eistneska ríkisins.<Ref n={14} /> Ísland notar þegar hluta þessarar nálgunar, því gagnaflutningskerfi hins opinbera, Straumurinn, byggir á eistneskri X-Road-tækni.<Ref n={15} />
+</FvCard>
+
+<FvCard title="Noregur semur um skilyrði fyrirfram" kicker="Noregur · Kenía" mark="">
+  Þar tóku árið 2025 gildi reglur sem leggja skráningar-, öryggis- og viðbúnaðarskyldur á gagnaver og veita stjórnvöldum yfirsýn.<Ref n={16} /> Í Kenía tafðist milljarðs dala uppbyggingarverkefni Microsoft og G42, með gagnaveri sem átti að nýta jarðvarma, vegna spurninga um umfang, getu raforkukerfisins og fjárhagslegt fyrirkomulag.<Ref n={17} /> Orkan ein ræður ekki niðurstöðunni, heldur skilyrðin sem hafa verið skilgreind áður en samið er.
+</FvCard>
+
+<PullQuote>
+  Spurningin er því ekki hvaða landi Ísland eigi að herma eftir, heldur hvaða samsetning reglna, samstarfs, viðbúnaðar og samninga hentar íslenskum aðstæðum.
+</PullQuote>
+
+## Hvar stendur Ísland?
+
+<Box title="Við búum yfir" icon="" tone="tint" level="3">
+  * orku
+  * opnum íslenskum málföngum og máltækni
+  * sameiginlegum stafrænum innviðum á borð við Strauminn, Ísland.is og rafræn skilríki
+  * aðild að evrópsku reiknisamstarfi um LUMI í gegnum íslenska aðgangspunktinn Glóð<Ref n={18} />
+</Box>
+
+<Box title="Á móti kemur" icon="" tone="neutral" level="3">
+  * lítill markaður
+  * fámennt sérfræðisamfélag
+  * takmarkaður aðgangur að reiknigetu
+  * mikil notkun erlendrar skýja- og hugbúnaðarþjónustu
+</Box>
+
+Hve mikil sú notkun er sést í opinberum tækniskrám. Sjálfstæð úttekt á 210 stofnunum á skrá Ísland.is sýnir að 91 prósent þeirra nota Microsoft 365 fyrir tölvupóst; bandarískir veitendur koma við sögu hjá 74 prósentum vefja og 53 prósentum nafnaþjóna.<Ref n={19} /> Mæling svissneska fyrirtækisins Proton sýnir 97 prósent íslenskra fyrirtækja í úrtaki þess með bandarískan póst- eða póstöryggisveitanda, hæsta hlutfall þeirra ríkja sem það birtir sérstaklega.<Ref n={20} /> Mælingarnar sýna hver veitir þjónustuna, ekki hvar öll gögn eru geymd eða hvaða skilmálar gilda. Þær sýna að þjónustan er dreifð milli margra notenda en samþjöppuð hjá fáum birgjum.
+
+<FvFigure figure="dots" />
+
+<Stat value="97%" note="Mæling Proton, Europe's Tech Sovereignty Watch. Proton selur evrópska valkosti við bandaríska þjónustu; heimildin er notuð fyrir birtar tölur og aðferð, ekki ályktanir fyrirtækisins.">
+  íslenskra fyrirtækja í úrtaki Proton með bandarískan póst- eða póstöryggisveitanda
+</Stat>
+
+Hér mætast áherslurnar tvær. Aðgerðaáætlunin spyr hvað þurfi að verða til, svörin á Alþingi lýsa því sem þegar er í notkun og skilyrðunum sem gilda um það. Þetta eru hlutar sama verkefnis, og þeir mætast þegar ný gervigreindarkerfi eru keypt. Skilyrði um gögn, öryggi, staðsetningu, ábyrgð, samfellu og möguleika á að skipta um þjónustuveitanda sem gilda um núverandi rekstur þurfa einnig að ná til nýju kerfanna, og innkaupin eru sá tímapunktur þegar kaupandinn hefur besta samningsstöðu. Aðgerð 16 í áætluninni, um viðmið og leiðbeiningar fyrir opinbera aðila, getur orðið sá vettvangur.<Ref n={21} />
+
+Tökum íslensku sem dæmi. Leiðirnar sem deilt var um í blaðagreinum í vor, samstarf við alþjóðlegt fyrirtæki, innlend þróun á opnum grunni eða frekari uppbygging í háskólum og fyrirtækjum, hafa ólíkan kostnað og áhættu en þurfa allar að svara sömu spurningum: hver ræður íslensku gögnunum og því sem verður til úr þeim, geta íslenskir aðilar keyrt og aðlagað líkanið sjálfir, og hvað gerist þegar ný kynslóð grunnlíkans kemur út? Ísland þarf ekki endilega að eiga eigið grunnlíkan. Ef íslensku gögnin, matsprófin, sérþekkingin og aðlögunarferlið haldast hér er auðveldara að skipta um grunn. Ef allt þetta er bundið einum birgja getur orðið erfitt að skipta um þótt líkanið sé hýst innanlands.
+
+<FvFigure figure="stack" />
+
+<PullQuote>
+  Spurningin er ekki aðeins hvaða líkan á að velja, heldur hvað flyst á milli líkana.
+</PullQuote>
+
+Með þessi viðmið í huga er staðan þessi. Svör ráðuneytanna og ytri mælingar varpa ljósi á hvaða kerfi og þjónustuveitendur ríkið reiðir sig á, en heildarmynd af samningum og kostnaði við að skipta um veitendur vantar. Skilyrði hafa verið sett um suma þætti, svo sem vistun innan EES, öryggi og afritun, en ekki liggur fyrir einn rammi sem tryggir að þau nái til allra nýrra gervigreindarverkefna ríkisins. Aðeins að hluta er ljóst hve auðvelt væri að skipta um þjónustuveitendur; ekki liggur fyrir hvað það myndi kosta eða hve langan tíma það tæki að skipta um þá stærstu. Þótt færni og dómgreind séu hluti af stefnunni er engin sameiginleg mæling til á getu stofnana til að meta kerfi, semja við birgja og fylgja skilyrðum eftir.
+
+<FvFigure figure="stations-status" />
+
+## Hvernig á að taka ákvörðunina?
+
+Af þessu leiða fjögur viðmið. Þau segja ekki hvaða tækni eigi að velja heldur hvernig eigi að taka ákvörðunina.
+
+Fjórða viðmiðið er rammi utan um hin þrjú: að vernda samfélagslegt svigrúm, það er gagnsæi um hvar gervigreind er notuð, rétt fólks til skýringa og endurmats, ábyrgð sem færist ekki frá stofnun til birgja og þekkingu til að meta kerfin.
+
+<FvFrame label="Vernda samfélagslegt svigrúm" edges="gagnsæi, skýringar og endurmat, ábyrgð sem færist ekki, þekking til að meta">
+  <Columns columns="3">
+    <Box title="Byggja eða stjórna sjálf" icon="" tone="tint" level="4">
+      Þar sem mest er í húfi og erfitt er að snúa við: íslensk málföng og matskerfi, meðferð viðkvæmra gagna og þjónusta sem samfélagið má ekki missa.
+    </Box>
+
+    <Box title="Byggja með öðrum" icon="" tone="tint" level="4">
+      Þar sem stærð skiptir máli: reiknigeta, rannsóknir og almenn grunnlíkön.
+    </Box>
+
+    <Box title="Kaupa með opnum möguleikum" icon="" tone="tint" level="4">
+      Þar sem þjónusta er keypt: færanleg gögn, samvirk kerfi, fleiri en einn raunhæfur kostur og útgönguleið sem liggur fyrir áður en samið er.
+    </Box>
+  </Columns>
+</FvFrame>
+
+Gervigreindarfullveldi Íslands mun ekki ráðast af því hvort landið eigi tiltekið líkan, gagnaver eða ofurtölvu. Staðsetning er ekki það sama og aðgangur, aðgangur er ekki það sama og stjórn og samningur getur ekki vikið til hliðar þeim lögum sem gilda. Fullveldið ræðst af því hvort samfélagið viti á hvaða tækni það reiðir sig, geti sett henni skilyrði og eigi raunhæfan kost á að breyta um stefnu þegar aðstæður kalla á það, og hvort stofnanir og almenningur búi yfir nægri dómgreind til að vita hvenær sú þörf er komin.
