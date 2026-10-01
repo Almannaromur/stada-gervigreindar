@@ -1,0 +1,28 @@
+---
+/**
+ * The article's mark: an empty, a half and a full circle, as in the assessment card.
+ * The same drawing as the „circles“ box icon (src/lib/icons.ts). Decorative; size it
+ * with height (the circles' diameter; width follows).
+ */
+import { boxIcons, iconViewBox } from '@/lib/icons';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg class:list={['fv-circles', className]} viewBox={iconViewBox('circles')} fill="currentColor" aria-hidden="true" focusable="false" set:html={boxIcons.circles.svg} />
+
+<style>
+  .fv-circles {
+    display: inline-block;
+    flex: none;
+    width: auto;
+    height: 0.875rem;
+    color: var(--cat-text);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+</style>

@@ -6,6 +6,7 @@ export const fvFigures = {
   weave: 'Stoðir og þverlæg skilyrði (vefnaður)',
   dots: '210 stofnanir, fáir birgjar',
   stack: 'Hvað flyst á milli líkana?',
+  routes: 'Tveir ásar',
 } as const;
 
 export type FvFigureName = keyof typeof fvFigures;

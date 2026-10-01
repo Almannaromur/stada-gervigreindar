@@ -1,0 +1,192 @@
+---
+/**
+ * The series this article opens, as a strip at the end of „Lokaorð“: this article,
+ * the three pillars (drawn as the pillars of „Stoðir“) and the article on
+ * Iceland's position. Each item links to its article once that is published;
+ * until then it says „Væntanleg“. Drafts are linked only from a draft, for preview.
+ *
+ * <FvSeries gogn="…" faerni="…" reiknigeta="…" stada="…" />
+ */
+import { getEntry } from 'astro:content';
+import { articleUrl } from '@/lib/content';
+import FvCircles from './FvCircles.astro';
+import './thread.css';
+import { pillars } from './thread';
+
+interface Props {
+  gogn?: string;
+  faerni?: string;
+  reiknigeta?: string;
+  stada?: string;
+}
+
+const { gogn, faerni, reiknigeta, stada } = Astro.props;
+const draft = Astro.locals.articleDraft ?? false;
+const href = async (slug?: string) => {
+  if (!slug) return undefined;
+  const entry = await getEntry('greinar', slug);
+  return entry && (!entry.data.draft || draft) ? articleUrl(entry) : undefined;
+};
+const current = Astro.locals.articleId ? await getEntry('greinar', Astro.locals.articleId) : undefined;
+const items = [
+  ...(await Promise.all([gogn, faerni, reiknigeta].map(async (slug, i) => ({ kind: 'pillar', name: pillars[i], href: await href(slug) })))),
+  { kind: 'last', name: 'Staða Íslands og samanburður við önnur ríki', href: await href(stada) },
+];
+---
+
+<nav class="series" aria-label="Greinaröðin">
+  <ol class="items">
+    <li class="item anchor" aria-current="page">
+      <span class="glyph"><FvCircles class="anchor-mark" /></span>
+      <span class="name">{current?.data.title ?? 'Hvað er gervigreindarfullveldi?'}</span>
+      <span class="status">Þessi grein</span>
+    </li>
+    {
+      items.map((item) => (
+        <li class:list={['item', item.kind]}>
+          <span class="glyph">
+            <span class="shape" aria-hidden="true" />
+          </span>
+          {item.href ? (
+            <a class="name" href={item.href}>
+              {item.name}
+            </a>
+          ) : (
+            <span class="name">{item.name}</span>
+          )}
+          {!item.href && <span class="status">Væntanleg</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .items {
+    position: relative;
+    display: grid;
+    /* Room for the longest word of this article's title on one line */
+    grid-template-columns: minmax(12.5rem, 1.6fr) repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr);
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The line the five stand on */
+  .items::before {
+    content: '';
+    position: absolute;
+    top: 4.5rem;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-line-soft);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    font-size: var(--body-xs);
+    line-height: 1.35;
+    hyphens: manual;
+  }
+
+  .glyph {
+    display: flex;
+    align-items: flex-end;
+    height: 4.5rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .anchor :global(.anchor-mark) {
+    margin-bottom: 0.625rem;
+  }
+
+  /* The pillars, as in „Stoðir“ */
+  .pillar .shape {
+    width: 1.75rem;
+    height: 100%;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: color-mix(in srgb, var(--cat-base) 50%, var(--color-bg));
+  }
+
+  .last .shape {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-bottom: calc(-0.375rem + 1px);
+    border: 2px solid var(--color-text-muted);
+    border-radius: 50%;
+    background: var(--color-bg);
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .anchor .name {
+    font-family: var(--font-serif);
+    font-size: var(--body-sm);
+    font-weight: 500;
+    line-height: 1.25;
+    overflow-wrap: normal;
+  }
+
+  .status {
+    margin-top: 0.25rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Phones: a list, each item's shape beside it */
+  @media (max-width: 40rem) {
+    .items {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.875rem;
+    }
+
+    .items::before {
+      content: none;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 2.25rem minmax(0, 1fr);
+      column-gap: 0.75rem;
+      align-items: center;
+    }
+
+    .glyph {
+      grid-row: 1 / span 2;
+      justify-content: center;
+      align-items: center;
+      height: auto;
+      margin: 0;
+    }
+
+    .anchor :global(.anchor-mark) {
+      height: 0.75rem;
+      margin: 0;
+    }
+
+    .pillar .shape {
+      width: 1rem;
+      height: 2.25rem;
+      border-radius: 3px;
+    }
+
+    .last .shape {
+      margin: 0;
+    }
+
+    .name,
+    .status {
+      grid-column: 2;
+    }
+
+    .status {
+      margin-top: 0;
+    }
+  }
+</style>

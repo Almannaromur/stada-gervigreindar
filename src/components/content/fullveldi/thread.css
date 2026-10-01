@@ -1,0 +1,25 @@
+/*
+ * The thread device of „Hvað er gervigreindarfullveldi?“ (see thread.ts), shared by
+ * its components. Each of them imports this file, so it loads whenever one is on
+ * the page. Hanging numerals sit in the margin only where the page has one
+ * (64rem and up, as the article layout); below that they move inside the text column.
+ * The article's mark (empty, half and full circle) is FvCircles.astro.
+ */
+:root {
+  --fv-hang: 0.875rem; /* gap between a hanging numeral and the text */
+}
+
+/* The numerals 1–3 look the same in every form of the thread */
+.fv-numeral {
+  color: var(--cat-text);
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+}
+
+/* Figures keep their colours in print */
+.fv-mynd {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}

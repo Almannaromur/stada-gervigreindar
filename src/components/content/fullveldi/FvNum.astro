@@ -1,0 +1,67 @@
+---
+/**
+ * A thread numeral (1–3) beside a sentence, placed right before its first word,
+ * without a space:  …verkfæri. <FvNum n={1} />Kortlagning, skráning og mat…
+ * Where the page has a margin it hangs there, level with the line where the sentence
+ * starts; otherwise it stands in the text, on a short line of its own.
+ *
+ * The line is found by the browser, not by a script: a word joiner (U+2060) ties the
+ * numeral to the first word, so it always moves to that word's line, whatever the
+ * font or width. The script only sets numerals that share a line side by side.
+ */
+import './thread.css';
+
+interface Props {
+  n: number | string;
+}
+
+const n = Number(Astro.props.n);
+---
+
+<span class="fv-num" aria-hidden="true">&#8288;<span class="n fv-numeral">{n}</span></span>
+
+<script>
+  // Numerals that land on the same line would overlap in the margin: set them side by side
+  const layout = () => {
+    for (const p of document.querySelectorAll('.prose p:has(> .fv-num)')) {
+      const lines = new Map<number, HTMLElement[]>();
+      for (const num of p.querySelectorAll<HTMLElement>(':scope > .fv-num > .n')) {
+        const top = Math.round(num.offsetTop);
+        lines.set(top, [...(lines.get(top) ?? []), num]);
+      }
+      for (const nums of lines.values()) nums.forEach((num, i) => num.style.setProperty('--shift', String(nums.length - 1 - i)));
+    }
+  };
+  layout();
+  addEventListener('resize', layout);
+  document.fonts?.addEventListener('loadingdone', layout);
+  const observer = new ResizeObserver(layout);
+  for (const p of document.querySelectorAll('.prose p:has(> .fv-num)')) observer.observe(p);
+</script>
+
+<style>
+  /* In the text: the numeral on a short line of its own, before the first word */
+  .n {
+    margin-right: 0.35em;
+    padding: 0 0.25em;
+    border-bottom: 2px solid var(--cat-text);
+    font-size: 0.85em;
+  }
+
+  /* In the margin: hung to the left of the paragraph, on the line it was placed on */
+  @media (min-width: 64rem) {
+    :global(.prose p:has(> .fv-num)) {
+      position: relative;
+    }
+
+    .n {
+      position: absolute;
+      right: calc(100% + var(--fv-hang) + var(--shift, 0) * 1em);
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 1em;
+      line-height: inherit;
+    }
+  }
+</style>

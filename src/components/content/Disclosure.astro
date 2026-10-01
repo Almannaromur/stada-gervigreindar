@@ -1,0 +1,48 @@
+---
+/**
+ * A short labelled aside between the title and the text, e.g. the author's interests.
+ * Shows nothing while it is empty, so it can wait in the article until there is text.
+ *
+ * <Disclosure label="Hagsmunir">Höfundur…</Disclosure>
+ */
+interface Props {
+  label?: string;
+}
+
+const label = Astro.props.label || 'Hagsmunir';
+const html = Astro.slots.has('default') ? await Astro.slots.render('default') : '';
+const empty = html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim() === '';
+---
+
+{
+  !empty && (
+    <aside class="disclosure" aria-label={label}>
+      <p class="label">{label}</p>
+      <div class="body" set:html={html} />
+    </aside>
+  )
+}
+
+<style>
+  .disclosure {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    font-size: var(--body-xs);
+    line-height: 1.5;
+  }
+
+  .label {
+    margin: 0 0 0.25rem;
+    color: var(--cat-text);
+    font-weight: 700;
+  }
+
+  .body :global(p) {
+    margin: 0;
+  }
+
+  .body :global(p + p) {
+    margin-top: 0.75em;
+  }
+</style>

@@ -17,7 +17,7 @@
  */
 import Rating from './Rating.astro';
 import { resolveImage } from '@/lib/images';
-import { boxIcons, type BoxIcon } from '@/lib/icons';
+import { boxIcons, iconViewBox, type BoxIcon } from '@/lib/icons';
 import { scaleColors } from '@/lib/colors';
 
 const headerTones = ['red', 'orange', 'yellow', 'green'] as const;
@@ -48,6 +48,10 @@ const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
 const headerTone = headerTones.find((t) => t === tone);
 const numbered = icon === 'number' && !headerTone;
 const iconSvg = icon && icon !== 'number' ? boxIcons[icon]?.svg : undefined;
+const viewBox = icon && icon !== 'number' && iconSvg ? iconViewBox(icon) : '0 0 256 256';
+const wideIcon = viewBox !== '0 0 256 256';
+// Without a title, the icon goes on the top line, before the chip
+const iconOnly = Boolean(iconSvg) && !title;
 const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : undefined;
 // Plain boxes (no header, icon or number) stack closely with others of the same colour
 const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
@@ -69,14 +73,23 @@ const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
             {rating && <Rating label={ratingLabel} value={rating} />}
           </div>
         )}
-        {chip && <span class="chip">{chip}</span>}
-        {(title || iconSvg) && (
-          <div class="heading">
-            {iconSvg && (
-              <svg class="icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />
-            )}
-            {title && <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>}
+        {iconOnly ? (
+          <div class="icon-line">
+            <svg class:list={['icon', { wide: wideIcon }]} viewBox={viewBox} fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />
+            {chip && <span class="chip">{chip}</span>}
           </div>
+        ) : (
+          <>
+            {chip && <span class="chip">{chip}</span>}
+            {title && (
+              <div class="heading">
+                {iconSvg && (
+                  <svg class:list={['icon', { wide: wideIcon }]} viewBox={viewBox} fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />
+                )}
+                <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>
+              </div>
+            )}
+          </>
         )}
       </>
     )
@@ -178,6 +191,25 @@ const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
     width: 2.5rem;
     height: 2.5rem;
     color: var(--cat-text);
+  }
+
+  /* A wide icon keeps its shape: fixed height, width from its viewBox */
+  .icon.wide {
+    width: auto;
+    height: 0.875rem;
+  }
+
+  /* Icon without a title: on the top line, before the chip */
+  .icon-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .icon-line .chip {
+    margin-bottom: 0;
   }
 
   .title {

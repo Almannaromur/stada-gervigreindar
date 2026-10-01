@@ -1,0 +1,220 @@
+---
+/**
+ * Progress through the article: one station per chapter on a line, tied to the section
+ * headings, drawn with the article's circles while reading: the current section
+ * half full, the sections already passed full, the rest empty.
+ * Each station belongs to the first following heading that starts with its label
+ * („Hvað“ → „Hvað merkir hugtakið?“). Place it first in the article.
+ *
+ * Wide screens: a sticky line in the left margin. Narrow screens and print: one line
+ * under the title, „Efni: Inngangur · Hvað · Til hvers · …“.
+ *
+ * <FvProgress stations="Inngangur, Hvað, Til hvers, Hvar, Hvernig, Lokaorð" />
+ */
+interface Props {
+  /** Comma separated */
+  stations?: string;
+}
+
+const stations = (Astro.props.stations || 'Inngangur, Hvað, Til hvers, Hvar, Hvernig, Lokaorð')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+---
+
+<nav class="progress" aria-label="Efni greinarinnar" data-fv-progress>
+  <div class="track">
+    <span class="lead">Efni:</span>
+    <ol class="stations">
+      {
+        stations.map((s) => (
+          <li class="station">
+            <a data-label={s}>
+              <span class="dot" aria-hidden="true" />
+              <span class="name">{s}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</nav>
+
+<script>
+  for (const nav of document.querySelectorAll<HTMLElement>('[data-fv-progress]')) {
+    const headings = [...(nav.closest('.prose')?.querySelectorAll<HTMLElement>(':scope > h2') ?? [])];
+    const byHeading = new Map<HTMLElement, HTMLAnchorElement>();
+    let from = 0;
+    for (const link of nav.querySelectorAll<HTMLAnchorElement>('a[data-label]')) {
+      const label = (link.dataset.label ?? '').toLocaleLowerCase('is');
+      const i = headings.findIndex((h, k) => k >= from && (h.textContent ?? '').trim().toLocaleLowerCase('is').startsWith(label));
+      if (i < 0 || !headings[i].id) continue;
+      link.href = `#${headings[i].id}`;
+      byHeading.set(headings[i], link);
+      from = i + 1;
+    }
+
+    // Headings above a line a third down the screen have been reached; the last of them
+    // is the current section. Its station is half full, stations reached before it are
+    // full, the rest empty. In a section without a station none is half full; before the
+    // first heading all are empty.
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const line = innerHeight / 3;
+      const reached = headings.filter((h) => h.getBoundingClientRect().top <= line);
+      const current = reached.at(-1);
+      for (const [heading, link] of byHeading) {
+        const state = heading === current ? 'half' : reached.includes(heading) ? 'full' : 'empty';
+        link.dataset.state = state;
+        link.toggleAttribute('aria-current', state === 'half');
+      }
+    };
+    addEventListener(
+      'scroll',
+      () => {
+        if (!queued) requestAnimationFrame(update);
+        queued = true;
+      },
+      { passive: true },
+    );
+    update();
+  }
+</script>
+
+<style>
+  /* Narrow screens and print: one line of text that wraps like a sentence, „Efni:“
+     first; the dot between chapters ends a line rather than starting the next */
+  .track {
+    color: var(--color-text-muted);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .lead {
+    margin-right: 0.5rem;
+  }
+
+  .stations {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .station {
+    display: inline;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .station:not(:last-child)::after {
+    content: '·';
+    padding-inline: 0.5rem;
+  }
+
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  a[href]:hover .name {
+    text-decoration: underline;
+  }
+
+  .dot {
+    display: none;
+  }
+
+  /* Wide screens: a line of dots in the left margin, sticky while reading */
+  @media screen and (min-width: 64rem) {
+    .progress {
+      position: sticky;
+      top: 8rem;
+      z-index: 1;
+      height: 0;
+    }
+
+    /* Back to the left edge of the page, where the margin column starts */
+    .track {
+      position: absolute;
+      top: 0;
+      left: calc((min(100vw, var(--page-max)) - 2 * var(--gutter) - var(--article-width)) / -2);
+      display: block;
+    }
+
+    .lead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    .stations {
+      position: relative;
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    /* The line through the dots */
+    .stations::before {
+      content: '';
+      position: absolute;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      left: calc(0.4375rem - 1px);
+      width: 2px;
+      background: var(--color-line-soft);
+    }
+
+    .station {
+      display: block;
+    }
+
+    .station:not(:last-child)::after {
+      content: none;
+    }
+
+    a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* The article's circles: empty ahead, half full here, full behind */
+    .dot {
+      display: block;
+      flex: none;
+      width: 0.875rem;
+      height: 0.875rem;
+      border: 1.5px solid var(--color-text-muted);
+      border-radius: 50%;
+      background: var(--color-bg);
+      transition: border-color 0.2s ease;
+    }
+
+    a[data-state='half'] .dot {
+      border-color: var(--cat-text);
+      background: linear-gradient(90deg, var(--cat-text) 50%, var(--color-bg) 50%);
+    }
+
+    a[data-state='full'] .dot {
+      border-color: var(--cat-text);
+      background: var(--cat-text);
+    }
+
+    a[data-state='half'] {
+      color: var(--color-text);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      transition: none;
+    }
+  }
+</style>

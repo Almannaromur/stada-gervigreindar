@@ -8,7 +8,7 @@
  * <FvCard title="Eistland tryggir samfellu" kicker="Eistland" icon="shield-check">…</FvCard>
  */
 import FvMark from './FvMark.astro';
-import { boxIcons, type BoxIcon } from '@/lib/icons';
+import { boxIcons, iconViewBox, type BoxIcon } from '@/lib/icons';
 
 interface Props {
   title: string;
@@ -17,9 +17,12 @@ interface Props {
   mark?: '' | 'stadsetning' | 'adgangur' | 'samningur';
   /** Icon in the side column (src/lib/icons.ts), when there is no mark */
   icon?: BoxIcon | '';
+  /** Heading level of the title: 4 for cards under a subheading (h3) */
+  level?: 3 | 4 | '3' | '4';
 }
 
-const { title, kicker, mark = '', icon = '' } = Astro.props;
+const { title, kicker, mark = '', icon = '', level = 3 } = Astro.props;
+const Heading = `h${Number(level) === 4 ? 4 : 3}` as 'h3' | 'h4';
 const iconSvg = !mark && icon ? boxIcons[icon as BoxIcon]?.svg : undefined;
 ---
 
@@ -27,10 +30,10 @@ const iconSvg = !mark && icon ? boxIcons[icon as BoxIcon]?.svg : undefined;
   {mark === 'stadsetning' && <FvMark kind="rings" highlight={1} class="card-mark" />}
   {mark === 'adgangur' && <FvMark kind="rings" highlight={2} class="card-mark" />}
   {mark === 'samningur' && <FvMark kind="nested" class="card-mark" />}
-  {iconSvg && <svg class="card-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />}
+  {iconSvg && <svg class="card-icon" viewBox={iconViewBox(icon as BoxIcon)} fill="currentColor" aria-hidden="true" focusable="false" set:html={iconSvg} />}
   <div class="content">
     {kicker && <p class="kicker">{kicker}</p>}
-    <h3 class="title">{title}</h3>
+    <Heading class="title">{title}</Heading>
     <div class="body"><slot /></div>
   </div>
 </section>

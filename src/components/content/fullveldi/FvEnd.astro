@@ -1,0 +1,25 @@
+---
+/**
+ * The mark once at the end of the article, after the last word: …önnur ríki.<FvEnd />
+ * An inline span painted with the circles (src/lib/icons.ts), holding a no-break
+ * space: it stays on the line of the last word and wraps with it, never alone.
+ */
+import { boxIcons, iconViewBox } from '@/lib/icons';
+
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${iconViewBox('circles')}">${boxIcons.circles.svg}</svg>`;
+const mark = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+---
+
+<span class="fv-end" style={`--mark: ${mark}`} aria-hidden="true">&nbsp;</span>
+
+<style>
+  .fv-end {
+    margin-left: 0.4em;
+    padding-left: 2.4em;
+    background: var(--cat-text);
+    -webkit-mask: var(--mark) center / contain no-repeat;
+    mask: var(--mark) center / contain no-repeat;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+</style>

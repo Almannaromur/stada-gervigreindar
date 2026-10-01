@@ -49,6 +49,15 @@ const { value, note } = Astro.props;
     margin: 0;
   }
 
+  /* With bold parts, the rest is set light so the bold stands out */
+  .stat:has(:global(strong)) {
+    font-weight: 300;
+  }
+
+  .stat :global(strong) {
+    font-weight: 600;
+  }
+
   /* With a figure: a box of its own */
   .figure {
     display: grid;

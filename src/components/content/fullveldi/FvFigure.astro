@@ -11,6 +11,7 @@ import Matrix from './Matrix.astro';
 import Weave from './Weave.astro';
 import Dots from './Dots.astro';
 import Stack from './Stack.astro';
+import Routes from './Routes.astro';
 import type { FvFigureName } from './figures';
 
 interface Props {
@@ -26,3 +27,4 @@ const { figure } = Astro.props;
 {figure === 'weave' && <Weave />}
 {figure === 'dots' && <Dots />}
 {figure === 'stack' && <Stack />}
+{figure === 'routes' && <Routes />}

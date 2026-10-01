@@ -8,6 +8,7 @@ export { default as Box } from './Box.astro';
 export { default as Callout } from './Callout.astro';
 export { default as Collapsible } from './Collapsible.astro';
 export { default as Columns } from './Columns.astro';
+export { default as Disclosure } from './Disclosure.astro';
 export { default as Figure } from './Figure.astro';
 export { default as Interview } from './Interview.astro';
 export { default as Lead } from './Lead.astro';
@@ -28,6 +29,13 @@ export { default as TimelineItem } from './TimelineItem.astro';
 export { default as TimelineToday } from './TimelineToday.astro';
 
 // Figures and cards for "Hvað er gervigreindarfullveldi?"
+export { default as FvAssessment } from './fullveldi/FvAssessment.astro';
 export { default as FvCard } from './fullveldi/FvCard.astro';
+export { default as FvDefinition } from './fullveldi/FvDefinition.astro';
+export { default as FvEnd } from './fullveldi/FvEnd.astro';
 export { default as FvFigure } from './fullveldi/FvFigure.astro';
 export { default as FvFrame } from './fullveldi/FvFrame.astro';
+export { default as FvNum } from './fullveldi/FvNum.astro';
+export { default as FvPillars } from './fullveldi/FvPillars.astro';
+export { default as FvProgress } from './fullveldi/FvProgress.astro';
+export { default as FvSeries } from './fullveldi/FvSeries.astro';

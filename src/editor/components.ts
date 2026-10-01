@@ -16,6 +16,7 @@ import { fields } from '@keystatic/core';
 import { block, inline, repeating, wrapper } from '@keystatic/core/content-components';
 import { boxIcons } from '../lib/icons';
 import { fvFigures } from '../components/content/fullveldi/figures';
+import { pillars, threadLines } from '../components/content/fullveldi/thread';
 
 // Images are stored in the article's own folder and written as
 // /src/content/greinar/<article>/<file>, which the components resolve (src/lib/images.ts)
@@ -187,6 +188,14 @@ export const components = {
     schema: {},
   }),
 
+  Disclosure: wrapper({
+    label: 'Hagsmunir (fyrirvari)',
+    description: 'Stutt málsgrein með merkimiða milli titils og texta, t.d. um hagsmuni höfundar. Sést ekki á meðan hún er tóm.',
+    schema: {
+      label: fields.text({ label: 'Merkimiði', defaultValue: 'Hagsmunir' }),
+    },
+  }),
+
   Steps: wrapper({
     label: 'Skref',
     description: 'Tölusett skref með stórum tölum. Skrifið venjulegan tölusettan lista, með feitletraða fyrstu línu í hverjum lið.',
@@ -354,6 +363,15 @@ export const components = {
         options: [{ label: 'Ekkert', value: '' }, ...Object.entries(boxIcons).map(([value, { label }]) => ({ label, value }))],
         defaultValue: '',
       }),
+      level: fields.select({
+        label: 'Stig fyrirsagnar',
+        description: 'Undir-undirkafli þegar spjaldið er undir millifyrirsögn (h3)',
+        options: [
+          { label: 'Undirkafli (h3)', value: '3' },
+          { label: 'Undir-undirkafli (h4)', value: '4' },
+        ],
+        defaultValue: '3',
+      }),
     },
   }),
 
@@ -363,6 +381,77 @@ export const components = {
     schema: {
       label: fields.text({ label: 'Heiti', validation: { length: { min: 1 } } }),
       edges: fields.text({ label: 'Textar á hliðum', description: 'Fjórir, aðskildir með kommu: efst, hægri, neðst, vinstri' }),
+    },
+  }),
+
+  // The thread (three numbered lines) and the figures built on it.
+  // Line labels and pillar names are in src/components/content/fullveldi/thread.ts.
+  FvDefinition: block({
+    label: 'Fullveldi: skilgreining',
+    description: 'Vinnuskilgreiningin sett sem þráðurinn: inngangsorð í línu fyrir sig, síðan þrír liðir á þremur línum, tölusettir á spássíu.',
+    schema: {
+      lead: fields.text({ label: 'Inngangsorð', validation: { length: { min: 1 } } }),
+      one: fields.text({ label: '1. liður', validation: { length: { min: 1 } } }),
+      two: fields.text({ label: '2. liður', validation: { length: { min: 1 } } }),
+      three: fields.text({ label: '3. liður', validation: { length: { min: 1 } } }),
+    },
+  }),
+
+  FvPillars: block({
+    label: 'Fullveldi: stoðir',
+    description:
+      'Myndin með stoðunum þremur og þráðunum þvert yfir þær, með hnút á hverjum krossi. Smellt er á hnút til að sjá dæmi. Á meðan dæmi vantar sýna drög „Dæmi kemur hér“; í birtri grein er hnútur án dæmis ekki smellanlegur.',
+    schema: Object.fromEntries(
+      threadLines.flatMap((line, i) =>
+        pillars.map((pillar, j) => [`e${i + 1}${j + 1}`, fields.text({ label: `Dæmi: ${i + 1} ${line} × ${pillar}`, description: 'Valfrjálst. Birtist þegar smellt er á hnútinn' })]),
+      ),
+    ),
+  }),
+
+  FvAssessment: block({
+    label: 'Fullveldi: matsspjald',
+    description: 'Spurningarnar þrjár sem lesandinn merkir við (liggur ekki fyrir, að hluta, liggur fyrir). Valið vistast aðeins í vafra lesandans.',
+    schema: {
+      q1: fields.text({ label: '1. spurning', validation: { length: { min: 1 } } }),
+      g1: fields.text({ label: '1. skýring', description: 'Ein setning undir spurningunni' }),
+      q2: fields.text({ label: '2. spurning', validation: { length: { min: 1 } } }),
+      g2: fields.text({ label: '2. skýring' }),
+      q3: fields.text({ label: '3. spurning', validation: { length: { min: 1 } } }),
+      g3: fields.text({ label: '3. skýring' }),
+    },
+  }),
+
+  FvNum: inline({
+    label: 'Fullveldi: númer þráðar',
+    description: 'Númer þráðar (1–3) á spássíu, sett fremst í setninguna sem það á við.',
+    schema: {
+      n: fields.integer({ label: 'Þráður', validation: { min: 1, max: 3, isRequired: true } }),
+    },
+  }),
+
+  FvEnd: inline({
+    label: 'Fullveldi: lokamerki',
+    description: 'Merki greinarinnar, einu sinni, á eftir síðasta orðinu.',
+    schema: {},
+  }),
+
+  FvProgress: block({
+    label: 'Fullveldi: framvinda',
+    description:
+      'Stöðvar sem fylgja köflunum við lestur (á breiðum skjá á spássíu; annars ein lína undir titli). Hver stöð tengist fyrstu fyrirsögn sem hefst á heiti hennar. Setjið fremst í greinina.',
+    schema: {
+      stations: fields.text({ label: 'Stöðvar', description: 'Aðskildar með kommu', defaultValue: 'Inngangur, Hvað, Til hvers, Hvar, Hvernig, Lokaorð' }),
+    },
+  }),
+
+  FvSeries: block({
+    label: 'Fullveldi: greinaröð',
+    description: 'Röð greinanna í lok „Lokaorða“. Grein sem er ekki valin eða ekki birt er merkt „Væntanleg“ og án tengils.',
+    schema: {
+      gogn: fields.relationship({ label: pillars[0], collection: 'greinar' }),
+      faerni: fields.relationship({ label: pillars[1], collection: 'greinar' }),
+      reiknigeta: fields.relationship({ label: pillars[2], collection: 'greinar' }),
+      stada: fields.relationship({ label: 'Staða Íslands og samanburður við önnur ríki', collection: 'greinar' }),
     },
   }),
 };
