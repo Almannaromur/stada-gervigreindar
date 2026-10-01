@@ -55,6 +55,7 @@ export const components = {
           { label: 'Litur flokksins', value: 'tint' },
           { label: 'Grár', value: 'neutral' },
           { label: 'Rammi (enginn bakgrunnur)', value: 'outline' },
+          { label: 'Haus í lit flokksins', value: 'head' },
           { label: 'Rauður haus', value: 'red' },
           { label: 'Appelsínugulur haus', value: 'orange' },
           { label: 'Gulur haus', value: 'yellow' },

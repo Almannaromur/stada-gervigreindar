@@ -10,6 +10,7 @@
  * <Box title="Andlitsgreiningar" icon="user-focus">…</Box>           icon next to the title (src/lib/icons.ts)
  * <Box title="Frumvarp á Alþingi" chip="Haust 2027">…</Box>          small label above the title
  * <Box title="Bönnuð notkun" tone="red" chip="Tók gildi 2025">…</Box> coloured header (red, orange, yellow, green)
+ * <Box title="Gögn og málföng" tone="head">…</Box>                  header in the category colour
  * <Box title="Gagnaöryggi" icon="number">…</Box>                     numbered: consecutive numbered boxes count 1, 2, 3…
  *
  * Plain boxes of the same colour that follow each other stack closely as a group
@@ -36,7 +37,7 @@ interface Props {
   icon?: BoxIcon | 'number' | '';
   /** Small label, e.g. a date or a status */
   chip?: string;
-  tone?: 'tint' | 'neutral' | 'outline' | (typeof headerTones)[number];
+  tone?: 'tint' | 'neutral' | 'outline' | 'head' | (typeof headerTones)[number];
   /** Heading level for the title */
   level?: 3 | 4 | '3' | '4';
 }
@@ -46,21 +47,23 @@ const Heading = `h${Number(level)}` as 'h3' | 'h4';
 const logoImage = logo ? resolveImage(logo, Astro.locals.articleId) : undefined;
 const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
 const headerTone = headerTones.find((t) => t === tone);
-const numbered = icon === 'number' && !headerTone;
+// A coloured header: a scale colour, or the category colour (tone="head")
+const hasHead = Boolean(headerTone) || tone === 'head';
+const numbered = icon === 'number' && !hasHead;
 const iconSvg = icon && icon !== 'number' ? boxIcons[icon]?.svg : undefined;
 const viewBox = icon && icon !== 'number' && iconSvg ? iconViewBox(icon) : '0 0 256 256';
 const wideIcon = viewBox !== '0 0 256 256';
 // Without a title, the icon goes on the top line, before the chip
 const iconOnly = Boolean(iconSvg) && !title;
-const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : undefined;
+const style = headerTone ? `--head: ${scaleColors[headerTone].base}` : tone === 'head' ? '--head: var(--cat-base)' : undefined;
 // Plain boxes (no header, icon or number) stack closely with others of the same colour
-const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
+const plain = !hasHead && !numbered && !iconSvg && tone !== 'outline';
 ---
 
-<section class:list={['box', headerTone ? 'has-head' : tone, { numbered, plain }]} style={style}>
+<section class:list={['box', hasHead ? 'has-head' : tone, { numbered, plain }]} style={style}>
   {numbered && <span class="number" />}
   {
-    headerTone ? (
+    hasHead ? (
       <header class="head">
         {title && <Heading class="title">{href ? <a href={href}>{title}</a> : title}</Heading>}
         {chip && <span class="chip">{chip}</span>}
@@ -112,7 +115,6 @@ const plain = !headerTone && !numbered && !iconSvg && tone !== 'outline';
     background: none;
     box-shadow: inset 0 0 0 1.5px var(--cat-base);
   }
-
   /* Coloured header: a light tint of the scale colour, the body in the surface colour */
   .has-head {
     padding: 0;
