@@ -1,13 +1,11 @@
 ---
 /**
- * Mynd: Matsspjald. The three questions of the article as the thread: one row per
- * line, numbered at the left, with a one-sentence gloss and three markers the reader
- * fills in (○ liggur ekki fyrir, ◐ að hluta, ● liggur fyrir). All empty at first;
- * the choice stays in this browser only, and „Hreinsa“ clears it.
+ * Mynd: Matsspjald. The three questions of the assessment, numbered, each with a
+ * short gloss, and at the foot the three possible answers: ○ liggur ekki fyrir,
+ * ◐ að hluta, ● liggur fyrir. An outline to use, not a form: nothing to click.
  *
  * <FvAssessment q1="Vitum við…?" g1="Hér þarf að…" q2="…" g2="…" q3="…" g3="…" />
  */
-import FvCircles from './FvCircles.astro';
 import './thread.css';
 
 interface Props {
@@ -25,135 +23,76 @@ const rows = [
   { q: q2, g: g2 },
   { q: q3, g: g3 },
 ];
-const states = [
+const answers = [
   { value: 'none', label: 'Liggur ekki fyrir' },
   { value: 'half', label: 'Að hluta' },
   { value: 'full', label: 'Liggur fyrir' },
 ];
-const id = 'fv-mat';
-const storageKey = `fv-matsspjald:${Astro.locals.articleId ?? ''}`;
 ---
 
-<figure class="assessment fv-mynd" data-fv-assessment data-key={storageKey}>
-  <form>
-    <div class="card">
-      <div class="head">
-        <p class="title"><FvCircles />Matsspjald</p>
-        <button type="reset" class="reset">Hreinsa</button>
-      </div>
-      {
-        rows.map((r, i) => (
-          <div class="row" role="radiogroup" aria-labelledby={`${id}-q${i + 1}`}>
-            <span class="n fv-numeral" aria-hidden="true">
-              {i + 1}
-            </span>
-            <div class="text">
-              <p class="q" id={`${id}-q${i + 1}`}>
-                {r.q}
-              </p>
-              {r.g && <p class="gloss">{r.g}</p>}
-            </div>
-            <div class="choices">
-              {states.map((s) => (
-                <label class="choice" title={s.label}>
-                  <input type="radio" name={`${id}-${i + 1}`} value={s.value} />
-                  <span class:list={['sym', s.value]} aria-hidden="true" />
-                  <span class="visually-hidden">{s.label}</span>
-                </label>
-              ))}
-            </div>
+<figure class="assessment fv-mynd">
+  <p class="title">Matsspjald</p>
+  <ol class="rows">
+    {
+      rows.map((r, i) => (
+        <li class="row">
+          <span class="n fv-numeral" aria-hidden="true">
+            {i + 1}
+          </span>
+          <div class="text">
+            <p class="q">{r.q}</p>
+            {r.g && <p class="gloss">{r.g}</p>}
           </div>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="answers">
+    <p class="answers-label">Svarmöguleikar</p>
+    <ul class="answer-list">
+      {
+        answers.map((a) => (
+          <li class="answer">
+            <span class:list={['sym', a.value]} aria-hidden="true" />
+            {a.label}
+          </li>
         ))
       }
-    </div>
-    <div class="below">
-      <p class="legend" aria-hidden="true">
-        {
-          states.map((s) => (
-            <span class="key">
-              <span class:list={['sym', 'on', s.value]} />
-              {s.label}
-            </span>
-          ))
-        }
-      </p>
-      <p class="note">Valið vistast aðeins í þessum vafra.</p>
-    </div>
-  </form>
+    </ul>
+  </div>
 </figure>
-
-<script>
-  // Restore and keep the reader's choices in this browser only
-  for (const root of document.querySelectorAll<HTMLElement>('[data-fv-assessment]')) {
-    const form = root.querySelector('form');
-    const key = root.dataset.key;
-    if (!form || !key) continue;
-
-    let saved: Record<string, string> = {};
-    try {
-      saved = JSON.parse(localStorage.getItem(key) ?? '{}');
-    } catch {}
-    for (const [name, value] of Object.entries(saved)) {
-      const input = form.querySelector<HTMLInputElement>(`input[name="${CSS.escape(name)}"][value="${CSS.escape(String(value))}"]`);
-      if (input) input.checked = true;
-    }
-
-    form.addEventListener('submit', (e) => e.preventDefault());
-    form.addEventListener('change', () => {
-      const values = Object.fromEntries([...new FormData(form)].map(([k, v]) => [k, String(v)]));
-      try {
-        localStorage.setItem(key, JSON.stringify(values));
-      } catch {}
-    });
-    form.addEventListener('reset', () => {
-      try {
-        localStorage.removeItem(key);
-      } catch {}
-    });
-  }
-</script>
 
 <style>
   .assessment {
     margin-inline: 0;
-  }
-
-  form {
-    margin: 0;
-  }
-
-  .card {
-    padding: 1.75rem 2rem 1rem;
+    padding: 1.75rem 2rem;
     border-radius: var(--radius);
     background: var(--color-surface);
   }
 
-  /* Title on the left, „Hreinsa“ on the right of the same line */
-  .head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
   .title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin: 0;
+    margin: 0 0 0.5rem;
     font-weight: 600;
     line-height: 1.3;
   }
 
-  /* Each row sits on its line, numbered at the left end */
+  /* The questions, numbered, with quiet lines between them */
+  .rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .row {
     display: grid;
-    grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
     column-gap: 1rem;
-    align-items: start;
-    padding: 1.125rem 0 1rem;
-    border-bottom: 2px solid var(--cat-text);
+    margin: 0;
+    padding: 1rem 0;
+  }
+
+  .row + .row {
+    border-top: 1px solid var(--color-line-soft);
   }
 
   .n {
@@ -175,131 +114,64 @@ const storageKey = `fv-matsspjald:${Astro.locals.articleId ?? ''}`;
     margin-top: 0.375rem;
     color: var(--color-text-muted);
     font-size: var(--body-xs);
-    line-height: 1.45;
+    line-height: 1.5;
   }
 
-  .choices {
-    display: flex;
-    gap: 0.25rem;
-  }
-
-  .choice {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .choice:hover {
-    background: color-mix(in srgb, var(--cat-base) 30%, transparent);
-  }
-
-  .choice input {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  /* ○ ◐ ●: drawn faint until chosen */
-  .sym {
-    --c: color-mix(in srgb, var(--color-text-muted) 60%, transparent);
-    display: inline-block;
-    flex: none;
-    width: 1.125rem;
-    height: 1.125rem;
-    border: 1.5px solid var(--c);
-    border-radius: 50%;
-  }
-
-  .sym.half {
-    background: linear-gradient(90deg, var(--c) 50%, transparent 50%);
-  }
-
-  .sym.full {
-    background: var(--c);
-  }
-
-  .choice:hover .sym,
-  .sym.on,
-  input:checked + .sym {
-    --c: var(--cat-text);
-  }
-
-  input:checked + .sym {
-    box-shadow: 0 0 0 3px var(--color-surface), 0 0 0 5px var(--cat-text);
-  }
-
-  input:focus-visible + .sym {
-    outline: 2px solid var(--color-text);
-    outline-offset: 5px;
-  }
-
-  /* Legend and clear button, once, under the card */
-  .below {
+  /* The possible answers, once, at the foot */
+  .answers {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem 1.25rem;
-    margin-top: 0.875rem;
+    margin-top: 0.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line-soft);
     font-size: var(--body-xs);
     line-height: 1.4;
   }
 
-  .below p {
+  .answers-label {
     margin: 0;
-  }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem 1rem;
-    font-weight: 600;
-  }
-
-  .key {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .key .sym {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
-
-  .note {
     color: var(--color-text-muted);
   }
 
-  /* Shown only once something is marked; its place is kept, so nothing moves */
-  .reset {
+  .answer-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .answer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* ○ ◐ ● */
+  .sym {
     flex: none;
-    padding: 0.3rem 0.875rem;
-    border: 1.5px solid var(--color-line-soft);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--color-text);
-    font: 600 var(--body-xs) / 1.3 var(--font-sans);
-    cursor: pointer;
-    visibility: hidden;
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 1.5px solid var(--cat-text);
+    border-radius: 50%;
   }
 
-  form:has(input:checked) .reset {
-    visibility: visible;
+  .sym.half {
+    background: linear-gradient(90deg, var(--cat-text) 50%, transparent 50%);
   }
 
-  .reset:hover {
-    border-color: var(--color-text);
+  .sym.full {
+    background: var(--cat-text);
   }
 
   @media (max-width: 40rem) {
-    .card {
-      padding: 1.5rem 1.25rem 0.75rem;
+    .assessment {
+      padding: 1.5rem 1.25rem;
     }
 
     .row {
@@ -307,16 +179,15 @@ const storageKey = `fv-matsspjald:${Astro.locals.articleId ?? ''}`;
       column-gap: 0.75rem;
     }
 
-    .choices {
-      grid-column: 2;
-      margin: 0.625rem 0 0 -0.5rem;
+    /* The label above, the answers one under the other, rather than two and one */
+    .answers {
+      flex-direction: column;
+      align-items: flex-start;
     }
-  }
 
-  @media print {
-    .note,
-    .reset {
-      display: none;
+    .answer-list {
+      flex-direction: column;
+      gap: 0.4rem;
     }
   }
 </style>

@@ -8,16 +8,34 @@
  * </Columns>
  *
  * <Columns columns="3">…three boxes…</Columns>
+ *
+ * <Columns columns="3-auto">…</Columns>   three side by side only where each has room
+ *   (the text column wider than 46rem, e.g. a tablet); otherwise one under the other,
+ *   as on desktop, where the article's text column is narrower than on a tablet.
  */
 interface Props {
   /** Boxes per row on wide screens */
-  columns?: 2 | 3 | '2' | '3';
+  columns?: 2 | 3 | '2' | '3' | '3-auto';
 }
 
-const three = Number(Astro.props.columns) === 3;
+const columns = String(Astro.props.columns ?? '2');
+const three = columns === '3';
+const auto = columns === '3-auto';
 ---
 
-<div class:list={['columns', { three }]}><slot /></div>
+{
+  auto ? (
+    <div class="room">
+      <div class="columns auto">
+        <slot />
+      </div>
+    </div>
+  ) : (
+    <div class:list={['columns', { three }]}>
+      <slot />
+    </div>
+  )
+}
 
 <style>
   .columns {
@@ -87,5 +105,59 @@ const three = Number(Astro.props.columns) === 3;
 
   .three > :global(.box .body) {
     font-size: 0.85em;
+  }
+
+  /* „3-auto“: measured against the room it has, not the screen. One under the other
+     until the text column is wider than 46rem, then three side by side, set like
+     the plain three columns above */
+  .room {
+    container-type: inline-size;
+  }
+
+  .columns.auto {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @container (min-width: 46rem) {
+    .columns.auto {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .auto > :global(.box:not(.has-head)) {
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+
+    .auto > :global(.box.has-head .head),
+    .auto > :global(.box.has-head .body) {
+      padding-inline: 1.25rem;
+    }
+
+    .auto > :global(.box.numbered) {
+      display: block;
+    }
+
+    .auto > :global(.box.numbered .number) {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .auto > :global(.box .heading:has(.icon)) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.125rem;
+    }
+
+    .auto > :global(.box .heading .icon:not(.wide)) {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    .auto > :global(.box .title) {
+      font-size: var(--body-sm);
+    }
+
+    .auto > :global(.box .body) {
+      font-size: 0.85em;
+    }
   }
 </style>

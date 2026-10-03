@@ -214,6 +214,7 @@ export const components = {
         options: [
           { label: '2 dálkar', value: '2' },
           { label: '3 dálkar', value: '3' },
+          { label: '3 dálkar þar sem pláss er, annars hver undir öðrum', value: '3-auto' },
         ],
         defaultValue: '2',
       }),
@@ -402,16 +403,22 @@ export const components = {
     label: 'Fullveldi: stoðir',
     description:
       'Myndin með stoðunum þremur og þráðunum þvert yfir þær, með hnút á hverjum krossi. Smellt er á hnút til að sjá dæmi. Á meðan dæmi vantar sýna drög „Dæmi kemur hér“; í birtri grein er hnútur án dæmis ekki smellanlegur.',
-    schema: Object.fromEntries(
-      threadLines.flatMap((line, i) =>
-        pillars.map((pillar, j) => [`e${i + 1}${j + 1}`, fields.text({ label: `Dæmi: ${i + 1} ${line} × ${pillar}`, description: 'Valfrjálst. Birtist þegar smellt er á hnútinn' })]),
+    schema: {
+      lysing: fields.text({
+        label: 'Lýsing',
+        description: 'Valfrjálst. Undir titlinum, á undan myndinni: hvernig á að lesa hana og nota. Án hennar birtist stutt ábending undir myndinni.',
+      }),
+      ...Object.fromEntries(
+        threadLines.flatMap((line, i) =>
+          pillars.map((pillar, j) => [`e${i + 1}${j + 1}`, fields.text({ label: `Dæmi: ${i + 1} ${line} × ${pillar}`, description: 'Valfrjálst. Birtist þegar smellt er á hnútinn' })]),
+        ),
       ),
-    ),
+    },
   }),
 
   FvAssessment: block({
     label: 'Fullveldi: matsspjald',
-    description: 'Spurningarnar þrjár sem lesandinn merkir við (liggur ekki fyrir, að hluta, liggur fyrir). Valið vistast aðeins í vafra lesandans.',
+    description: 'Spurningarnar þrjár, tölusettar, hver með stuttri skýringu, og neðst svarmöguleikarnir (liggur ekki fyrir, að hluta, liggur fyrir).',
     schema: {
       q1: fields.text({ label: '1. spurning', validation: { length: { min: 1 } } }),
       g1: fields.text({ label: '1. skýring', description: 'Ein setning undir spurningunni' }),

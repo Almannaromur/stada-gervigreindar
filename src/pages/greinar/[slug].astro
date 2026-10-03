@@ -32,8 +32,11 @@ const { Content } = await render(article);
 const { title, description, date, draft, heimildir } = article.data;
 // Source text may mark titles as *italic*. When a source has no link of its own (Slóð),
 // web addresses in its text become links, so a source can cite several pages.
+// Every source link opens in a new tab, and says so to screen readers.
+const newTab = 'target="_blank" rel="noopener"';
+const newTabNote = '<span class="visually-hidden"> (opnast í nýjum flipa)</span>';
 const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const linkify = (html: string) => html.replace(/https?:\/\/[^\s<"]*[^\s<".,;:!?)]/g, (url) => `<a href="${url}">${url}</a>`);
+const linkify = (html: string) => html.replace(/https?:\/\/[^\s<"]*[^\s<".,;:!?)]/g, (url) => `<a href="${url}" ${newTab}>${url}${newTabNote}</a>`);
 const sourceHtml = (s: string, links = false) => {
   const html = escapeHtml(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   return links ? linkify(html) : html;
@@ -81,7 +84,13 @@ const related = (
               <h2 id="heimildir">Heimildaskrá</h2>
               <ol>
                 {heimildir.map((h, i) => (
-                  <li id={`heimild-${i + 1}`}>{h.slod ? <a href={h.slod} set:html={sourceHtml(h.texti)} /> : <span set:html={sourceHtml(h.texti, true)} />}</li>
+                  <li id={`heimild-${i + 1}`}>
+                    {h.slod ? (
+                      <a href={h.slod} target="_blank" rel="noopener" set:html={sourceHtml(h.texti) + newTabNote} />
+                    ) : (
+                      <span set:html={sourceHtml(h.texti, true)} />
+                    )}
+                  </li>
                 ))}
               </ol>
             </section>

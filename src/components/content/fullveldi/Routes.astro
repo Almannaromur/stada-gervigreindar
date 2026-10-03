@@ -4,13 +4,9 @@
  * itself (right), as a plain x–y plot. The vertical midline runs through the top half
  * only: with little at stake the route is the same either way (buy), so the bottom is
  * one region. The routes are small labels in their regions; the examples from the text
- * are dots.
- *
- * A switch under the plot shows one more example, „Leiðirnar geta farið saman“: one
- * system whose parts sit in all three regions, as open circles joined by a dashed line,
- * with the sentence from the text as a caption. A checkbox, so it works without script.
+ * are dots. Þýðingartól sits to the right: buying it is about what is at stake, not a
+ * judgement on what Icelandic companies can make.
  */
-import FvCircles from './FvCircles.astro';
 
 const routes = [
   { key: 'with', name: 'Byggja með öðrum' },
@@ -22,23 +18,15 @@ const routes = [
 const points = [
   { label: 'LUMI-ofurtölvan', x: 17, y: 76, ySm: 82, side: 'right' },
   { label: 'Málföng og matspróf', x: 83, y: 76, ySm: 70, side: 'left' },
-  { label: 'Þýðingartól', x: 24, y: 24, ySm: 26, side: 'right' },
+  { label: 'Þýðingartól', x: 72, y: 24, ySm: 26, side: 'left' },
 ];
-// The parts of one system, as in the text (kerfi sem styður ákvarðanir um bætur)
-const parts = [
-  { label: 'Þróun í samstarfi', x: 36, y: 61, ySm: 57, side: 'left' },
-  { label: 'Gögn, gæðamat og ákvarðanir', x: 64, y: 61, ySm: 57, side: 'right' },
-  { label: 'Tæknin keypt', x: 58, y: 30, ySm: 33, side: 'right' },
-];
-// The dashed line through them, in the plot's own coordinates (y downwards)
-const outline = (key: 'y' | 'ySm') => parts.map((p) => `${p.x},${100 - p[key]}`).join(' ');
 const description =
   'Mikið í húfi og ekki raunhæft eitt og sér: byggja með öðrum (LUMI-ofurtölvan). Mikið í húfi og raunhæft: byggja eða stjórna sjálf (málföng og matspróf). Lítið í húfi: kaupa með opnum möguleikum (þýðingartól).';
 const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%; --y: ${p.y}%; --y-sm: ${p.ySm}%`;
 ---
 
 <figure class="routes fv-mynd">
-  <p class="title"><FvCircles />Tveir ásar</p>
+  <p class="title">Tveir ásar</p>
   <div class="plot">
     <p class="axis y" aria-hidden="true">
       <span class="tick">lítið</span>
@@ -57,20 +45,6 @@ const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%;
           </span>
         ))
       }
-      <div class="example">
-        <svg class="links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <polygon class="wide" points={outline('y')} />
-          <polygon class="narrow" points={outline('ySm')} />
-        </svg>
-        {
-          parts.map((p) => (
-            <span class:list={['point', 'part', p.side]} style={pointStyle(p)}>
-              <span class="dot" />
-              <span class="label">{p.label}</span>
-            </span>
-          ))
-        }
-      </div>
     </div>
     <p class="axis x" aria-hidden="true">
       <span class="tick">lítið</span>
@@ -78,17 +52,6 @@ const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%;
       <span class="tick">mikið</span>
     </p>
   </div>
-  <div class="example-row">
-    <label class="example-button">
-      <input type="checkbox" class="example-toggle" />
-      <span class="switch" aria-hidden="true"></span>
-      Leiðir sem fara saman
-    </label>
-    <span class="example-hint">Ýttu á til að sjá dæmi.</span>
-  </div>
-  <figcaption class="example-caption">
-    Í kerfi sem styður ákvarðanir um bætur eða er notað í heilbrigðisþjónustu getur stofnun keypt tæknina, tekið þátt í samstarfi um þróun og haldið sjálf utan um gögn, gæðamat og ákvarðanir.
-  </figcaption>
 </figure>
 
 <style>
@@ -147,8 +110,10 @@ const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%;
     padding-top: 0.5rem;
   }
 
+  /* The plot is a container, so the labels can be sized against its width */
   .area {
     position: relative;
+    container-type: inline-size;
     aspect-ratio: 4 / 3;
     border-bottom: 2px solid var(--color-text-muted);
     border-left: 2px solid var(--color-text-muted);
@@ -224,12 +189,15 @@ const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%;
     transform: translate(-50%, -50%);
   }
 
+  /* A label may be as wide as the room between its dot and the centre line (the dots sit
+     a sixth of the way in from each side), so at any width it wraps before it reaches
+     the middle, and the two at the top never meet */
   .point .label {
     position: absolute;
     top: 0;
     left: 0.75rem;
     width: max-content;
-    max-width: 12rem;
+    max-width: max(4.5rem, calc(33cqi - 1rem));
     transform: translateY(-50%);
   }
 
@@ -245,146 +213,9 @@ const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%;
     line-height: 1.2;
   }
 
-  /* The example: hidden until the switch is on; then the other dots step back.
-     The checkbox lies invisibly over the switch itself, so focusing it on a click
-     never scrolls the page somewhere else. */
-  .example-toggle {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .example,
-  .example-caption {
-    display: none;
-  }
-
-  .routes:has(.example-toggle:checked) .example {
-    display: block;
-    position: absolute;
-    inset: 0;
-  }
-
-  .routes:has(.example-toggle:checked) .example-caption {
-    display: block;
-  }
-
-  .routes:has(.example-toggle:checked) .point:not(.part) {
-    opacity: 0.3;
-  }
-
-  .links {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
-
-  .links polygon {
-    fill: color-mix(in srgb, var(--cat-base) 22%, transparent);
-    stroke: var(--cat-text);
-    stroke-width: 1.5px;
-    stroke-dasharray: 5 4;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .links .narrow {
-    display: none;
-  }
-
-  .part .dot {
-    width: 0.9rem;
-    height: 0.9rem;
-    background: var(--color-surface);
-    box-shadow: inset 0 0 0 2px var(--cat-text);
-  }
-
-  .part .label {
-    color: var(--cat-text);
-  }
-
-  /* The switch and, beside it, how to use it (as under „Stoðir“) */
-  .example-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 0.875rem;
-    margin-top: 1.25rem;
-  }
-
-  .example-hint {
-    color: var(--color-text-muted);
-    font-size: var(--body-xs);
-    line-height: 1.5;
-  }
-
-  .example-button {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem 0.875rem 0.375rem 0.625rem;
-    border: 1.5px solid var(--color-line-soft);
-    border-radius: 999px;
-    font-size: var(--body-xs);
-    font-weight: 600;
-    line-height: 1.3;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .example-button:hover {
-    border-color: var(--color-text);
-  }
-
-  .routes:has(.example-toggle:focus-visible) .example-button {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
-  }
-
-  /* An empty circle when off, a full one when on */
-  .switch {
-    flex: none;
-    width: 0.75rem;
-    height: 0.75rem;
-    border: 1.5px solid var(--cat-text);
-    border-radius: 50%;
-  }
-
-  .routes:has(.example-toggle:checked) .switch {
-    background: var(--cat-text);
-  }
-
-  .example-caption {
-    margin-top: 0.75rem;
-    color: var(--color-text-muted);
-    font-size: var(--body-xs);
-    line-height: 1.5;
-  }
-
-  @media print {
-    .example-row {
-      display: none;
-    }
-  }
-
   @media (max-width: 30rem) {
     .routes {
       padding: 1.5rem 1.25rem;
-    }
-
-    .links .wide {
-      display: none;
-    }
-
-    .links .narrow {
-      display: inline;
     }
 
     /* Taller than wide, so the top half has room for its labels */
@@ -413,16 +244,5 @@ const pointStyle = (p: { x: number; y: number; ySm: number }) => `left: ${p.x}%;
 
     .label {
       font-size: 0.8125rem;
-    }
-
-    /* The dots' labels wrap onto two short lines, so the two at the top don't meet */
-    .point .label {
-      max-width: 5.5rem;
-    }
-
-    /* With the example on, the faded dots keep their place but not their labels */
-    .routes:has(.example-toggle:checked) .point:not(.part) .label {
-      visibility: hidden;
-    }
-  }
+    }  }
 </style>

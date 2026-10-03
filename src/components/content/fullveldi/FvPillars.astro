@@ -7,16 +7,19 @@
  * then pillar (1–3). Until an example is written, drafts show a placeholder; in a
  * published article a knot without an example is not clickable.
  *
- * <FvPillars e11="…" />
+ * An optional description (lysing) under the title says how to read and use the
+ * figure; without one, a short hint under the figure says to pick a knot.
+ *
+ * <FvPillars lysing="…" e11="…" />
  */
-import FvCircles from './FvCircles.astro';
 import './thread.css';
 import { pillars, threadLines } from './thread';
 
 type Key = `e${1 | 2 | 3}${1 | 2 | 3}`;
-type Props = Partial<Record<Key, string>>;
+type Props = Partial<Record<Key, string>> & { lysing?: string };
 
 const props = Astro.props;
+const lysing = (props.lysing ?? '').trim();
 const draft = Astro.locals.articleDraft ?? false;
 const crossings = threadLines.flatMap((line, i) =>
   pillars.map((pillar, j) => {
@@ -28,7 +31,8 @@ const anyOpen = crossings.some((c) => c.open);
 ---
 
 <figure class="pillars fv-mynd">
-  <p class="title"><FvCircles />Stoðir</p>
+  <p class="title">Stoðir</p>
+  {lysing && <p class="intro">{lysing}</p>}
   <div class="grid">
     {pillars.map((p, j) => <span class="pillar-name" style={`grid-column: ${j + 2}`}>{p}</span>)}
     {pillars.map((_, j) => <span class="pillar" style={`grid-column: ${j + 2}`} aria-hidden="true" />)}
@@ -46,7 +50,6 @@ const anyOpen = crossings.some((c) => c.open);
         const cell = `grid-row: ${c.i + 2}; grid-column: ${c.j + 2}`;
         return (
           <>
-            <span class="cross" style={cell} aria-hidden="true" />
             {c.open ? (
               <button type="button" class="knot" style={cell} popovertarget={c.id} aria-label={`Dæmi: ${c.i + 1} ${c.line}, ${c.pillar}`} data-fv-knot>
                 <span class="dot" aria-hidden="true" />
@@ -70,16 +73,14 @@ const anyOpen = crossings.some((c) => c.open);
       ))
     }
   </p>
-  {anyOpen && <figcaption>Veldu punkt til að sjá dæmi.</figcaption>}
+  {anyOpen && !lysing && <figcaption>Veldu punkt til að sjá dæmi.</figcaption>}
   {
     crossings
       .filter((c) => c.open)
       .map((c) => (
         <div class="pop" id={c.id} popover>
           <p class="pop-pillar">{c.pillar}</p>
-          <p class="pop-line">
-            <span class="fv-numeral">{c.i + 1}</span> {c.line}
-          </p>
+          <p class="pop-line">{c.line}</p>
           <p class:list={['pop-body', { placeholder: !c.example }]}>{c.example || 'Dæmi kemur hér.'}</p>
         </div>
       ))
@@ -154,9 +155,9 @@ const anyOpen = crossings.some((c) => c.open);
 
 <style>
   .pillars {
-    --pillar: color-mix(in srgb, var(--cat-base) 50%, var(--color-bg));
-    --pw: 2.75rem; /* pillar width */
-    --tw: 3px; /* thread width */
+    --pillar: color-mix(in srgb, var(--cat-base) 32%, var(--color-bg));
+    --pw: 1.5rem; /* pillar width */
+    --tw: 2px; /* thread width */
     margin-inline: 0;
     padding: 1.75rem 2rem;
     border-radius: var(--radius);
@@ -172,6 +173,14 @@ const anyOpen = crossings.some((c) => c.open);
     line-height: 1.3;
   }
 
+  /* The description: under the title, before the figure */
+  .intro {
+    margin: -0.625rem 0 1.75rem;
+    color: var(--color-text-muted);
+    font-size: var(--body-sm);
+    line-height: 1.5;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: 10.5rem repeat(3, minmax(0, 1fr));
@@ -183,12 +192,12 @@ const anyOpen = crossings.some((c) => c.open);
   .pillar-name {
     grid-row: 1;
     align-self: end;
+    justify-self: center;
+    max-width: 6.5rem;
     padding: 0 0.25rem 1.25rem;
-    color: var(--cat-text);
-    font-family: var(--font-serif);
-    font-size: var(--body-sm);
-    font-weight: 500;
-    line-height: 1.25;
+    font-size: var(--body-xs);
+    font-weight: 600;
+    line-height: 1.3;
     text-align: center;
     hyphens: manual;
   }
@@ -198,8 +207,8 @@ const anyOpen = crossings.some((c) => c.open);
     grid-row: 2 / -1;
     justify-self: center;
     width: var(--pw);
-    margin-block: -0.75rem;
-    border-radius: var(--radius);
+    margin-block: -0.875rem;
+    border-radius: 999px;
     background: var(--pillar);
   }
 
@@ -221,7 +230,7 @@ const anyOpen = crossings.some((c) => c.open);
     font-size: var(--h5);
   }
 
-  /* The threads run in front of the pillars, which part slightly around them */
+  /* The threads run in front of the pillars */
   .thread {
     z-index: 2;
     grid-column: 2 / -1;
@@ -229,14 +238,6 @@ const anyOpen = crossings.some((c) => c.open);
     height: var(--tw);
     border-radius: 2px;
     background: var(--cat-text);
-  }
-
-  .cross {
-    z-index: 1;
-    place-self: center;
-    width: var(--pw);
-    height: calc(var(--tw) + 6px);
-    background: var(--color-surface);
   }
 
   /* Knots: buttons where there is an example to show */
@@ -262,17 +263,16 @@ const anyOpen = crossings.some((c) => c.open);
     height: 0.75rem;
     border-radius: 50%;
     background: var(--cat-text);
-    box-shadow: 0 0 0 3px var(--pillar);
-    transition: transform 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
   }
 
   button.knot:hover .dot,
   button.knot:focus-visible .dot,
   button.knot.is-open .dot {
-    transform: scale(1.35);
-    box-shadow:
-      0 0 0 3px var(--pillar),
-      0 0 0 4.5px var(--cat-text);
+    transform: scale(1.25);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--cat-base) 55%, transparent);
   }
 
   button.knot:focus-visible {
@@ -299,12 +299,12 @@ const anyOpen = crossings.some((c) => c.open);
     transform: translate(-50%, -50%);
     width: min(17rem, calc(100vw - 1.5rem));
     margin: 0;
-    padding: 0.875rem 1rem 1rem;
+    padding: 1rem 1.125rem 1.125rem;
     overflow: visible;
     border: 1px solid var(--pop-border);
     border-radius: var(--radius-lg);
     background: var(--color-bg);
-    box-shadow: 0 10px 30px -12px rgb(61 42 39 / 0.25);
+    box-shadow: 0 12px 32px -14px rgb(61 42 39 / 0.3);
     color: var(--color-text);
     font-size: var(--body-xs);
     line-height: 1.45;
@@ -346,25 +346,26 @@ const anyOpen = crossings.some((c) => c.open);
     margin: 0;
   }
 
+  /* A small label for the pillar, the line in bold, then the example */
   .pop .pop-pillar {
     color: var(--cat-text);
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .pop .pop-line {
-    color: var(--color-text-muted);
-  }
-
-  .pop-line .fv-numeral {
-    margin-right: 0.15rem;
+    margin-top: 0.125rem;
+    font-size: var(--body-sm);
+    font-weight: 600;
+    line-height: 1.3;
   }
 
   .pop .pop-body {
-    margin-top: 0.625rem;
-    padding-top: 0.625rem;
-    border-top: 1px solid var(--color-line-soft);
+    margin-top: 0.5rem;
     font-size: var(--body-sm);
-    line-height: 1.45;
+    line-height: 1.5;
   }
 
   .pop .placeholder {
@@ -378,7 +379,7 @@ const anyOpen = crossings.some((c) => c.open);
 
   @media (max-width: 40rem) {
     .pillars {
-      --pw: 2rem;
+      --pw: 1.25rem;
       padding: 1.5rem 1.25rem;
     }
 
@@ -389,9 +390,7 @@ const anyOpen = crossings.some((c) => c.open);
 
     .pillar-name {
       padding-bottom: 1.125rem;
-      font-family: var(--font-sans);
       font-size: 0.8125rem;
-      font-weight: 700;
       overflow-wrap: normal;
     }
 
