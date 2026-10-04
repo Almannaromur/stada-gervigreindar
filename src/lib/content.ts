@@ -23,6 +23,20 @@ export async function getAllArticles(): Promise<Article[]> {
   return (await getCollection('greinar')).sort(newestFirst);
 }
 
+/**
+ * „Nýjar greinar“ on the homepage: the articles picked in the editor (Uppsetning → Forsíða,
+ * src/content/forsida.yaml) in their order, then the newest published ones in the places left.
+ * Drafts and missing picks are skipped, so a pick shows up once its article is published.
+ */
+export async function getHomeArticles(count = 3): Promise<Article[]> {
+  const slugs = (await getEntry('forsida', 'forsida'))?.data.greinar ?? [];
+  const picked = (await Promise.all(slugs.map((slug) => getEntry('greinar', slug)))).filter(
+    (article): article is Article => article !== undefined && !article.data.draft,
+  );
+  const all = [...picked, ...(await getArticles())];
+  return all.filter((a, i) => all.findIndex((b) => b.id === a.id) === i).slice(0, count);
+}
+
 export async function getCategory(article: Article): Promise<Category> {
   const category = await getEntry(article.data.category);
   if (!category) throw new Error(`Grein "${article.id}" vísar í flokk sem er ekki til: ${article.data.category.id}`);

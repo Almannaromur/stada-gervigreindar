@@ -1,4 +1,4 @@
-import { collection, config, fields } from '@keystatic/core';
+import { collection, config, fields, singleton } from '@keystatic/core';
 import { components } from './src/editor/components';
 import { categoryArtwork, categoryColors } from './src/lib/colors';
 
@@ -12,8 +12,25 @@ export default config({
     brand: { name: 'Staða gervigreindar' },
     navigation: {
       Efni: ['greinar'],
-      Uppsetning: ['flokkar', 'authors', 'einkunnir'],
+      Uppsetning: ['forsida', 'flokkar', 'authors', 'einkunnir'],
     },
+  },
+
+  singletons: {
+    forsida: singleton({
+      label: 'Forsíða',
+      path: 'src/content/forsida',
+      format: 'yaml',
+      schema: {
+        greinar: fields.array(fields.relationship({ label: 'Grein', collection: 'greinar', validation: { isRequired: true } }), {
+          label: 'Greinar á forsíðu',
+          description:
+            'Allt að þrjár greinar undir „Nýjar greinar“, í þessari röð. Greinar í drögum birtast þegar þær eru birtar. Nýjustu greinarnar fylla í laus sæti.',
+          validation: { length: { max: 3 } },
+          itemLabel: (props) => props.value ?? 'Veldu grein',
+        }),
+      },
+    }),
   },
 
   collections: {

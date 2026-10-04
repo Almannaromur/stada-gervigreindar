@@ -2,13 +2,11 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ArticlePanel from '@/components/ArticlePanel.astro';
 import CategoryCard from '@/components/CategoryCard.astro';
-import { getArticles, getCategories, getCategory } from '@/lib/content';
+import { getCategories, getCategory, getHomeArticles } from '@/lib/content';
 import { site } from '@/site';
 
 const categories = await getCategories();
-const latest = await Promise.all(
-  (await getArticles()).slice(0, 3).map(async (article) => ({ article, category: await getCategory(article) })),
-);
+const latest = await Promise.all((await getHomeArticles()).map(async (article) => ({ article, category: await getCategory(article) })));
 ---
 
 <BaseLayout backdrop="brand">

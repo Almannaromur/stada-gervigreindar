@@ -81,4 +81,14 @@ const einkunnir = defineCollection({
   }),
 });
 
-export const collections = { authors, flokkar, greinar, einkunnir };
+// Homepage settings (Keystatic singleton „Forsíða“): src/content/forsida.yaml
+// Article slugs as plain strings, so a removed article is skipped instead of failing the build
+const forsida = defineCollection({
+  loader: glob({ pattern: 'forsida.yaml', base: './src/content' }),
+  schema: z.object({
+    /** Articles picked for „Nýjar greinar“, in order */
+    greinar: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = { authors, flokkar, greinar, einkunnir, forsida };
