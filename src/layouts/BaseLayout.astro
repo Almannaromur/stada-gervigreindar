@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import Analytics from '@vercel/analytics/astro';
 import '@/styles/global.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
@@ -56,6 +57,9 @@ const backdropStyle = backdropArt ? `background-image: url(${backdropArt})` : un
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Vercel Web Analytics (cookieless page views; reports only on the Vercel deployment) -->
+    <Analytics />
   </head>
   <body style={style}>
     {backdrop && <div class:list={['backdrop', backdrop === 'brand' ? 'brand' : 'art']} style={backdropStyle} aria-hidden="true" />}

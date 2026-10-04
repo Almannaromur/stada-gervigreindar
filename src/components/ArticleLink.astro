@@ -1,0 +1,31 @@
+---
+/**
+ * Every link written in an article's text ([texti](slóð) in the editor) goes through
+ * here (src/pages/greinar/[slug].astro passes it to the MDX content as `a`):
+ * links to other sites and documents in /skjol/ open in a new tab, and say so to
+ * screen readers; links within the site (other articles, /sjalfsmat, #anchors) stay
+ * in the same tab.
+ */
+interface Props {
+  href?: string;
+  [attribute: string]: unknown;
+}
+
+const { href = '', ...rest } = Astro.props;
+const site = Astro.site?.origin;
+const otherSite = /^https?:\/\//i.test(href) && !(site && href.startsWith(site));
+const newTab = otherSite || href.startsWith('/skjol/');
+---
+
+{
+  newTab ? (
+    <a href={href} target="_blank" rel="noopener" {...rest}>
+      <slot />
+      <span class="visually-hidden"> (opnast í nýjum flipa)</span>
+    </a>
+  ) : (
+    <a href={href} {...rest}>
+      <slot />
+    </a>
+  )
+}

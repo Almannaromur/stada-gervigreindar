@@ -45,9 +45,9 @@ const current = Astro.url.pathname.replace(/\/$/, '');
         </div>
       </details>
 
-      <a href={site.org.url} class="pill org-link">
+      <a href={site.org.url} class="pill org-link" target="_blank" rel="noopener">
         {site.org.name}.is <Icon name="external" />
-        <span class="visually-hidden">(opnast á öðrum vef)</span>
+        <span class="visually-hidden">(opnast á öðrum vef, í nýjum flipa)</span>
       </a>
     </nav>
   </div>

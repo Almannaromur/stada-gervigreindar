@@ -2,6 +2,7 @@
 import { getEntry, render } from 'astro:content';
 import '@/styles/prose.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleLink from '@/components/ArticleLink.astro';
 import ArticlePanel from '@/components/ArticlePanel.astro';
 import BackButton from '@/components/BackButton.astro';
 import Byline from '@/components/Byline.astro';
@@ -76,7 +77,7 @@ const related = (
       </header>
 
       <div class="prose">
-        <Content components={contentComponents} />
+        <Content components={{ ...contentComponents, a: ArticleLink }} />
 
         {
           heimildir.length > 0 && (
