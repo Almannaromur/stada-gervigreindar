@@ -32,7 +32,7 @@ const answers = [
 
 <figure class="assessment fv-mynd">
   <p class="title">Matsspjald</p>
-  <ol class="rows">
+  <ol class="rows" role="list">
     {
       rows.map((r, i) => (
         <li class="row">
@@ -49,7 +49,7 @@ const answers = [
   </ol>
   <div class="answers">
     <p class="answers-label">Svarmöguleikar</p>
-    <ul class="answer-list">
+    <ul class="answer-list" role="list">
       {
         answers.map((a) => (
           <li class="answer">

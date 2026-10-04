@@ -57,14 +57,20 @@
   margin-top: 0.3em;
 }
 
+/* Links in the text keep the text colour (readable in every category) and are
+   underlined in the category colour, one unbroken line just below the descenders
+   (no gaps at j, g, þ); on hover the line darkens, at once. Components with their
+   own link style (box titles, references [n]) keep theirs. */
 .prose a {
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  text-decoration-line: underline;
+  text-decoration-color: var(--cat-base);
+  text-decoration-thickness: 2px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.26em;
 }
 
 .prose a:hover {
-  text-decoration-color: var(--cat-base);
-  text-decoration-thickness: 2px;
+  text-decoration-color: var(--cat-text);
 }
 
 .prose strong {
