@@ -1,0 +1,190 @@
+---
+/**
+ * „Leit“: full-text search over the published articles, in the browser. Every article is
+ * rendered as a hidden result; the script shows the ones whose title, summary, text, author
+ * or tags contain every word searched for, best match first. The query is kept in ?q=.
+ */
+import { getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import BackButton from '@/components/BackButton.astro';
+import { articleText, getArticles, getCategory } from '@/lib/content';
+
+const results = await Promise.all(
+  (await getArticles()).map(async (article) => ({
+    article,
+    category: await getCategory(article),
+    author: (await getEntry(article.data.author))?.data.name ?? '',
+  })),
+);
+const index = results.map(({ article, category, author }) => ({
+  id: article.id,
+  title: article.data.title,
+  description: article.data.description,
+  author,
+  tags: [category.data.name, article.data.opinion ? 'Skoðanapistill' : ''].join(' '),
+  body: articleText(article)
+    .replace(/[#*_>|[\]]+/g, ' ')
+    .replace(/\s+/g, ' '),
+}));
+// Every "<" escaped, so no text in the index can end its script element early
+const indexJson = JSON.stringify(index).replace(/</g, '\\u003c');
+---
+
+<BaseLayout title="Leit" description="Leit í greinum á Stöðu gervigreindar.">
+  <div class="container page">
+    <header class="intro">
+      <BackButton href="/" />
+      <h1>Leit</h1>
+      <form role="search" action="/leit" data-search>
+        <label for="q" class="visually-hidden">Leita í greinum</label>
+        <input id="q" name="q" type="search" placeholder="Leita í greinum" autocomplete="off" spellcheck="false" />
+      </form>
+      <noscript><p class="status">Leitin virkar aðeins með JavaScript.</p></noscript>
+    </header>
+
+    <p class="status" role="status" data-status></p>
+    <ol class="results" data-results>
+      {
+        results.map(({ article, category }) => (
+          <li data-id={article.id} hidden>
+            <ArticleCard article={article} category={category} headingLevel="h2" />
+          </li>
+        ))
+      }
+    </ol>
+    <script is:inline type="application/json" data-search-index set:html={indexJson} />
+  </div>
+</BaseLayout>
+
+<script>
+  interface Entry {
+    id: string;
+    title: string;
+    description: string;
+    author: string;
+    tags: string;
+    body: string;
+  }
+
+  // Lower case and without accents, so „log“ finds „lög“ and „ahrif“ finds „áhrif“
+  const fold = (s: string) => s.toLocaleLowerCase('is').normalize('NFD').replace(/\p{M}/gu, '');
+  const count = (text: string, word: string) => text.split(word).length - 1;
+
+  const form = document.querySelector<HTMLFormElement>('[data-search]');
+  const input = form?.querySelector('input');
+  const list = document.querySelector<HTMLOListElement>('[data-results]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  const index: Entry[] = JSON.parse(document.querySelector('[data-search-index]')?.textContent ?? '[]');
+
+  if (form && input && list && status) {
+    const items = new Map([...list.querySelectorAll<HTMLLIElement>('li[data-id]')].map((li) => [li.dataset.id, li]));
+    const entries = index.map((e) => ({
+      id: e.id,
+      title: fold(e.title),
+      meta: fold(`${e.description} ${e.author} ${e.tags}`),
+      body: fold(e.body),
+    }));
+
+    // Every word must appear somewhere. Hits in the title count most, then the summary,
+    // author and tags, then the text; ties keep the newest first
+    const search = (query: string) => {
+      const words = fold(query).split(/\s+/).filter(Boolean);
+      const hits = words.length
+        ? entries
+            .filter((e) => words.every((w) => e.title.includes(w) || e.meta.includes(w) || e.body.includes(w)))
+            .map((e) => ({ id: e.id, score: words.reduce((sum, w) => sum + 10 * count(e.title, w) + 3 * count(e.meta, w) + Math.min(count(e.body, w), 10), 0) }))
+            .sort((a, b) => b.score - a.score)
+        : [];
+
+      for (const li of items.values()) li.hidden = true;
+      for (const { id } of hits) {
+        const li = items.get(id);
+        if (!li) continue;
+        li.hidden = false;
+        list.append(li);
+      }
+
+      const n = hits.length;
+      status.textContent = !words.length
+        ? ''
+        : n === 0
+          ? `Engar niðurstöður fyrir „${query.trim()}“.`
+          : `${n} ${n % 10 === 1 && n % 100 !== 11 ? 'niðurstaða' : 'niðurstöður'}`;
+    };
+
+    const update = () => {
+      search(input.value);
+      const url = new URL(location.href);
+      if (input.value.trim()) url.searchParams.set('q', input.value);
+      else url.searchParams.delete('q');
+      history.replaceState(null, '', url);
+    };
+
+    input.value = new URLSearchParams(location.search).get('q') ?? '';
+    search(input.value);
+    if (!input.value) input.focus();
+    input.addEventListener('input', update);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      update();
+      input.blur();
+    });
+  }
+</script>
+
+<style>
+  .intro {
+    padding-block: clamp(3rem, 8vw, 6rem) 2rem;
+  }
+
+  h1 {
+    margin-top: 1.75rem;
+  }
+
+  .page {
+    max-width: calc(var(--article-width) + 2 * var(--gutter));
+  }
+
+  form {
+    margin-top: 2rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-line-soft);
+    border-radius: var(--radius);
+    background: var(--color-white);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--body-md);
+  }
+
+  input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  input:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 0;
+  }
+
+  .status {
+    margin: 0 0 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+/**
+ * „Efnisyfirlit“ for an article: links to its main (h2) headings.
+ * Either sticky in the side column (wide screens) or `collapsible`: a box that opens
+ * on click (above the text on narrower screens).
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { slug: string; text: string }[];
+  collapsible?: boolean;
+}
+
+const { items, collapsible = false } = Astro.props;
+const Wrapper = collapsible ? 'details' : 'div';
+---
+
+<Wrapper class:list={['toc', collapsible ? 'collapsible' : 'side']}>
+  {
+    collapsible && (
+      <summary>
+        Efnisyfirlit <Icon name="chevron-down" class="chevron" />
+      </summary>
+    )
+  }
+  <nav aria-label="Efnisyfirlit">
+    {!collapsible && <p class="title" aria-hidden="true">Efnisyfirlit</p>}
+    <ol>
+      {
+        items.map(({ slug, text }) => (
+          <li>
+            <a href={`#${slug}`}>{text}</a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</Wrapper>
+
+<style>
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li + li {
+    margin-top: 0.5rem;
+  }
+
+  a {
+    display: block;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .title {
+    margin: 0 0 1rem;
+    font-weight: 600;
+  }
+
+  /* Side column: stays in view while the article scrolls, below the sticky site header */
+  .side {
+    position: sticky;
+    top: 6.5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    font-size: var(--body-xs);
+  }
+
+  .collapsible {
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary :global(.chevron) {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--color-text-muted);
+  }
+
+  .collapsible[open] :global(.chevron) {
+    transform: rotate(180deg);
+  }
+
+  .collapsible nav {
+    padding: 0.25rem 1rem 1.25rem;
+  }
+</style>

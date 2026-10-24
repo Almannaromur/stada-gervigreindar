@@ -1,7 +1,7 @@
 ---
 /**
- * Horizontal bar chart. Each bar is a <Bar>; widths are relative to `max`, and
- * the last bar is drawn in the full category colour.
+ * Horizontal bar chart. Each bar is a <Bar>; widths are relative to `max`. The bars
+ * marked `highlight` are drawn in the full category colour, or the last bar if none is.
  *
  * <BarChart title="Notkun gervigreindar í lögfræðiþjónustu" caption="Heimild: 8am, 2026 Legal Industry Report.">
  *   <Bar label="2025" value={31} />
@@ -44,7 +44,7 @@ const { title, caption, max = 100, unit = '%' } = Astro.props;
   /* One grid for all bars (each Bar's parts join it), so the bars line up */
   .bars {
     display: grid;
-    grid-template-columns: minmax(3rem, max-content) minmax(0, 1fr) 3.5rem;
+    grid-template-columns: minmax(3rem, max-content) minmax(0, 1fr) minmax(3.5rem, max-content);
     align-items: center;
     gap: 0.75rem 0.875rem;
   }

@@ -8,9 +8,12 @@ import BackButton from '@/components/BackButton.astro';
 import Byline from '@/components/Byline.astro';
 import CategoryCta from '@/components/CategoryCta.astro';
 import CategoryDot from '@/components/CategoryDot.astro';
+import OpinionTag from '@/components/OpinionTag.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import { customArticlePages } from '@/layouts/articles';
 import { categoryVars } from '@/lib/colors';
 import * as contentComponents from '@/components/content';
-import { categoryUrl, formatDate, getAllArticles, getArticles, getCategories, getCategory, isoDate, nextArticle, readingPath, type Article } from '@/lib/content';
+import { categoryUrl, formatDate, getAllArticles, getArticles, getCategories, getCategory, isoDate, nextArticle, opinionCategoryId, readingPath, type Article } from '@/lib/content';
 
 export async function getStaticPaths() {
   const path = readingPath(await getArticles(), await getCategories());
@@ -29,8 +32,23 @@ interface Props {
 const { article, next } = Astro.props;
 const category = await getCategory(article);
 const nextCategory = next && (await getCategory(next));
-const { Content } = await render(article);
+const { Content, headings } = await render(article);
 const { title, description, date, draft, heimildir } = article.data;
+// „Efnisyfirlit“: the article's h2 headings, then the sources. Text before the first h2
+// (most articles open without one) is listed as „Inngangur“, linking to the top of the
+// text; a Disclosure (e.g. „Hagsmunir“) up there doesn't count. Articles without h2s get none.
+const sections = headings.filter((h) => h.depth === 2).map(({ slug, text }) => ({ slug, text: text.trim() }));
+const body = article.body ?? '';
+const firstHeading = body.search(/^## /m);
+const intro = firstHeading > 0 && body.slice(0, firstHeading).replace(/<Disclosure\b[^>]*\/>|<Disclosure\b[\s\S]*?<\/Disclosure>/g, '').trim() !== '';
+const toc =
+  sections.length > 0
+    ? [
+        ...(intro ? [{ slug: 'inngangur', text: 'Inngangur' }] : []),
+        ...sections,
+        ...(heimildir.length > 0 ? [{ slug: 'heimildir', text: 'Heimildaskrá' }] : []),
+      ]
+    : [];
 // Source text may mark titles as *italic*. When a source has no link of its own (Slóð),
 // web addresses in its text become links, so a source can cite several pages.
 // Every source link opens in a new tab, and says so to screen readers.
@@ -45,6 +63,8 @@ const sourceHtml = (s: string, links = false) => {
 // Lets content components find images stored next to this article
 Astro.locals.articleId = article.id;
 Astro.locals.articleDraft = article.data.draft;
+// One-off articles with a page design of their own (src/layouts/articles) use it instead
+const CustomPage = customArticlePages[article.id];
 // Related articles ("Tengt efni"): missing ones, the article itself and drafts are left out
 // (drafts are shown when this article is a draft too, for preview)
 const related = (
@@ -58,69 +78,106 @@ const related = (
 ).filter((item) => item !== undefined);
 ---
 
-<BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
-  <div class="container layout">
-    <div class="back"><BackButton href={categoryUrl(category)} /></div>
+{
+  CustomPage ? (
+    <CustomPage article={article} category={category} />
+  ) : (
+    <BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
+      <div class="container layout">
+        <div class="back"><BackButton href={categoryUrl(category)} /></div>
 
-    <article class="article">
-      {draft && <p class="draft-banner" role="status">Drög: þessi grein er ekki birt. Hún sést aðeins þeim sem hafa slóðina.</p>}
-      <header>
-        <p class="meta">
-          <a href={categoryUrl(category)} class="category">
-            <CategoryDot color={category.data.color} size="lg" />
-            {category.data.name}
-          </a>
-          <time datetime={isoDate(date)}>{formatDate(date)}</time>
-        </p>
-        <h1>{title}</h1>
-        <Byline article={article} />
-      </header>
+        <article class="article">
+          {draft && <p class="draft-banner" role="status">Drög: þessi grein er ekki birt. Hún sést aðeins þeim sem hafa slóðina.</p>}
+          {
+            draft && category.id === opinionCategoryId && (
+              <p class="draft-banner" role="note">
+                Veljið flokk eftir efni greinarinnar í stað „{category.data.name}“ og hakið við „Skoðanapistill“. (Sést aðeins í drögum.)
+              </p>
+            )
+          }
+          <header>
+            <p class="meta">
+              <span class="tags">
+                <a href={categoryUrl(category)} class="category">
+                  <CategoryDot color={category.data.color} size="lg" />
+                  {category.data.name}
+                </a>
+                {article.data.opinion && <OpinionTag link />}
+              </span>
+              <span class="when">
+                <time datetime={isoDate(date)}>{formatDate(date)}</time>
+                {/* Reading time is hidden until it's calculated better; to show it again, restore
+                    this line and the readingMinutes import:
+                    <span class="reading-time">{readingMinutes(article)} mín lestur</span> */}
+              </span>
+            </p>
+            <h1>{title}</h1>
+            <Byline article={article} />
+          </header>
 
-      <div class="prose">
-        <Content components={{ ...contentComponents, a: ArticleLink }} />
+          {
+            toc.length > 0 && (
+              <div class="toc-inline">
+                <TableOfContents items={toc} collapsible />
+              </div>
+            )
+          }
+
+          <div class="prose" id={intro ? 'inngangur' : undefined}>
+            <Content components={{ ...contentComponents, a: ArticleLink }} />
+
+            {
+              heimildir.length > 0 && (
+                <section class="sources" aria-labelledby="heimildir">
+                  <h2 id="heimildir">Heimildaskrá</h2>
+                  <ol>
+                    {heimildir.map((h, i) => (
+                      <li id={`heimild-${i + 1}`}>
+                        {h.slod ? (
+                          <a href={h.slod} target="_blank" rel="noopener" set:html={sourceHtml(h.texti) + newTabNote} />
+                        ) : (
+                          <span set:html={sourceHtml(h.texti, true)} />
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+              )
+            }
+          </div>
+        </article>
 
         {
-          heimildir.length > 0 && (
-            <section class="sources" aria-labelledby="heimildir">
-              <h2 id="heimildir">Heimildaskrá</h2>
-              <ol>
-                {heimildir.map((h, i) => (
-                  <li id={`heimild-${i + 1}`}>
-                    {h.slod ? (
-                      <a href={h.slod} target="_blank" rel="noopener" set:html={sourceHtml(h.texti) + newTabNote} />
-                    ) : (
-                      <span set:html={sourceHtml(h.texti, true)} />
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </section>
+          toc.length > 0 && (
+            <div class="toc-side">
+              <TableOfContents items={toc} />
+            </div>
+          )
+        }
+
+        {
+          related.length > 0 && (
+            <div class="related">
+              <ArticlePanel title="Tengt efni" items={related} />
+            </div>
+          )
+        }
+
+        {
+          next && nextCategory && (
+            <div class="next-article">
+              <ArticlePanel title="Næsta grein" items={[{ article: next, category: nextCategory }]} />
+            </div>
           )
         }
       </div>
-    </article>
 
-    {
-      related.length > 0 && (
-        <div class="related">
-          <ArticlePanel title="Tengt efni" items={related} />
-        </div>
-      )
-    }
-
-    {
-      next && nextCategory && (
-        <div class="next-article">
-          <ArticlePanel title="Næsta grein" items={[{ article: next, category: nextCategory }]} />
-        </div>
-      )
-    }
-  </div>
-
-  <div class="container category-cta">
-    <CategoryCta heading="Flokkur" category={category} />
-  </div>
-</BaseLayout>
+      <div class="container category-cta">
+        <CategoryCta heading="Flokkur" category={category} />
+      </div>
+    </BaseLayout>
+  )
+}
 
 <style>
   .layout {
@@ -165,6 +222,13 @@ const related = (
     background: var(--color-surface);
   }
 
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+
   .category {
     display: inline-flex;
     align-items: center;
@@ -185,14 +249,63 @@ const related = (
     font-weight: 600;
   }
 
-  .meta time {
+  /* Date and reading time: "5. október 2026 · 7 mín lestur", stacked on phones */
+  .when {
+    display: flex;
     flex: none;
+    gap: 0.5rem;
     color: var(--color-text-muted);
     white-space: nowrap;
   }
 
+  .reading-time::before {
+    content: '·';
+    content: '·' / '';
+    margin-right: 0.5rem;
+  }
+
+  @media (max-width: 39.99rem) {
+    .when {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+    }
+
+    .reading-time::before {
+      display: none;
+    }
+  }
+
   h1 {
     font-size: var(--h1);
+  }
+
+  .toc-inline {
+    margin-bottom: 2.75rem;
+  }
+
+  .toc-side {
+    display: none;
+  }
+
+  /* Wide screens: the contents move to the left-hand column under „Til baka“, reaching
+     the article's end so the sticky list stops there. Room is left on the right for the
+     hanging numerals of the fullveldi article. Narrower, the column is too slim */
+  @media (min-width: 75rem) {
+    .layout {
+      grid-template-rows: auto 1fr;
+    }
+
+    .toc-inline {
+      display: none;
+    }
+
+    .toc-side {
+      display: block;
+      grid-column: 1;
+      grid-row: 2;
+      padding: 2.5rem 2rem 0 0;
+    }
   }
 
   .related,

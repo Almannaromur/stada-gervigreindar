@@ -240,6 +240,10 @@ export const components = {
     schema: {
       label: fields.text({ label: 'Heiti', description: 'T.d. ártal', validation: { length: { min: 1 } } }),
       value: fields.number({ label: 'Gildi', validation: { isRequired: true } }),
+      highlight: fields.checkbox({
+        label: 'Áhersla',
+        description: 'Súlan í fullum lit. Ef engin súla í ritinu er merkt fær sú síðasta fullan lit.',
+      }),
     },
   }),
 
@@ -460,6 +464,115 @@ export const components = {
       faerni: fields.relationship({ label: pillars[1], collection: 'greinar' }),
       reiknigeta: fields.relationship({ label: pillars[2], collection: 'greinar' }),
       stada: fields.relationship({ label: 'Staða Íslands og samanburður við önnur ríki', collection: 'greinar' }),
+    },
+  }),
+
+  // For "ChatGPT í yfirburðastöðu á Íslandi" (Gallup 2026), which has a page of its own
+  GallupHero: wrapper({
+    label: 'Gallup: haus',
+    description: 'Efst í Gallup-greininni, á litaborða: flokkur, titill, inngangurinn (textinn hér) og höfundur. Titill, flokkur og höfundur koma úr reitum greinarinnar.',
+    schema: {},
+  }),
+
+  GallupStats: repeating({
+    label: 'Gallup: lykiltölur',
+    description: 'Lykiltölur í fjórum dálkum. Bætið við tölu með „Insert“.',
+    children: ['GallupStat'],
+    validation: { children: { min: 1 } },
+    schema: {},
+  }),
+
+  GallupStat: wrapper({
+    label: 'Gallup: lykiltala',
+    forSpecificLocations: true,
+    schema: {
+      name: fields.text({ label: 'Heiti', description: 'T.d. ChatGPT', validation: { length: { min: 1 } } }),
+      logo: articleImage('Merki', 'Valfrjálst'),
+      logoFill: fields.checkbox({ label: 'Merkið fyllir reitinn', description: 'Fyrir forritstákn (ferningur með eigin bakgrunni)' }),
+      value: fields.text({ label: 'Tala', description: 'T.d. 89%' }),
+      rank: fields.integer({ label: 'Sæti', description: 'Valfrjálst, í stað tölu: sæti í keppni, sýnt með reit fyrir hvern keppanda' }),
+      total: fields.integer({ label: 'Fjöldi keppenda' }),
+      shortlisted: fields.integer({ label: 'Fjöldi í mannlegu mati', description: 'Efstu sætin, lituð' }),
+    },
+  }),
+
+  GallupChart: repeating({
+    label: 'Gallup: graf',
+    description: 'Súlur, spjöld með súlum (tvö hlið við hlið) eða kaka. Bætið við með „Insert“.',
+    children: ['GallupBar', 'GallupPanel', 'GallupDonut'],
+    validation: { children: { min: 1 } },
+    schema: {
+      title: fields.text({ label: 'Fyrirsögn' }),
+      sub: fields.text({ label: 'Skýring', description: 'Undir grafinu. Hver lína verður sér málsgrein.', multiline: true }),
+      caption: fields.text({ label: 'Heimild', description: 'Smátt letur neðst', multiline: true }),
+      unit: fields.text({ label: 'Eining', description: 'Á eftir hverri tölu', defaultValue: '%' }),
+      labelWidth: fields.text({ label: 'Breidd heita', description: 'Valfrjálst, t.d. 15rem. Annars jafnbreitt lengsta heitinu.' }),
+      legend: fields.checkbox({ label: 'Litaskýring', description: 'Ráðandi tól, íslenskt tól, annað' }),
+      wide: fields.checkbox({ label: 'Breitt graf' }),
+      icons: fields.checkbox({ label: 'Tákn við súlur', description: 'Manneskja við mannlega þýðingu, vél við aðrar' }),
+      reference: fields.number({ label: 'Viðmiðunarlína', description: 'Valfrjálst. Strikalína í gegnum súlurnar við þetta gildi' }),
+      footnote: fields.text({ label: 'Neðanmálsgrein', multiline: true }),
+    },
+  }),
+
+  GallupPanel: repeating({
+    label: 'Gallup: spjald',
+    description: 'Lítið súlurit innan grafs; tvö hlið við hlið.',
+    forSpecificLocations: true,
+    children: ['GallupBar'],
+    validation: { children: { min: 1 } },
+    schema: {
+      title: fields.text({ label: 'Fyrirsögn', validation: { length: { min: 1 } } }),
+      base: fields.text({ label: 'Grunnur', description: 'T.d. Grunnur: 494 sem nota spjallmenni' }),
+      n: fields.integer({ label: 'Fjöldi í grunni', description: 'Valfrjálst. Með heildarfjölda sést hlutfall og mjór borði' }),
+      total: fields.integer({ label: 'Heildarfjöldi svarenda' }),
+      labelWidth: fields.text({ label: 'Breidd heita', description: 'Valfrjálst, t.d. 10rem' }),
+    },
+  }),
+
+  GallupBar: block({
+    label: 'Gallup: súla',
+    forSpecificLocations: true,
+    schema: {
+      label: fields.text({ label: 'Heiti', validation: { length: { min: 1 } } }),
+      value: fields.number({ label: 'Gildi' }),
+      tone: fields.select({
+        label: 'Litur',
+        options: [
+          { label: 'Annað', value: '' },
+          { label: 'Ráðandi tól', value: 'accent' },
+          { label: 'Íslenskt tól', value: 'icelandic' },
+          { label: 'Mannleg þýðing (viðmið)', value: 'human' },
+          { label: 'Utan mats (texti í stað súlu)', value: 'outside' },
+        ],
+        defaultValue: '',
+      }),
+      note: fields.text({ label: 'Texti í stað súlu', description: 'Aðeins fyrir „Utan mats“' }),
+    },
+  }),
+
+  GallupDonut: block({
+    label: 'Gallup: kaka',
+    forSpecificLocations: true,
+    schema: {
+      slices: fields.text({
+        label: 'Sneiðar',
+        description: 'Heiti og gildi, aðskilin með semíkommu, t.d. Mjög miklu: 32,2; Frekar miklu: 29,9',
+        validation: { length: { min: 1 } },
+      }),
+      center: fields.text({ label: 'Í miðju', description: 'T.d. 62%' }),
+      centerLabel: fields.text({ label: 'Undir miðju', description: 'T.d. miklu máli' }),
+      label: fields.text({ label: 'Lýsing fyrir skjálesara' }),
+    },
+  }),
+
+  GallupMethod: wrapper({
+    label: 'Gallup: aðferðafræði',
+    description: 'Spjald með hnappi sem opnar textann hér í glugga. Glugginn opnast líka beint með slóðinni …#adferdafraedi.',
+    schema: {
+      text: fields.text({ label: 'Texti á spjaldi' }),
+      button: fields.text({ label: 'Texti á hnappi', defaultValue: 'Opna aðferðafræði' }),
+      title: fields.text({ label: 'Titill glugga', defaultValue: 'Aðferðafræði' }),
     },
   }),
 };

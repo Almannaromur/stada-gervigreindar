@@ -1,0 +1,41 @@
+---
+/**
+ * A small chart in a GallupChart, two side by side. With `n` and `total` (e.g. 494 of 814
+ * respondents) the base is shown with its share and a thin strip; otherwise `base` is one line.
+ *
+ * <GallupPanel title="Spjallmenni" base="Grunnur: 494 sem nota spjallmenni" n={494} total={814}>
+ *   <GallupBar label="ChatGPT" value={88.9} tone="accent" />
+ * </GallupPanel>
+ */
+interface Props {
+  title: string;
+  base?: string;
+  n?: number | null;
+  total?: number | null;
+  /** Width of the bar labels, e.g. 10rem */
+  labelWidth?: string;
+}
+
+const { title, base, n, total, labelWidth } = Astro.props;
+const share = n && total ? (n / total) * 100 : undefined;
+---
+
+<section class="g-panel" style={labelWidth ? `--label-w: ${labelWidth}` : undefined}>
+  <h4>{title}</h4>
+  {
+    share !== undefined ? (
+      <>
+        <div class="base">
+          <span>{base}</span>
+          <span>{Math.round(share)}% svarenda</span>
+        </div>
+        <div class="strip" role="img" aria-label={`${n} af ${total} svarendum`}>
+          <span style={`width: ${share.toFixed(1)}%`} />
+        </div>
+      </>
+    ) : (
+      base && <p class="base-line">{base}</p>
+    )
+  }
+  <div class="g-bars"><slot /></div>
+</section>

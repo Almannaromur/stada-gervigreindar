@@ -1,4 +1,6 @@
 ---
+import { getEntry } from 'astro:content';
+import OpinionTag from './OpinionTag.astro';
 import { categoryVars } from '@/lib/colors';
 import { articleUrl, formatDate, isoDate, type Article, type Category } from '@/lib/content';
 
@@ -11,13 +13,20 @@ interface Props {
 }
 
 const { article, category, excerpt = false, headingLevel: Heading = 'h3' } = Astro.props;
+const author = await getEntry(article.data.author);
 ---
 
 <a href={articleUrl(article)} class:list={['card', { 'with-excerpt': excerpt }]} style={categoryVars(category.data.color)}>
-  <span class="tag">{category.data.name}</span>
+  <span class="tags">
+    <span class="tag">{category.data.name}</span>
+    {article.data.opinion && <OpinionTag />}
+  </span>
   <Heading class="title">{article.data.title}</Heading>
   {excerpt && <p class="excerpt">{article.data.description}</p>}
-  <time datetime={isoDate(article.data.date)}>{formatDate(article.data.date)}</time>
+  <p class="byline">
+    {author && <><span class="author">{author.data.name}</span> · </>}
+    <time datetime={isoDate(article.data.date)}>{formatDate(article.data.date)}</time>
+  </p>
 </a>
 
 <style>
@@ -35,6 +44,13 @@ const { article, category, excerpt = false, headingLevel: Heading = 'h3' } = Ast
   .card:hover {
     background: var(--color-hover);
     box-shadow: var(--shadow-1);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.75rem;
   }
 
   .tag {
@@ -67,7 +83,17 @@ const { article, category, excerpt = false, headingLevel: Heading = 'h3' } = Ast
     -webkit-box-orient: vertical;
   }
 
-  time {
+  /* Author, then the date: "Atli Þór Jóhannsson · 5. október 2026" */
+  .byline {
+    margin: 0;
     color: var(--color-text-muted);
+  }
+
+  .author {
+    color: var(--color-text);
+  }
+
+  time {
+    white-space: nowrap;
   }
 </style>

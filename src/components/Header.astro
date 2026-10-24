@@ -3,6 +3,7 @@ import Icon from './Icon.astro';
 import CategoryDot from './CategoryDot.astro';
 import FooterInfo from './FooterInfo.astro';
 import { categoryUrl, getCategories } from '@/lib/content';
+import { boxIcons } from '@/lib/icons';
 import { site } from '@/site';
 
 const categories = await getCategories();
@@ -16,6 +17,11 @@ const current = Astro.url.pathname.replace(/\/$/, '');
     </a>
 
     <nav aria-label="Aðalvalmynd" class="nav">
+      <a href="/leit" class="pill search-link" aria-current={current === '/leit' ? 'page' : undefined}>
+        <svg class="icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false" set:html={boxIcons['magnifying-glass'].svg} />
+        <span class="search-label">Leit</span>
+      </a>
+
       <details class="menu" data-menu>
         <summary class="pill menu-button">
           <span class="desktop-label">Flokkar <Icon name="chevron-down" class="chevron" /></span>
@@ -133,6 +139,7 @@ const current = Astro.url.pathname.replace(/\/$/, '');
   }
 
   .pill:hover,
+  .pill[aria-current='page'],
   .menu[open] > .pill {
     background: var(--color-white);
   }
@@ -236,14 +243,26 @@ const current = Astro.url.pathname.replace(/\/$/, '');
       display: inline-flex;
     }
 
-    .menu-button {
+    .menu-button,
+    .search-link {
       padding: 0.5rem;
     }
 
-    .menu-button :global(.icon) {
+    .menu-button :global(.icon),
+    .search-link .icon {
       width: 1.5rem;
       height: 1.5rem;
       color: var(--color-text);
+    }
+
+    /* Phones: the magnifying glass alone, its label kept for screen readers */
+    .search-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
     }
 
     .menu :global(.close-icon),

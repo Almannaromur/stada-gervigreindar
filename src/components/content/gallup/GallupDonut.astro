@@ -1,0 +1,75 @@
+---
+/**
+ * A donut with a key, in a GallupChart. Slices as "name: value" pairs separated by
+ * semicolons, in order; shares are of their sum.
+ *
+ * <GallupDonut slices="Mjög miklu: 32,2; Frekar miklu: 29,9; Hvorki né: 18,9" center="62%" centerLabel="miklu máli" label="62% segja…" />
+ */
+interface Props {
+  slices: string;
+  /** Large in the middle, e.g. 62% */
+  center?: string;
+  centerLabel?: string;
+  /** What the donut shows, for screen readers */
+  label?: string;
+}
+
+const { slices, center, centerLabel, label } = Astro.props;
+const parts = slices
+  .split(';')
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .map((s) => {
+    const i = s.lastIndexOf(':');
+    return { name: s.slice(0, i).trim(), value: Number(s.slice(i + 1).trim().replace(',', '.')) || 0 };
+  });
+const sum = parts.reduce((total, p) => total + p.value, 0) || 1;
+const circumference = 2 * Math.PI * 80;
+const percent = (v: number) => `${v.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+let start = 0;
+const arcs = parts.map((p, i) => {
+  const length = (p.value / sum) * circumference;
+  const arc = { ...p, colour: `var(--g-pie-${(i % 5) + 1})`, dash: `${length.toFixed(2)} ${(circumference - length).toFixed(2)}`, offset: (-start).toFixed(2) };
+  start += length;
+  return arc;
+});
+---
+
+<div class="g-donut">
+  <svg viewBox="0 0 220 220" role="img" aria-label={label}>
+    {
+      arcs.map((a) => (
+        <circle cx="110" cy="110" r="80" fill="none" style={`stroke: ${a.colour}`} stroke-width="40" stroke-dasharray={a.dash} stroke-dashoffset={a.offset} transform="rotate(-90 110 110)">
+          <title>
+            {a.name}: {percent(a.value)}
+          </title>
+        </circle>
+      ))
+    }
+    {
+      center && (
+        <text x="110" y="114" text-anchor="middle" class="center">
+          {center}
+        </text>
+      )
+    }
+    {
+      centerLabel && (
+        <text x="110" y="138" text-anchor="middle" class="center-label">
+          {centerLabel}
+        </text>
+      )
+    }
+  </svg>
+  <ul>
+    {
+      arcs.map((a) => (
+        <li>
+          <i class="g-swatch" style={`background: ${a.colour}`} />
+          <span>{a.name}</span>
+          <b>{percent(a.value)}</b>
+        </li>
+      ))
+    }
+  </ul>
+</div>

@@ -1,0 +1,817 @@
+/*
+ * „ChatGPT í yfirburðastöðu á Íslandi“ (Gallup 2026): its page and figures, ported from the
+ * HTML draft the article was written in. Used by the article's own page
+ * (src/layouts/articles/GallupArticle.astro) and the Gallup* components. Figure colours come
+ * from the draft; fonts and base colours are the site's tokens. Class names start with g-.
+ */
+
+:is(.gallup, .g-hero, .g-stats, .g-chart, .g-method) {
+  --g-muted: #7c736e; /* the site's #908883, darkened so small text stays legible */
+  --g-surface-light: #fffdf6;
+  --g-gradient: linear-gradient(180deg, #c6f4ff 0%, #e9f6e4 38%, #f8efb4 68%, #fdf8ee 100%);
+  --g-tint: linear-gradient(150deg, #e7f9ff 0%, #fbf3cf 100%);
+  /* Bars: darkened sky blue and spring yellow, so they reach 3:1 contrast */
+  --g-accent: #1f7f99;
+  --g-icelandic: #a88600;
+  --g-other: #c8dde3;
+  --g-ref: #908883;
+  --g-outside: #9a5539;
+  --g-pie-1: #1f7f99;
+  --g-pie-2: #6cc3d8;
+  --g-pie-3: #f3ebc0;
+  --g-pie-4: #c9bfb8;
+  --g-pie-5: #8a7f79;
+  --g-text-col: 46rem;
+  --g-chart-col: 56rem;
+  --g-wide-col: 72rem;
+}
+
+/* ----- Page: everything lines up with the site's container; the hero runs edge to edge ----- */
+
+.gallup {
+  --g-edge: max(var(--gutter), calc((100% - var(--page-max)) / 2 + var(--gutter)));
+  display: flow-root;
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.gallup > * {
+  margin: 1.5rem var(--g-edge) 0;
+}
+
+.gallup > p {
+  max-width: var(--g-text-col);
+}
+
+/* Sections: a rule across the page above a large serif heading */
+.gallup > h2 {
+  margin-top: clamp(3.5rem, 8vw, 6.5rem);
+  padding-top: 1.75rem;
+  padding-right: max(0px, 100% - 2 * var(--g-edge) - var(--g-text-col));
+  border-top: 1px solid var(--color-text);
+  font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.gallup > p a {
+  text-underline-offset: 0.2em;
+}
+
+.gallup > p a:hover {
+  color: var(--cat-text);
+}
+
+@media (max-width: 45rem) {
+  .gallup {
+    font-size: 1.125rem;
+  }
+}
+
+/* ----- Hero: on the brand gradient, behind the site header ----- */
+
+.gallup > .g-hero {
+  margin: -5.5rem 0 0;
+}
+
+.g-hero {
+  position: relative;
+  overflow: hidden;
+  padding: calc(5.5rem + clamp(3rem, 8vw, 6rem)) var(--g-edge, var(--gutter)) clamp(2.5rem, 6vw, 4.5rem);
+  background: var(--g-gradient);
+}
+
+.g-hero .pattern {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(30%, 460px);
+  height: 100%;
+  opacity: 0.85;
+}
+
+.g-hero .inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: var(--g-text-col);
+}
+
+.g-hero .draft {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius);
+  background: #ffca58;
+  font-size: var(--body-sm);
+  font-weight: 600;
+}
+
+.g-hero .tag {
+  color: var(--cat-text);
+  font: 600 0.875rem / 1.24 var(--font-sans);
+  text-decoration: none;
+}
+
+.g-hero .tag::before {
+  content: '# ';
+  content: '# ' / '';
+}
+
+.g-hero .lead {
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  letter-spacing: -0.0025em;
+}
+
+.g-hero .lead p {
+  margin: 0;
+}
+
+.g-hero .byline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+}
+
+.g-hero .who {
+  font-weight: 600;
+}
+
+.g-hero .when {
+  color: var(--g-muted);
+}
+
+@media (max-width: 45rem) {
+  .g-hero .pattern {
+    width: 60%;
+    opacity: 0.35;
+  }
+}
+
+/* ----- Key figures ----- */
+
+.g-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.gallup > .g-stats {
+  margin-top: 0;
+}
+
+.g-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1.75rem;
+  border-radius: 20px;
+  background: var(--g-tint);
+}
+
+.g-stat .head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.g-stat .logo {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-white);
+  box-shadow: 0 1px 0 rgb(64 30 30 / 0.06);
+}
+
+.g-stat .logo img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.g-stat .logo.fill img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.g-stat .num,
+.g-stat .rank b {
+  font: 500 clamp(3rem, 5vw, 4rem) / 1 var(--font-serif);
+  letter-spacing: -0.02em;
+}
+
+.g-stat p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.g-stat .rank {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.g-stat .rank b {
+  color: var(--g-outside);
+}
+
+.g-stat .rank-unit {
+  margin-left: 0.3em;
+  font-size: 0.42em;
+  letter-spacing: 0;
+}
+
+.g-stat .rank-grid {
+  display: grid;
+  grid-template-columns: repeat(11, 10px);
+  gap: 4px;
+}
+
+.g-stat .rank-grid i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: #e6decb;
+}
+
+.g-stat .rank-grid .shortlisted {
+  background: #6cc3d8;
+}
+
+.g-stat .rank-grid .position {
+  background: var(--g-outside);
+  outline: 2px solid var(--g-outside);
+  outline-offset: 1px;
+}
+
+@media (max-width: 62.5rem) {
+  .g-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 30rem) {
+  .g-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----- Figures ----- */
+
+.g-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  max-width: var(--g-chart-col);
+}
+
+.gallup > .g-chart {
+  margin-top: calc(1.5rem + clamp(1.5rem, 4vw, 2.75rem));
+}
+
+.gallup > .g-chart + :not(h2) {
+  margin-top: calc(1.5rem + clamp(1rem, 3vw, 2rem));
+}
+
+.g-chart.wide {
+  gap: 2rem;
+  max-width: var(--g-wide-col);
+}
+
+.g-chart .title {
+  font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+  letter-spacing: -0.015em;
+}
+
+.g-chart .notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: -0.25rem;
+}
+
+.g-chart .notes p {
+  margin: 0;
+  color: var(--g-muted);
+  font-size: 0.9375rem;
+}
+
+.g-chart figcaption {
+  margin-top: -1rem;
+  color: var(--g-muted);
+  font-size: 0.8125rem;
+}
+
+.g-chart .footnote {
+  margin: -0.4rem 0 0;
+  color: var(--g-muted);
+  font-size: 0.8125rem;
+}
+
+.g-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  color: var(--g-muted);
+  font-size: 0.9375rem;
+}
+
+.g-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.g-swatch {
+  display: inline-block;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.g-swatch.accent {
+  background: var(--g-accent);
+}
+
+.g-swatch.icelandic {
+  background: var(--g-icelandic);
+}
+
+.g-swatch.other {
+  background: var(--g-other);
+}
+
+/* Bars: one grid per set, so labels and bars line up (each row takes part through subgrid) */
+.g-bars {
+  display: grid;
+  grid-template-columns: var(--label-w, max-content) minmax(0, 1fr);
+  gap: 0.85rem 0.9rem;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.g-chart.icons .g-bars {
+  grid-template-columns: 1.5rem var(--label-w, max-content) minmax(0, 1fr);
+}
+
+.g-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+.g-row .icon {
+  display: none;
+}
+
+.g-chart.icons .g-row .icon {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--g-muted);
+}
+
+.g-row .label {
+  text-align: right;
+}
+
+.g-row .track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.25rem;
+}
+
+.g-row .bar {
+  flex: none;
+  width: max(3px, calc((100% - 4.25rem) * var(--v) / 100));
+  height: 2.25rem;
+  border-radius: 6px;
+  background: var(--g-other);
+}
+
+.g-row .value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.g-row .value::after {
+  content: var(--unit, '%');
+}
+
+.g-row.accent .bar {
+  background: var(--g-accent);
+}
+
+.g-row.icelandic .bar {
+  background: var(--g-icelandic);
+}
+
+/* Human translation: the yardstick, dashed; its value also draws a line through the rows below */
+.g-row.human {
+  margin-bottom: 0.9rem;
+}
+
+.g-row.human .icon {
+  color: var(--color-text);
+}
+
+.g-row.human .label,
+.g-row.outside .label {
+  font-weight: 600;
+}
+
+.g-row.human .bar {
+  border: 1.5px dashed var(--g-ref);
+  background: rgb(144 136 131 / 0.12);
+}
+
+.g-chart.reference .g-row:not(.human, .outside) .track::after {
+  content: '';
+  position: absolute;
+  top: -0.4rem;
+  bottom: -0.4rem;
+  left: calc((100% - 4.25rem) * var(--ref) / 100);
+  border-left: 1.5px dashed var(--g-ref);
+}
+
+/* Outside the evaluation: a dashed box with text instead of a bar */
+.g-row.outside {
+  margin-top: 0.9rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgb(144 136 131 / 0.3);
+}
+
+.g-row .outside-box {
+  display: block;
+  width: calc(100% - 4.25rem);
+  padding: 0.55rem 0.9rem;
+  border: 1.5px dashed var(--g-outside);
+  border-radius: 6px;
+  color: var(--g-outside);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Panels: a chart of several small charts, two side by side */
+.g-bars:has(> .g-panel) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3.5rem 4.5rem;
+  align-items: start;
+  margin-top: 0.75rem;
+}
+
+.g-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.g-panel h4 {
+  font-size: 1.25rem;
+  letter-spacing: -0.0125em;
+}
+
+.g-panel .base {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--g-muted);
+  font-size: 0.875rem;
+}
+
+.g-panel .base-line {
+  margin: 0;
+  color: var(--g-muted);
+  font-size: 0.8125rem;
+}
+
+.g-panel .strip {
+  height: 7px;
+  margin-bottom: 0.4rem;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e7f9ff;
+}
+
+.g-panel .strip span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: #6cc3d8;
+}
+
+.g-panel .g-bars {
+  gap: 0.75rem 0.9rem;
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.g-panel .bar {
+  height: 1.9rem;
+}
+
+/* Donut */
+.g-bars:has(> .g-donut) {
+  display: block;
+}
+
+.g-donut {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2.5rem 4rem;
+  padding: 0.5rem 0;
+}
+
+.g-donut svg {
+  flex: none;
+  width: 260px;
+  height: 260px;
+}
+
+.g-donut .center {
+  fill: var(--color-text);
+  font: 600 34px var(--font-sans);
+}
+
+.g-donut .center-label {
+  fill: var(--g-muted);
+  font: 400 14px var(--font-sans);
+}
+
+.g-donut ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  min-width: 15rem;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  list-style: none;
+}
+
+.g-donut li {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.g-donut li .g-swatch {
+  width: 16px;
+  height: 16px;
+}
+
+.g-donut li b {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+@media (max-width: 45rem) {
+  .g-bars,
+  .g-chart.icons .g-bars {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .g-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .g-row .label {
+    text-align: left;
+  }
+
+  .g-chart.icons .g-row {
+    grid-template-columns: 1.4rem 1fr;
+    gap: 0.2rem 0.9rem;
+  }
+
+  .g-chart.icons .g-row .track {
+    grid-column: 1 / -1;
+  }
+
+  .g-bars:has(> .g-panel) {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Bars grow once when their chart comes into view. Only with JavaScript (the page sets
+   html.gallup-js before the charts load) and when the reader allows motion */
+@media (prefers-reduced-motion: no-preference) {
+  .gallup-js .g-chart .bar {
+    transform-origin: left center;
+    transition: transform 0.8s cubic-bezier(0.22, 0.8, 0.24, 1) calc(var(--i, 0) * 70ms);
+  }
+
+  .gallup-js .g-chart :is(.value, .outside-box) {
+    transition: opacity 0.45s ease calc(var(--i, 0) * 70ms + 0.45s);
+  }
+
+  .gallup-js .g-chart .g-donut svg {
+    transition:
+      opacity 0.7s ease,
+      transform 0.9s cubic-bezier(0.22, 0.8, 0.24, 1);
+  }
+
+  .gallup-js .g-chart:not(.is-in) .bar {
+    transform: scaleX(0);
+  }
+
+  .gallup-js .g-chart:not(.is-in) :is(.value, .outside-box) {
+    opacity: 0;
+  }
+
+  .gallup-js .g-chart:not(.is-in) .g-donut svg {
+    opacity: 0;
+    transform: rotate(-30deg) scale(0.96);
+  }
+}
+
+/* ----- Methodology: a card with a button that opens the text in a dialog ----- */
+
+.g-method .card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  max-width: var(--g-text-col);
+  padding: 1.5rem 1.75rem;
+  border-radius: 16px;
+  background: var(--g-tint);
+}
+
+.g-method .card p {
+  flex: 1 1 18rem;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.g-method .open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.2rem;
+  border: 1px solid rgb(64 30 30 / 0.2);
+  border-radius: 999px;
+  background: var(--color-white);
+  color: var(--color-text);
+  font: 600 1rem / 1.24 var(--font-sans);
+  cursor: pointer;
+}
+
+.g-method .open:hover,
+.g-method .close:hover {
+  background: var(--color-hover);
+}
+
+.g-method .open svg,
+.g-method .close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.g-method dialog {
+  width: min(48rem, calc(100% - 2rem));
+  max-height: min(88vh, 60rem);
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: 0 18px 60px rgb(64 30 30 / 0.25);
+}
+
+.g-method dialog::backdrop {
+  background: rgb(64 30 30 / 0.45);
+}
+
+.g-method .inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.g-method .inner > * {
+  margin: 0;
+}
+
+.g-method .inner h2 {
+  padding-right: 3rem;
+  font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.g-method .inner h3 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.0175em;
+}
+
+.g-method .inner h4 {
+  margin-top: 0.75rem;
+  font-size: 1.125rem;
+  letter-spacing: -0.015em;
+}
+
+.g-method .inner :is(p, li) {
+  font-size: 1rem;
+}
+
+.g-method .inner ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-left: 1.25rem;
+}
+
+.g-method .close {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  flex: none;
+  place-items: center;
+  align-self: flex-end;
+  width: 44px;
+  height: 44px;
+  margin-bottom: -3.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.g-method table {
+  width: 100%;
+  overflow: hidden;
+  border-collapse: collapse;
+  border-radius: 12px;
+  background: var(--g-surface-light);
+  font-size: 0.9375rem;
+}
+
+.g-method :is(th, td) {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--color-surface);
+  text-align: left;
+  vertical-align: top;
+}
+
+.g-method :is(th, td)[align='right'],
+.g-method :is(th, td)[style*='right'] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.g-method thead th {
+  background: var(--color-hover);
+  font-weight: 600;
+}
+
+.g-method tbody td:first-child {
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .g-method dialog[open] {
+    animation: g-pop 0.18s ease-out;
+  }
+
+  @keyframes g-pop {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

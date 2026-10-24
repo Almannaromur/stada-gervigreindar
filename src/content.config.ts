@@ -38,6 +38,8 @@ const greinar = defineCollection({
   schema: z.object({
     title: z.string(),
     category: reference('flokkar'),
+    /** Opinion piece („Skoðanapistill“): tagged as one, and also listed on the Skoðanapistlar page */
+    opinion: z.boolean().default(false),
     /** Short summary: shown on category pages, in link previews and search results */
     description: z.string(),
     author: reference('authors'),
@@ -86,7 +88,7 @@ const einkunnir = defineCollection({
 const forsida = defineCollection({
   loader: glob({ pattern: 'forsida.yaml', base: './src/content' }),
   schema: z.object({
-    /** Articles picked for „Nýjar greinar“, in order */
+    /** Articles picked for „Nýjast“, in order */
     greinar: z.array(z.string()).default([]),
   }),
 });

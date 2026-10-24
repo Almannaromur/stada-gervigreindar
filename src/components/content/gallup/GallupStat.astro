@@ -1,0 +1,56 @@
+---
+/**
+ * One key figure in GallupStats: a tool's logo and name, a large figure and the text.
+ * With `rank`, a placing in a contest instead of a figure, shown with a square per entrant
+ * (the shortlisted ones tinted, the placing marked).
+ *
+ * <GallupStat name="ChatGPT" logo="/src/content/greinar/<grein>/chatgpt.png" value="89%">þeirra sem…</GallupStat>
+ * <GallupStat name="Google Translate" logo="…" logoFill rank={24} total={33} shortlisted={19}>í vélþýðingakeppninni…</GallupStat>
+ */
+import { resolveImage } from '@/lib/images';
+
+interface Props {
+  name: string;
+  logo?: string;
+  /** The logo fills its square (an app icon) */
+  logoFill?: boolean;
+  value?: string;
+  rank?: number;
+  total?: number;
+  shortlisted?: number;
+}
+
+const { name, logo, logoFill = false, value, rank, total = 0, shortlisted = 0 } = Astro.props;
+const logoImage = logo ? resolveImage(logo, Astro.locals.articleId) : undefined;
+const logoSrc = typeof logoImage === 'string' ? logoImage : logoImage?.src;
+---
+
+<li class="g-stat">
+  <div class="head">
+    {
+      logoSrc && (
+        <span class:list={['logo', { fill: logoFill }]}>
+          <img src={logoSrc} alt="" width="40" height="40" />
+        </span>
+      )
+    }
+    <span>{name}</span>
+  </div>
+  {
+    rank ? (
+      <div class="rank">
+        <b>
+          {rank}.<span class="rank-unit">sæti</span>
+        </b>
+        <div class="rank-grid" role="img" aria-label={`${rank}. sæti af ${total} kerfum; ${shortlisted} efstu fóru í mannlegt mat`}>
+          {Array.from({ length: total }, (_, i) => (
+            <i class:list={{ shortlisted: i < shortlisted, position: i + 1 === rank }} />
+          ))}
+        </div>
+      </div>
+    ) : (
+      value && <b class="num">{value}</b>
+    )
+  }
+  <slot />
+</li>

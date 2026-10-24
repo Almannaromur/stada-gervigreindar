@@ -4,7 +4,7 @@ import ArticleCard from '@/components/ArticleCard.astro';
 import BackButton from '@/components/BackButton.astro';
 import CategoryCta from '@/components/CategoryCta.astro';
 import { categoryVars } from '@/lib/colors';
-import { categoryArt, getArticles, getCategories, type Article, type Category } from '@/lib/content';
+import { categoryArt, categoryArticles, getArticles, getCategories, getCategory, type Article, type Category } from '@/lib/content';
 
 export async function getStaticPaths() {
   const categories = await getCategories();
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
     params: { slug: category.id },
     props: {
       category,
-      articles: articles.filter((a) => a.data.category.id === category.id),
+      articles: categoryArticles(articles, category),
       next: categories[(i + 1) % categories.length],
     },
   }));
@@ -27,6 +27,8 @@ interface Props {
 
 const { category, articles, next } = Astro.props;
 const { name, description, color } = category.data;
+// Each card in its own article's category (on Skoðanapistlar, the topic of each piece)
+const items = await Promise.all(articles.map(async (article) => ({ article, category: await getCategory(article) })));
 ---
 
 <BaseLayout title={name} description={description} backdrop={{ art: categoryArt(category, 'hero') }} style={categoryVars(color)}>
@@ -38,12 +40,12 @@ const { name, description, color } = category.data;
     </header>
 
     <section class="section split" aria-labelledby="greinar">
-      <h2 id="greinar" class="section-heading">Greinar</h2>
+      <h2 id="greinar" class="section-heading">Allt</h2>
       <div class="split-body">
         {
-          articles.length > 0 ? (
+          items.length > 0 ? (
             <ul class="articles">
-              {articles.map((article) => (
+              {items.map(({ article, category }) => (
                 <li>
                   <ArticleCard article={article} category={category} excerpt />
                 </li>

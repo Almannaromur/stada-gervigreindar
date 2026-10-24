@@ -1,0 +1,32 @@
+---
+/**
+ * Page of „ChatGPT í yfirburðastöðu á Íslandi“ (Gallup 2026): a one-off design after the HTML
+ * draft the article was written in. The article's MDX is drawn edge to edge in the site's
+ * container: a hero on the brand gradient (GallupHero), key figures, sections under a rule,
+ * wide figures and the methodology in a dialog. Unlike the standard article page there is no
+ * contents list, back button, reading time, source list or related articles.
+ */
+import { render } from 'astro:content';
+import ArticleLink from '@/components/ArticleLink.astro';
+import * as contentComponents from '@/components/content';
+import '@/components/content/gallup/gallup.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { categoryVars } from '@/lib/colors';
+import type { CustomArticleProps } from './index';
+
+type Props = CustomArticleProps;
+
+const { article, category } = Astro.props;
+const { Content } = await render(article);
+const { title, description, draft } = article.data;
+---
+
+<BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
+  <!-- Before the figures load, so their bars can start empty and grow into view -->
+  <script is:inline>
+    document.documentElement.classList.add('gallup-js');
+  </script>
+  <div class="gallup">
+    <Content components={{ ...contentComponents, a: ArticleLink }} />
+  </div>
+</BaseLayout>

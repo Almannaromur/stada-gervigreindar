@@ -1,0 +1,101 @@
+---
+/**
+ * Gallup article: a figure. Holds bars (GallupBar), panels of bars side by side
+ * (GallupPanel) or a donut (GallupDonut), with a title, notes and source.
+ * Bars grow once when the figure comes into view (on the article's own page).
+ *
+ * <GallupChart title="Tæp níu af hverjum tíu nota ChatGPT" sub="…" caption="Heimild: …">
+ *   <GallupBar label="ChatGPT" value={88.9} tone="accent" />
+ * </GallupChart>
+ *
+ * WMT-style: `icons` (a person by the human translation, a machine by the rest),
+ * `reference` (a dashed line at that value through the machines' bars), `unit=""`.
+ */
+import './gallup.css';
+
+interface Props {
+  title?: string;
+  /** Notes under the figure; each line is its own paragraph */
+  sub?: string;
+  /** Source, in small type at the bottom */
+  caption?: string;
+  /** After each value (default %) */
+  unit?: string;
+  /** Width of the bar labels, e.g. 15rem; otherwise as wide as the longest */
+  labelWidth?: string;
+  /** Colour key: leading tool, Icelandic tool, other */
+  legend?: boolean;
+  wide?: boolean;
+  icons?: boolean;
+  /** Value for a dashed line through the bars */
+  reference?: number | null;
+  footnote?: string;
+}
+
+const { title, sub, caption, unit = '%', labelWidth, legend = false, wide = false, icons = false, reference, footnote } = Astro.props;
+const hasReference = typeof reference === 'number';
+const notes = (sub ?? '')
+  .split('\n')
+  .map((line) => line.trim())
+  .filter(Boolean);
+const style = [`--unit: ${JSON.stringify(unit ?? '')}`, labelWidth && `--label-w: ${labelWidth}`, hasReference && `--ref: ${reference}`].filter(Boolean).join('; ');
+---
+
+<figure class:list={['g-chart', { wide, icons, reference: hasReference }]} style={style}>
+  {title && <h3 class="title">{title}</h3>}
+  {
+    legend && (
+      <div class="g-legend">
+        <span>
+          <i class="g-swatch accent" />
+          Ráðandi tól
+        </span>
+        <span>
+          <i class="g-swatch icelandic" />
+          Íslenskt tól
+        </span>
+        <span>
+          <i class="g-swatch other" />
+          Annað
+        </span>
+      </div>
+    )
+  }
+  <div class="g-bars"><slot /></div>
+  {footnote && <p class="footnote">{footnote}</p>}
+  {
+    notes.length > 0 && (
+      <div class="notes">
+        {notes.map((note) => (
+          <p>{note}</p>
+        ))}
+      </div>
+    )
+  }
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  // Each chart's bars grow once it is a fifth in view, one after another
+  const charts = document.querySelectorAll<HTMLElement>('.g-chart');
+  for (const chart of charts) {
+    for (const bars of chart.querySelectorAll('.g-bars')) {
+      [...bars.children].forEach((row, i) => (row as HTMLElement).style.setProperty('--i', String(i)));
+    }
+  }
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-in');
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.2 },
+    );
+    charts.forEach((chart) => observer.observe(chart));
+  } else {
+    charts.forEach((chart) => chart.classList.add('is-in'));
+  }
+</script>

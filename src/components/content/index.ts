@@ -39,3 +39,14 @@ export { default as FvNum } from './fullveldi/FvNum.astro';
 export { default as FvPillars } from './fullveldi/FvPillars.astro';
 export { default as FvProgress } from './fullveldi/FvProgress.astro';
 export { default as FvSeries } from './fullveldi/FvSeries.astro';
+
+// Page parts and figures for "ChatGPT í yfirburðastöðu á Íslandi" (Gallup 2026),
+// which has a page of its own (src/layouts/articles/GallupArticle.astro)
+export { default as GallupBar } from './gallup/GallupBar.astro';
+export { default as GallupChart } from './gallup/GallupChart.astro';
+export { default as GallupDonut } from './gallup/GallupDonut.astro';
+export { default as GallupHero } from './gallup/GallupHero.astro';
+export { default as GallupMethod } from './gallup/GallupMethod.astro';
+export { default as GallupPanel } from './gallup/GallupPanel.astro';
+export { default as GallupStat } from './gallup/GallupStat.astro';
+export { default as GallupStats } from './gallup/GallupStats.astro';

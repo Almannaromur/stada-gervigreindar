@@ -1,0 +1,41 @@
+---
+/**
+ * One bar in a GallupChart or GallupPanel. `tone`: "accent" (the leading tool), "icelandic",
+ * "human" (the dashed yardstick) or "outside" (no bar: `note` in a dashed box instead).
+ *
+ * <GallupBar label="ChatGPT" value={88.9} tone="accent" />
+ * <GallupBar label="Google Translate*" tone="outside" note="24. sæti af 33…" />
+ */
+interface Props {
+  label: string;
+  value?: number | null;
+  tone?: 'accent' | 'icelandic' | 'human' | 'outside' | '';
+  note?: string;
+}
+
+const { label, value, tone = '', note } = Astro.props;
+const number = Number(value) || 0;
+const shown = number.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+// Phosphor Icons (regular): user for the human translation, robot for the machines
+const icon =
+  tone === 'human'
+    ? 'M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z'
+    : 'M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z';
+---
+
+<div class:list={['g-row', tone]} style={`--v: ${number}`}>
+  <svg class="icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" focusable="false"><path d={icon} /></svg>
+  <span class="label">{label}</span>
+  <span class="track">
+    {
+      tone === 'outside' ? (
+        <span class="outside-box">{note}</span>
+      ) : (
+        <>
+          <span class="bar" />
+          <span class="value">{shown}</span>
+        </>
+      )
+    }
+  </span>
+</div>

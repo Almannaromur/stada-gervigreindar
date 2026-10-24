@@ -25,7 +25,7 @@ export default config({
         greinar: fields.array(fields.relationship({ label: 'Grein', collection: 'greinar', validation: { isRequired: true } }), {
           label: 'Greinar á forsíðu',
           description:
-            'Allt að þrjár greinar undir „Nýjar greinar“, í þessari röð. Greinar í drögum birtast þegar þær eru birtar. Nýjustu greinarnar fylla í laus sæti.',
+            'Allt að þrjár greinar undir „Nýjast“, í þessari röð. Greinar í drögum birtast þegar þær eru birtar. Nýjustu greinarnar fylla í laus sæti.',
           validation: { length: { max: 3 } },
           itemLabel: (props) => props.value ?? 'Veldu grein',
         }),
@@ -47,7 +47,16 @@ export default config({
           name: { label: 'Titill', validation: { length: { min: 1 } } },
           slug: { label: 'Slóð', description: 'Birtist sem /greinar/<slóð>. Breytið ekki eftir birtingu (ekki ýta á „Regenerate“ / ↻): tenglar á greinina hætta þá að virka.' },
         }),
-        category: fields.relationship({ label: 'Flokkur', collection: 'flokkar', validation: { isRequired: true } }),
+        category: fields.relationship({
+          label: 'Flokkur',
+          description: 'Efnið sem greinin fjallar um. Skoðanapistill fær líka flokk eftir efni: veljið hann hér og hakið við „Skoðanapistill“.',
+          collection: 'flokkar',
+          validation: { isRequired: true },
+        }),
+        opinion: fields.checkbox({
+          label: 'Skoðanapistill',
+          description: 'Greinin birtist í flokknum hér að ofan merkt „Skoðanapistill“, og með öllum skoðanapistlum á síðunni Skoðanapistlar.',
+        }),
         description: fields.text({
           label: 'Útdráttur',
           description: 'Ein til tvær setningar. Birtist á flokkasíðu og þegar grein er deilt.',

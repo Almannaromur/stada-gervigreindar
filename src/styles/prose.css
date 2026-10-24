@@ -110,10 +110,25 @@
   font-weight: 600;
 }
 
-/* The first column stays on one line where there is room; on phones it may wrap */
+/* In two-column tables (label and text) the first column stays on one line where there
+   is room; on phones it may wrap. Wider tables wrap it, so they fit the text column */
 @media (min-width: 40rem) {
-  .prose > table td:first-child {
+  .prose > table td:first-child:nth-last-child(2) {
     white-space: nowrap;
+  }
+}
+
+/* Phones: tables with three or more columns get smaller type and tighter cells, and
+   scroll sideways if they still don't fit */
+@media (max-width: 39.99rem) {
+  .prose > table:has(th:nth-child(3)) {
+    display: block;
+    overflow-x: auto;
+    font-size: var(--body-xs);
+  }
+
+  .prose > table:has(th:nth-child(3)) :is(th, td) {
+    padding: 0.625rem 0.75rem;
   }
 }
 

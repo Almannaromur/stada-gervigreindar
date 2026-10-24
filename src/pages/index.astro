@@ -18,7 +18,7 @@ const latest = await Promise.all((await getHomeArticles()).map(async (article) =
         <p class="lead-text">{site.home.lead}</p>
       </div>
       <div class="latest">
-        <ArticlePanel title="Nýjar greinar" items={latest} />
+        <ArticlePanel title="Nýjast" items={latest} />
       </div>
     </section>
 

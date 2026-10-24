@@ -1,0 +1,41 @@
+---
+/**
+ * „Skoðanapistill“ tag on opinion pieces, in the Skoðanapistlar category's colour.
+ * With `link`, it leads to the Skoðanapistlar page (not inside cards, which are links themselves).
+ */
+import { getEntry } from 'astro:content';
+import { categoryVars } from '@/lib/colors';
+import { categoryUrl, opinionCategoryId } from '@/lib/content';
+
+interface Props {
+  link?: boolean;
+}
+
+const { link = false } = Astro.props;
+const category = await getEntry('flokkar', opinionCategoryId);
+const href = link && category ? categoryUrl(category) : undefined;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag href={href} class="opinion-tag" style={category && categoryVars(category.data.color)}>
+  Skoðanapistill
+</Tag>
+
+<style>
+  .opinion-tag {
+    display: inline-block;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--cat-base) 30%, transparent);
+    color: var(--color-text);
+    font-size: var(--body-xs);
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  a.opinion-tag:hover {
+    background: color-mix(in srgb, var(--cat-base) 55%, transparent);
+  }
+</style>

@@ -112,7 +112,7 @@ h1 {
   flex: none;
 }
 
-/* Section with a rule above and a large serif heading ("Flokkar", "Greinar", "Næsti flokkur") */
+/* Section with a rule above and a large serif heading ("Flokkar", "Allt", "Næsti flokkur") */
 .section {
   padding-top: 1.25rem;
   border-top: 1px solid var(--color-line);

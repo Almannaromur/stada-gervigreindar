@@ -24,7 +24,7 @@ export async function getAllArticles(): Promise<Article[]> {
 }
 
 /**
- * „Nýjar greinar“ on the homepage: the articles picked in the editor (Uppsetning → Forsíða,
+ * „Nýjast“ on the homepage: the articles picked in the editor (Uppsetning → Forsíða,
  * src/content/forsida.yaml) in their order, then the newest published ones in the places left.
  * Drafts and missing picks are skipped, so a pick shows up once its article is published.
  */
@@ -35,6 +35,17 @@ export async function getHomeArticles(count = 3): Promise<Article[]> {
   );
   const all = [...picked, ...(await getArticles())];
   return all.filter((a, i) => all.findIndex((b) => b.id === a.id) === i).slice(0, count);
+}
+
+/**
+ * Skoðanapistlar is a kind of article, not a topic. An opinion piece (`opinion`) has a
+ * topic as its category like any article; this category's page lists every opinion piece.
+ */
+export const opinionCategoryId = 'skodanapistlar';
+
+/** The articles listed on a category's page. */
+export function categoryArticles(articles: Article[], category: Category): Article[] {
+  return articles.filter((a) => a.data.category.id === category.id || (category.id === opinionCategoryId && a.data.opinion));
 }
 
 export async function getCategory(article: Article): Promise<Category> {
@@ -57,6 +68,25 @@ export function nextArticle(article: Article, path: Article[]): Article | undefi
   if (path.length < 2) return undefined;
   const i = path.findIndex((a) => a.id === article.id);
   return path[(i + 1) % path.length];
+}
+
+/**
+ * The text of an article's MDX body, for reading time and search. Of a component tag only
+ * its quoted attribute values are kept (some components keep their text there), not the tag
+ * or attribute names; links lose their addresses.
+ */
+export function articleText(article: Article): string {
+  return (article.body ?? '')
+    .replace(/<[^>]*>/g, (tag) => ` ${(tag.match(/"[^"]*"/g) ?? []).join(' ')} `)
+    .replace(/\]\([^)]*\)/g, ']');
+}
+
+/** Minutes to read the article's text, at 200 words a minute, rounded up (at least 1). */
+export function readingMinutes(article: Article): number {
+  const words = articleText(article)
+    .split(/\s+/)
+    .filter((word) => /[\p{L}\p{N}]/u.test(word)).length;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 export const articleUrl = (article: Article) => `/greinar/${article.id}`;

@@ -1,14 +1,16 @@
 ---
-/** One bar in a BarChart: <Bar label="2026" value={69} /> */
+/** One bar in a BarChart: <Bar label="2026" value={69} />, or <Bar … highlight /> for full colour */
 interface Props {
   label: string;
   value: number;
+  /** Full colour; when no bar in the chart has it, the last bar is in full colour */
+  highlight?: boolean;
 }
 
-const { label, value } = Astro.props;
+const { label, value, highlight = false } = Astro.props;
 ---
 
-<div class="bar">
+<div class:list={['bar', { highlight }]}>
   <span class="label">{label}</span>
   <span class="track" aria-hidden="true"><span class="fill" style={`--value: ${Number(value) || 0}`}></span></span>
   <span class="value">{Number(value).toLocaleString('is-IS')}</span>
@@ -40,14 +42,21 @@ const { label, value } = Astro.props;
     background: color-mix(in srgb, var(--cat-base) 50%, var(--color-bg));
   }
 
+  /* Full colour: the highlighted bars, or the last bar when none is highlighted */
+  .highlight .fill,
   .bar:last-child .fill {
     background: var(--cat-base);
+  }
+
+  :global(.bars:has(.highlight)) .bar:last-child:not(.highlight) .fill {
+    background: color-mix(in srgb, var(--cat-base) 50%, var(--color-bg));
   }
 
   .value {
     color: var(--cat-text);
     font-weight: 700;
     text-align: right;
+    white-space: nowrap;
   }
 
   .value::after {
