@@ -6,8 +6,8 @@ description: >-
   Ný könnun Gallup fyrir Almannaróm sýnir hvaða gervigreindartól landsmenn nota
   á íslensku.
 author: ottar-kolbeinsson-proppe
-date: 2026-10-21
-draft: true
+date: 2026-10-28
+draft: false
 heimildir: []
 tengt: []
 ---
@@ -16,7 +16,7 @@ tengt: []
 </GallupHero>
 
 <GallupStats>
-  <GallupStat name="ChatGPT" logo="/src/content/greinar/chatgpt-i-yfirburdastodu-a-islandi/chatgpt.png" value="89%">
+  <GallupStat name="ChatGPT" logo="/src/content/greinar/chatgpt-i-yfirburdastodu-a-islandi/chatgpt.png" logoFill={false} value="89%">
     þeirra sem nota gervigreindarspjallmenni á íslensku nota ChatGPT
   </GallupStat>
 
@@ -37,7 +37,7 @@ tengt: []
 
 Vélþýðingar og spjallmenni eru komin í mjög víðtæka notkun meðal almennings. Mun færri nota tól eins og villuleiðréttingar og raddstýring á íslensku er afar lítið notuð – enda sú tækni þar sem íslensk virkni er komin styst í erlendum lausnum.
 
-<GallupChart title="Vélþýðingar og spjallmenni orðin almenn en raddstýring nánast ónotuð" sub="Hlutfall svarenda sem nota gervigreind eða máltækni á íslensku við hvert verkefni" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Grunnur: allir svarendur (n = 814)." unit="%" labelWidth="15rem">
+<GallupChart title="Vélþýðingar og spjallmenni orðin almenn en raddstýring nánast ónotuð" sub="Hlutfall svarenda sem nota gervigreind eða máltækni á íslensku við hvert verkefni" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Grunnur: allir svarendur (n = 814)." unit="%" labelWidth="15rem" legend={false} wide={false} icons={false}>
   <GallupBar label="Vélþýðingar" value={67.7} tone="accent" />
 
   <GallupBar label="Gervigreindarspjallmenni" value={60.7} tone="accent" />
@@ -53,7 +53,7 @@ Vélþýðingar og spjallmenni eru komin í mjög víðtæka notkun meðal almen
 
 Meðal þeirra sem nota gervigreindarspjallmenni á íslensku nota tæp níu af hverjum tíu ChatGPT. Þar á eftir kemur Gemini, sem 28% þeirra sem nota mállíkön nýta sér. Aðeins 12% þeirra sem nota slík líkön nota Claude.
 
-<GallupChart title="Tæp níu af hverjum tíu nota ChatGPT" sub="Hvaða gervigreindarspjallmenni notar þú á íslensku? Fleiri en eitt svar leyft" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Grunnur: þeir sem nota gervigreindarspjallmenni á íslensku (n = 494). Hlutföllin leggjast ekki saman í hundrað." unit="%" labelWidth="11rem">
+<GallupChart title="Tæp níu af hverjum tíu nota ChatGPT" sub="Hvaða gervigreindarspjallmenni notar þú á íslensku? Fleiri en eitt svar leyft" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Grunnur: þeir sem nota gervigreindarspjallmenni á íslensku (n = 494). Hlutföllin leggjast ekki saman í hundrað." unit="%" labelWidth="11rem" legend={false} wide={false} icons={false}>
   <GallupBar label="ChatGPT" value={88.9} tone="accent" />
 
   <GallupBar label="Google Gemini" value={28.2} tone="" />
@@ -84,6 +84,7 @@ Mjói borðinn sýnir hve stór hluti allra 814 svarenda er í grunninum. Fleiri
   labelWidth="9.5rem"
   legend
   wide
+  icons={false}
 >
   <GallupPanel title="Spjallmenni" base="Grunnur: 494 sem nota spjallmenni" n={494} total={814}>
     <GallupBar label="ChatGPT" value={88.9} tone="accent" />
@@ -128,7 +129,7 @@ Mjói borðinn sýnir hve stór hluti allra 814 svarenda er í grunninum. Fleiri
 
 Sérstaka athygli vekur hve vel Google Translate stendur meðal almennra notenda þrátt fyrir að margfalt betri vélþýðingartól séu í boði fyrir íslensku í dag. Það sést vel í [WMT](https://aclanthology.org/2025.wmt-1.22/), stærstu vélþýðingakeppni heims, þar sem atvinnuþýðendur meta árlega íslenskar þýðingar kerfanna.
 
-<GallupChart title="Gemini efst og íslenska lausnin Erlendur næst í vélþýðingum á íslensku" sub="Mat atvinnuþýðenda á þýðingum úr ensku á íslensku, kvarði 0–100. Fimm efstu vélarnar" caption="Heimild: WMT25, úr ensku á íslensku, mannlegt mat atvinnuþýðenda (ESA). Kocmi o.fl. 2025." unit="" labelWidth="11rem" icons reference={87.5} footnote="* Netþýðingarvélar eru nafnlausar í WMT-skýrslunni. Almennt er talið að vélin ONLINE-G sé Google Translate. Hún raðaðist í 24. sæti af 33 í sjálfvirku forvali.">
+<GallupChart title="Gemini efst og íslenska lausnin Erlendur næst í vélþýðingum á íslensku" sub="Mat atvinnuþýðenda á þýðingum úr ensku á íslensku, kvarði 0–100. Fimm efstu vélarnar" caption="Heimild: WMT25, úr ensku á íslensku, mannlegt mat atvinnuþýðenda (ESA). Kocmi o.fl. 2025." labelWidth="11rem" legend={false} wide={false} icons reference={87.5} footnote="* Netþýðingarvélar eru nafnlausar í WMT-skýrslunni. Almennt er talið að vélin ONLINE-G sé Google Translate. Hún raðaðist í 24. sæti af 33 í sjálfvirku forvali.">
   <GallupBar label="Mannleg þýðing" value={87.5} tone="human" />
 
   <GallupBar label="Gemini 2.5 Pro" value={77.6} tone="" />
@@ -152,7 +153,7 @@ Sérstaka athygli vekur hve vel Google Translate stendur meðal almennra notenda
 
 Þegar fólk notar þjónustuspjallmenni fyrirtækja og stofnana gerir það það nær eingöngu á íslensku. Gæði íslenskunnar í þessum lausnum skipta því miklu máli fyrir gæði þjónustunnar sem fyrirtækin veita.
 
-<GallupChart title="Þjónustuspjallmenni eru notuð á íslensku, nánast aldrei á ensku" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Vinstri: allir svarendur (n = 814). Hægri: þeir sem nota þjónustuspjallmenni." unit="%">
+<GallupChart title="Þjónustuspjallmenni eru notuð á íslensku, nánast aldrei á ensku" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Vinstri: allir svarendur (n = 814). Hægri: þeir sem nota þjónustuspjallmenni." unit="%" legend={false} wide={false} icons={false}>
   <GallupPanel title="Nota þjónustuspjallmenni" base="Hlutfall allra svarenda" labelWidth="6rem">
     <GallupBar label="Á íslensku" value={39.8} tone="accent" />
 
@@ -172,7 +173,7 @@ Sérstaka athygli vekur hve vel Google Translate stendur meðal almennra notenda
 
 Rúm 62% segja að það skipti sig miklu máli að geta notað tækni og gervigreind á íslensku. Hlutfallið hefur haldist stöðugt í þremur mælingum Almannaróms frá því um haustið 2025.
 
-<GallupChart title="62% segja það skipta sig miklu máli að geta notað gervigreind á íslensku" sub="Hversu miklu máli skiptir það þig að geta notað tækni og gervigreind á íslensku?" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Grunnur: þeir sem tóku afstöðu (n = 767).">
+<GallupChart title="62% segja það skipta sig miklu máli að geta notað gervigreind á íslensku" sub="Hversu miklu máli skiptir það þig að geta notað tækni og gervigreind á íslensku?" caption="Heimild: Gallup fyrir Almannaróm, júní 2026. Grunnur: þeir sem tóku afstöðu (n = 767)." legend={false} wide={false} icons={false}>
   <GallupDonut slices="Mjög miklu: 32,2; Frekar miklu: 29,9; Hvorki né: 18,9; Frekar litlu: 7,2; Mjög litlu: 11,9" center="62%" centerLabel="miklu máli" label="62% segja það skipta sig miklu máli" />
 </GallupChart>
 
@@ -219,11 +220,11 @@ Rúm 62% segja að það skipti sig miklu máli að geta notað tækni og gervig
   Vikmörk eru reiknuð með 95% vissu. Þau eru þröng þar sem hópar eru stórir en víðari þar sem þeir eru minni.
 
   | Niðurstaða                                        | Grunnur (n) | Hlutfall | Vikmörk |
-  | ------------------------------------------------- | ----------: | -------: | ------: |
-  | ChatGPT meðal notenda spjallmenna                 |         494 |    88,9% |    ±2,8 |
-  | Google Translate meðal notenda vélþýðinga         |         551 |    95,5% |    ±1,7 |
-  | Skrambi meðal notenda villuleiðréttingar          |         199 |    44,6% |    ±6,9 |
-  | Skiptir miklu máli að geta notað tækni á íslensku |         767 |    62,1% |    ±3,4 |
+  | ------------------------------------------------- | ----------- | -------- | ------- |
+  | ChatGPT meðal notenda spjallmenna                 | 494         | 88,9%    | ±2,8    |
+  | Google Translate meðal notenda vélþýðinga         | 551         | 95,5%    | ±1,7    |
+  | Skrambi meðal notenda villuleiðréttingar          | 199         | 44,6%    | ±6,9    |
+  | Skiptir miklu máli að geta notað tækni á íslensku | 767         | 62,1%    | ±3,4    |
 
   #### Hvað könnunin mælir ekki
 
