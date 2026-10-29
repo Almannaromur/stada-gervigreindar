@@ -19,3 +19,10 @@ export function resolveImage(src: string, articleId: string | undefined): ImageM
   if (!image) throw new Error(`Mynd fannst ekki: "${src}" (grein: ${articleId ?? '?'})`);
   return image.default;
 }
+
+/** An article's link preview image (`ogImage`), if it has one stored next to it */
+export function articleOgImage(article: { id: string; data: { ogImage?: string | null } }): ImageMetadata | undefined {
+  if (!article.data.ogImage) return undefined;
+  const image = resolveImage(article.data.ogImage, article.id);
+  return typeof image === 'string' ? undefined : image;
+}

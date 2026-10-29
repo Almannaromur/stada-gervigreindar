@@ -42,6 +42,8 @@ const greinar = defineCollection({
     opinion: z.boolean().default(false),
     /** Short summary: shown on category pages, in link previews and search results */
     description: z.string(),
+    /** Image for link previews ("/src/content/greinar/<slug>/ogImage.jpg"); without one the site's og.png is used */
+    ogImage: z.string().nullable().optional(),
     author: reference('authors'),
     date: z.coerce.date(),
     updated: z.coerce.date().optional().nullable(),

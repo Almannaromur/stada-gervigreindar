@@ -12,6 +12,7 @@ import OpinionTag from '@/components/OpinionTag.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
 import { customArticlePages } from '@/layouts/articles';
 import { categoryVars } from '@/lib/colors';
+import { articleOgImage } from '@/lib/images';
 import * as contentComponents from '@/components/content';
 import { categoryUrl, formatDate, getAllArticles, getArticles, getCategories, getCategory, isoDate, nextArticle, opinionCategoryId, readingPath, type Article } from '@/lib/content';
 
@@ -82,7 +83,7 @@ const related = (
   CustomPage ? (
     <CustomPage article={article} category={category} />
   ) : (
-    <BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
+    <BaseLayout title={title} description={description} ogType="article" image={articleOgImage(article)} style={categoryVars(category.data.color)} noindex={draft}>
       <div class="container layout">
         <div class="back"><BackButton href={categoryUrl(category)} /></div>
 

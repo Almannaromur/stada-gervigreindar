@@ -50,3 +50,4 @@ Consult these guides before working on related tasks:
 - Design tokens in `src/styles/tokens.css` come from the Figma design system ("Vefskýrsla Sept"). Figma exports live in `design/` (git-ignored).
 - Markdown is processed by Sätteri (Astro 7 default), configured in `astro.config.mjs`.
 - Text is Icelandic: keep `lang="is"`, „…“ quotes, and don't "fix" content wording without asking.
+- Link previews: an article's optional `ogImage` (editor „Mynd þegar grein er deilt“, stored next to the article) is cropped to a 1200×630 JPG for `og:image`/`twitter:image` (`articleOgImage` in `src/lib/images.ts`, `image` prop of `BaseLayout`); without one, pages use `public/og.png`.

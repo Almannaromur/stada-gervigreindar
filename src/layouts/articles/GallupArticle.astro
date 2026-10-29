@@ -12,6 +12,7 @@ import * as contentComponents from '@/components/content';
 import '@/components/content/gallup/gallup.css';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { categoryVars } from '@/lib/colors';
+import { articleOgImage } from '@/lib/images';
 import type { CustomArticleProps } from './index';
 
 type Props = CustomArticleProps;
@@ -21,7 +22,7 @@ const { Content } = await render(article);
 const { title, description, draft } = article.data;
 ---
 
-<BaseLayout title={title} description={description} ogType="article" style={categoryVars(category.data.color)} noindex={draft}>
+<BaseLayout title={title} description={description} ogType="article" image={articleOgImage(article)} style={categoryVars(category.data.color)} noindex={draft}>
   <!-- Before the figures load, so their bars can start empty and grow into view -->
   <script is:inline>
     document.documentElement.classList.add('gallup-js');
