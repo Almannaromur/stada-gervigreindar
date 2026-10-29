@@ -63,6 +63,12 @@ export default config({
           multiline: true,
           validation: { length: { min: 1 } },
         }),
+        ogImage: fields.image({
+          label: 'Mynd þegar grein er deilt',
+          description: 'Valfrjálst. Birtist þegar tengli á greinina er deilt (Facebook, LinkedIn, Slack o.fl.). Best 1200×630 px (eða 2400×1260), JPG eða PNG; er skorin í þau hlutföll. Án myndar er notuð almenn mynd vefsins.',
+          directory: 'src/content/greinar',
+          publicPath: '/src/content/greinar/',
+        }),
         author: fields.relationship({ label: 'Höfundur', collection: 'authors', validation: { isRequired: true } }),
         date: fields.date({ label: 'Dagsetning', defaultValue: { kind: 'today' }, validation: { isRequired: true } }),
         updated: fields.date({ label: 'Uppfært', description: 'Valfrjálst' }),
